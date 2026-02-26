@@ -1,12 +1,7 @@
-import { type NextAuthOptions } from "next-auth"
-import GitHubProvider from "next-auth/providers/github"
+import { cookies } from "next/headers";
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
-  ],
-  secret: process.env.NEXTAUTH_SECRET,
+export async function isAuthenticated() {
+  const cookieStore = await cookies(); 
+  const token = cookieStore.get("auth_token")?.value;
+  return !!token;
 }

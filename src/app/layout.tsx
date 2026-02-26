@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
- import { ThemeProvider } from "@/components/theme-provider.tsx/theme-provider";
- import Providers from "./providers";
+import { ThemeProvider } from "@/components/theme-provider.tsx/theme-provider";
+import Providers from "./providers";
+import { ChatBot } from "@/components/chat-bot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,17 +36,18 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <head />
         <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
         >
-           <Providers>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <Providers>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <ChatBot />
+            </ThemeProvider>
           </Providers>
         </body>
       </html>

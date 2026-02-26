@@ -1,0 +1,75 @@
+SUMIT KUMAR	
+GenAI & Multi-Agent Engineer | Full Stack Web Developer 
+Noida, India | 7011676185 | sumitsumitsumit163@gmail.com | LinkedIn | GitHub | Portfolio 
+
+PROFILE SUMMARY
+
+Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures. Currently specializing in the IIT Mandi GenAI curriculum, focusing on LLM orchestration, fine-tuning and agentic workflows using LangChain and CrewAI. Proven track record of integrating AI-driven automation into enterprise web applications (MERN/Next.js) to optimize performance and decision-making. 
+
+TECHNICAL SKILLS
+
+•	Generative AI & LLMs: RAG Pipelines, Prompt Engineering (Zero-shot/Few-shot/CoT), LLM Fine-Tuning, Transformers. 
+•	Agentic Frameworks: Multi-Agent Systems (MAS), LangChain, LlamaIndex, CrewAI, AutoGen, ReAct Agents. 
+•	AI Development: Gemini API, OpenAI API, Hugging Face, FastAPI, RESTful APIs, JWT Authentication.
+•	Database & Storage: Vector Databases (Pinecone, ChromaDB, FAISS), MySQL, PostgreSQL, MongoDB. 
+•	Full Stack Core: React.js, Next.js, Python, TypeScript, JavaScript, Node.js, Express.js, Tailwind CSS, MUI. 
+•	Deployment & ML Ops: Docker, AWS, Jenkins, CI/CD, LangSmith/LangFuse.
+•	Tools & Utilities: Git, GitHub, GitLab, Postman, VS Code, Cursor AI, Jupiter, Anaconda.   
+
+PROFESSIONAL EXPERIENCE
+
+Software Engineer, Kent RO Systems Pvt Ltd 	 Apr 2024 — Present
+•	Integrated OCR-based invoice parsing to automate data extraction and validation, reducing manual effort and improving accuracy. 
+•	Implemented server load balancing using NGINX, ensuring high availability, optimized traffic distribution, and improved system stability. 
+•	Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters, enhancing decision-making and data accessibility across departments. 
+•	Developed secure authentication and role-based access control using JWT and OAuth2 for internal and external stakeholders. 
+•	Improved API performance, optimized backend logic, and strengthened system scalability across the Kent RiseEngine platform. 
+
+Associate Software Developer, TechnoIdentity 	 Aug 2023 — Mar 2024
+•	Revamped the HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience. 
+•	Developed scalable and reusable UI components for the Hectare (US Toll Authority) platform, enhancing system reliability and maintainability. 
+•	Automated end-to-end test cases using Cypress and Playwright, reducing manual QA effort and improving testing efficiency. 
+
+PROJECTS
+
+Kent Risengine, Internal 	 
+•	Built an AI-based invoice parser in RiseEngine to automate data extraction and improve processing accuracy. 
+•	Created validation schemas, components and UI using React and Node.js to ensure clean, consistent and reliable data. 
+•	Integrated Zoho Analytics dashboards with role-based and criteria-based views for real-time insights. 
+Cam Attendance, Internal/Client 	 
+•	Maintained and enhanced a full-stack attendance platform used by thousands of employees and clients. 
+•	Managed backend services and REST APIs (Spring Boot) along with frontend modules (Angular) for real-time HR data tracking. 
+•	Integrated automated data pipelines to sync and validate check-ins, leave logs, and key HR metrics. 
+
+TIOS Revamp, Internal 	 
+•	Migrated a legacy HRMS to a modern modular architecture using Next.js. 
+•	Improved performance, maintainability, and scalability by redesigning the UI/UX and restructuring the entire codebase. 
+
+KEY ACHIEVEMENTS
+
+•	Delivered automation and AI-driven enhancements across platforms, improving accuracy, reliability, and workflow efficiency. 
+•	Built secure Node.js authentication with role-based login, user management (create/delete), and integrated AWS certificate handling. 
+•	Improved system scalability and uptime through optimized server load handling, high-performance APIs, and refined backend logic. 
+•	Enhanced decision-making by implementing structured analytics dashboards and improving data visibility across departments. 
+•	Strengthened platform architecture with modular codebases, reusable components, and improved cross-service data flow. 
+
+EDUCATION
+
+MTech – Computer Science 	 2022 — 2024
+Monad University
+
+B.E – Mechanical Engineering 	               2012 — 2016
+RGPV
+
+CERTIFICATIONS & TRAINING
+
+PG Certification in Gen AI and Multi-Agent Systems, IIT Mandi - TIH	 Dec 2025 — Present
+•	Core Curriculum: Mastered advanced Prompt Engineering, NLP fundamentals, and Retrieval-Augmented Generation (RAG) pipelines using Vector Databases.
+•	Agentic AI & Fine-Tuning: Architected autonomous Multi-Agent Systems (MAS) using LangChain, CrewAI, AutoGen, LlamaIndex and fine-tuned Large Language Models.
+•	Key Learnings & Deployment: Applied Deep Learning foundations and Transformer architectures to build and deploy scalable GenAI models via FastAPI.  
+
+Full Stack Web Developer, Newton School 	 May 2022 — Mar 2023
+•	Trained in modern full-stack web technologies with a strong focus on building AI-powered web applications. 
+•	Gained hands-on experience with HTML, CSS, JavaScript, React, Next.js, Node.js, Express.js, MongoDB, and Git. 
+•	Actively participated in DSA coding contests, improving problem-solving and algorithmic thinking. 
+•	Collaborated on group projects and real-world development challenges, strengthening teamwork and practical development skills. 

@@ -29,9 +29,10 @@ export function LoginForm({
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <Button
+                  type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => signIn("credentials", { guest: true })}
+                  onClick={() => signIn("credentials", { callbackUrl: "/dashboard" })}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -42,9 +43,10 @@ export function LoginForm({
                   Login as Guest
                 </Button>
                 <Button
+                  type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => signIn("github")}
+                  onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -56,9 +58,10 @@ export function LoginForm({
                 </Button>
 
                 <Button
+                  type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => signIn("google")}
+                  onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path

@@ -17,20 +17,6 @@ export function ChatBot() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [input, setInput] = useState("");
 
-    // const { messages, status, error, sendMessage } = useChat({
-    //     initialMessages: [
-    //         {
-    //             id: "init-msg",
-    //             role: "assistant",
-    //             parts: [
-    //                 {
-    //                     type: "text",
-    //                     text: `Hi ${session?.user?.name?.split(" ")?.[0] || "there"}! I am Sumit's AI Assistant. How can I help you today?`,
-    //                 },
-    //             ],
-    //         },
-    //     ],
-    // });
 
     const { messages, status, error, sendMessage, setMessages } = useChat();
 
@@ -43,8 +29,6 @@ export function ChatBot() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
-
-        // AI SDK v6: sendMessage expects { text } not a full UIMessage
         sendMessage({ text: input });
         setInput("");
     };
@@ -59,7 +43,7 @@ export function ChatBot() {
                 id: "init-msg",
                 role: "assistant",
                 parts: [
-                    { type: "text", text: "Hi! How can I help you?" }
+                    { type: "text", text: "AskNova — AI Assistant for Intelligent Conversations?" }
                 ],
             },
         ]);
@@ -153,13 +137,32 @@ export function ChatBot() {
                     </CardContent>
                 </Card>
             ) : (
-                <Button
-                    size="icon"
-                    className="h-14 w-14 rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-105 transition-all duration-300"
-                    onClick={() => setIsOpen(true)}
-                >
-                    <MessageCircle className="h-6 w-6" />
-                </Button>
+                <div className="relative flex flex-col items-end">
+                    {/* Bouncing Tooltip with Dancing GIF */}
+                    <div className="absolute bottom-full mb-4 right-0 flex flex-col items-end animate-bounce">
+                        <div className="bg-primary text-primary-foreground px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-3 whitespace-nowrap cursor-pointer hover:scale-105 transition-transform" onClick={() => setIsOpen(true)}>
+                            {/* <img
+                                src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif"
+                                alt="Dancing AI"
+                                className="w-10 h-10 rounded-full object-cover border-2 border-primary-foreground/30 bg-background"
+                            /> */}
+                            <div className="text-left">
+                                <p className="text-sm font-bold leading-none mb-1">Hi there! 👋</p>
+                                <p className="text-xs font-medium opacity-90 leading-none">I'm your AI Assistant Nova</p>
+                            </div>
+                        </div>
+                        {/* Pointer Tail */}
+                        <div className="w-4 h-4 bg-primary transform rotate-45 -mt-2 mr-6 -z-10" />
+                    </div>
+
+                    <Button
+                        size="icon"
+                        className="h-14 w-14 rounded-full shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:scale-110 transition-all duration-300"
+                        onClick={() => setIsOpen(true)}
+                    >
+                        <MessageCircle className="h-6 w-6" />
+                    </Button>
+                </div>
             )}
         </div>
     );

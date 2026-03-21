@@ -21,8 +21,10 @@ import {
 const sections = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
-  { id: "projects", label: "Projects" },
+  { id: "skills", label: "Skills" },
   { id: "experience", label: "Experience" },
+  { id: "projects", label: "Projects" },
+  { id: "gallery", label: "Gallery" },
   { id: "contact", label: "Contact" },
 ];
 

@@ -7,29 +7,32 @@ import { useChat } from "@ai-sdk/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 
 export function ChatBot() {
     const { data: session } = useSession();
     const [isOpen, setIsOpen] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
     const [input, setInput] = useState("");
 
-    const { messages, status, error, sendMessage, stop } = useChat({
-        messages: [
+    const { messages, status, error, sendMessage } = useChat({
+        initialMessages: [
             {
-                id: 'init-msg',
-                role: 'assistant',
-                parts: [{ type: 'text', text: `Hi ${session?.user?.name?.split(' ')?.[0] || 'there'}! I am Sumit's AI Assistant. How can I help you today?` }]
-            }
-        ] as import("ai").UIMessage[]
+                id: "init-msg",
+                role: "assistant",
+                parts: [
+                    {
+                        type: "text",
+                        text: `Hi ${session?.user?.name?.split(" ")?.[0] || "there"}! I am Sumit's AI Assistant. How can I help you today?`,
+                    },
+                ],
+            },
+        ],
     });
 
-    const isLoading = status === 'submitted' || status === 'streaming';
+    const isLoading = status === "submitted" || status === "streaming";
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
@@ -37,8 +40,10 @@ export function ChatBot() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!input.trim()) return;
-        sendMessage({ id: Date.now().toString(), role: 'user', parts: [{ type: 'text', text: input }] });
+        if (!input.trim() || isLoading) return;
+
+        // AI SDK v6: sendMessage expects { text } not a full UIMessage
+        sendMessage({ text: input });
         setInput("");
     };
 
@@ -47,6 +52,17 @@ export function ChatBot() {
     }, [messages]);
 
     if (!session) return null;
+
+    // Helper to extract text content from a message's parts
+    const getMessageText = (m: (typeof messages)[number]) => {
+        if (m.parts && m.parts.length > 0) {
+            return m.parts
+                .map((p) => (p.type === "text" ? p.text : ""))
+                .join("");
+        }
+        // fallback for legacy content field
+        return (m as any).content || "";
+    };
 
     return (
         <div className="fixed bottom-6 right-6 z-50">
@@ -57,24 +73,32 @@ export function ChatBot() {
                             <MessageCircle className="h-4 w-4 text-primary" />
                             AI Assistant
                         </CardTitle>
-                        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground" onClick={() => setIsOpen(false)}>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+                            onClick={() => setIsOpen(false)}
+                        >
                             <X className="h-4 w-4" />
                         </Button>
                     </CardHeader>
                     <CardContent className="flex-1 p-4 flex flex-col bg-background/50 overflow-hidden">
-
                         <div className="flex-1 overflow-y-auto w-full mb-4 space-y-3 pr-2 custom-scrollbar">
-                            {messages.map(m => (
-                                <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`p-3 rounded-lg text-sm max-w-[85%] ${m.role === 'user'
-                                        ? 'bg-primary text-primary-foreground rounded-tr-none'
-                                        : 'bg-primary/10 text-foreground rounded-tl-none'
-                                        }`}>
+                            {messages.map((m) => (
+                                <div
+                                    key={m.id}
+                                    className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                                >
+                                    <div
+                                        className={`p-3 rounded-lg text-sm max-w-[85%] ${
+                                            m.role === "user"
+                                                ? "bg-primary text-primary-foreground rounded-tr-none"
+                                                : "bg-primary/10 text-foreground rounded-tl-none"
+                                        }`}
+                                    >
                                         <div className="prose prose-sm dark:prose-invert max-w-none break-words">
-                                            <Markdown
-                                                remarkPlugins={[remarkGfm, remarkBreaks]}
-                                            >
-                                                {m.parts?.length ? m.parts.map((p) => p.type === "text" ? p.text : "").join("") : (m as any).content || ""}
+                                            <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                                                {getMessageText(m)}
                                             </Markdown>
                                         </div>
                                     </div>
@@ -91,7 +115,10 @@ export function ChatBot() {
                                 <div className="flex justify-start mt-2">
                                     <div className="bg-destructive/10 text-destructive flex gap-2 items-center p-3 rounded-lg rounded-tl-none text-sm inline-block max-w-[85%]">
                                         <AlertCircle className="h-4 w-4 shrink-0" />
-                                        <span>we are currenlty down due to traffice Please wait some time</span>
+                                        <span>
+                                            We are currently down due to traffic. Please wait some
+                                            time.
+                                        </span>
                                     </div>
                                 </div>
                             )}
@@ -106,7 +133,9 @@ export function ChatBot() {
                                 disabled={isLoading}
                                 className="flex-1 text-sm rounded-md border border-input bg-transparent px-3 py-2 shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
                             />
-                            <Button type="submit" disabled={isLoading} size="sm" className="px-3">Send</Button>
+                            <Button type="submit" disabled={isLoading} size="sm" className="px-3">
+                                Send
+                            </Button>
                         </form>
                     </CardContent>
                 </Card>

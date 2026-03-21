@@ -8,7 +8,6 @@ export default function ResumeAnalyzer() {
 
   const analyzeResume = async () => {
     const res = await axios.post('/api/analyze', { jd })
-    console.log(res)
     setResponse(res.data.result)
   }
 

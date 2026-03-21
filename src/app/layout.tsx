@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider.tsx/theme-provider";
+import { ThemeProvider } from "@/components/theme-provider/theme-provider";
 import Providers from "./providers";
 import { ChatBot } from "@/components/chat-bot";
 
@@ -15,11 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
 export const metadata: Metadata = {
   title: "Sumit Kumar | AI-Powered Full Stack Developer",
   description: "Portfolio powered by Next.js, OpenAI, and 3D Web",
@@ -27,30 +22,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <html lang="en" suppressHydrationWarning>
-        <head />
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
-        >
-          <Providers>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <ChatBot />
-            </ThemeProvider>
-          </Providers>
-        </body>
-      </html>
-    </>
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <ChatBot />
+          </ThemeProvider>
+        </Providers>
+      </body>
+    </html>
   );
 }

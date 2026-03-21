@@ -1,21 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/toggle";
 import { Container } from "@/components/ui/container";
-
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,8 +18,6 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 
-
-
 const sections = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
@@ -34,8 +25,6 @@ const sections = [
   { id: "experience", label: "Experience" },
   { id: "contact", label: "Contact" },
 ];
-
-
 
 export default function Navbar() {
   const { data: session, status } = useSession();

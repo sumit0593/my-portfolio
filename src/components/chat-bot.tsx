@@ -17,20 +17,22 @@ export function ChatBot() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [input, setInput] = useState("");
 
-    const { messages, status, error, sendMessage } = useChat({
-        initialMessages: [
-            {
-                id: "init-msg",
-                role: "assistant",
-                parts: [
-                    {
-                        type: "text",
-                        text: `Hi ${session?.user?.name?.split(" ")?.[0] || "there"}! I am Sumit's AI Assistant. How can I help you today?`,
-                    },
-                ],
-            },
-        ],
-    });
+    // const { messages, status, error, sendMessage } = useChat({
+    //     initialMessages: [
+    //         {
+    //             id: "init-msg",
+    //             role: "assistant",
+    //             parts: [
+    //                 {
+    //                     type: "text",
+    //                     text: `Hi ${session?.user?.name?.split(" ")?.[0] || "there"}! I am Sumit's AI Assistant. How can I help you today?`,
+    //                 },
+    //             ],
+    //         },
+    //     ],
+    // });
+
+    const { messages, status, error, sendMessage, setMessages } = useChat();
 
     const isLoading = status === "submitted" || status === "streaming";
 
@@ -50,6 +52,18 @@ export function ChatBot() {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    useEffect(() => {
+        setMessages([
+            {
+                id: "init-msg",
+                role: "assistant",
+                parts: [
+                    { type: "text", text: "Hi! How can I help you?" }
+                ],
+            },
+        ]);
+    }, []);
 
     if (!session) return null;
 
@@ -90,11 +104,10 @@ export function ChatBot() {
                                     className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                                 >
                                     <div
-                                        className={`p-3 rounded-lg text-sm max-w-[85%] ${
-                                            m.role === "user"
-                                                ? "bg-primary text-primary-foreground rounded-tr-none"
-                                                : "bg-primary/10 text-foreground rounded-tl-none"
-                                        }`}
+                                        className={`p-3 rounded-lg text-sm max-w-[85%] ${m.role === "user"
+                                            ? "bg-primary text-primary-foreground rounded-tr-none"
+                                            : "bg-primary/10 text-foreground rounded-tl-none"
+                                            }`}
                                     >
                                         <div className="prose prose-sm dark:prose-invert max-w-none break-words">
                                             <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>

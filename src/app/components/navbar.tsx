@@ -71,8 +71,15 @@ export default function Navbar() {
       <Container className="flex justify-between items-center py-3">
         {/* Left Logo */}
         <Link
-          href="/"
-          className="text-2xl font-bold transition-colors hover:text-primary"
+          href="/dashboard"
+          className="text-2xl font-bold cursor-pointer transition-colors hover:text-primary"
+          onClick={(e) => {
+            if (window.location.pathname === "/dashboard") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setActive("home");
+            }
+          }}
         >
           Sumit Kumar
         </Link>

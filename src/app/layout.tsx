@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider/theme-provider";
 import Providers from "./providers";
 import { ChatBot } from "@/components/chat-bot";
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           >
             {children}
             <ChatBot />
+            <Analytics />
           </ThemeProvider>
         </Providers>
       </body>

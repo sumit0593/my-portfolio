@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         { role: 'system', content: 'You are an expert resume advisor.' },
         { role: 'user', content: `Analyze my resume against this JD: ${jd}` },
       ],
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o-mini',
     })
 
     return NextResponse.json({ result: chat.choices[0].message.content })

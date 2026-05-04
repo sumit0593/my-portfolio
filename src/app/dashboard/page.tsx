@@ -203,7 +203,7 @@ export default function Dashboard() {
                           {/* Display PDF as preview */}
                           <div className="absolute inset-0 bg-background/5 transition-colors z-10 group-hover:bg-transparent" />
                           <iframe
-                            src="/gallery/certification/certificate_llm.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
+                            src="/gallery/certification/certificate_prompt_engineering.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
                             className="w-full h-[150%] -mt-10 pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
                             title="Certificate PDF"
                           />
@@ -221,7 +221,7 @@ export default function Dashboard() {
                             </ul>
                           </CardContent>
                           <div className="mt-auto">
-                            <a href="/gallery/certification/certificate_llm.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:underline gap-1 relative z-20">
+                            <a href="/gallery/certification/certificate_prompt_engineering.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:underline gap-1 relative z-20">
                               <ExternalLink className="w-4 h-4" /> View Full Certificate
                             </a>
                           </div>
@@ -230,8 +230,14 @@ export default function Dashboard() {
 
                       {/* Newton School */}
                       <Card className="flex flex-col group hover:border-primary/50 transition-all hover:shadow-md hover:-translate-y-1 overflow-hidden">
-                        <div className="relative h-64 bg-muted/20 border-b flex items-center justify-center">
-                          <Award className="w-24 h-24 text-muted-foreground/30 group-hover:text-primary/50 transition-colors group-hover:scale-110 duration-500" />
+                        <div className="relative h-64 bg-muted/30 border-b flex items-center justify-center overflow-hidden">
+                          {/* Display PDF as preview */}
+                          <div className="absolute inset-0 bg-background/5 transition-colors z-10 group-hover:bg-transparent" />
+                          <iframe
+                            src="/gallery/certification/full_stack_web_certificate.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
+                            className="w-full h-[150%] -mt-10 pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
+                            title="Certificate PDF"
+                          />
                         </div>
                         <div className="flex flex-col p-6 flex-1">
                           <CardHeader className="p-0 mb-4">
@@ -246,6 +252,11 @@ export default function Dashboard() {
                               <li>Collaborated on group projects and real-world development challenges.</li>
                             </ul>
                           </CardContent>
+                          <div className="mt-auto">
+                            <a href="/gallery/certification/full_stack_web_certificate.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:underline gap-1 relative z-20">
+                              <ExternalLink className="w-4 h-4" /> View Full Certificate
+                            </a>
+                          </div>
                         </div>
                       </Card>
 

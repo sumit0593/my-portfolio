@@ -7,12 +7,12 @@ import { SkillsScene } from "../3d/SkillsScene";
 
 export function SkillsSection() {
   return (
-    <section className="relative w-full h-screen bg-[#030014] py-20 flex flex-col items-center overflow-hidden border-t border-white/5">
+    <section className="relative w-full h-screen bg-background py-20 flex flex-col items-center overflow-hidden border-t border-border">
       <div className="z-10 text-center relative pointer-events-none mb-8">
          <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-2">
            Tech Orbit
          </h2>
-         <p className="text-slate-400 max-w-md mx-auto font-light">
+         <p className="text-muted-foreground max-w-md mx-auto font-light">
            Drag to rotate the universe. Hover nodes to see details.
            <br/> Color Rings scale from Core Stack to deployment & tools.
          </p>

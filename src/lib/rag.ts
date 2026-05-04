@@ -71,7 +71,6 @@ export async function upsertDocument(text: string, title: string, source: string
     throw new Error("No chunks generated from the input text.");
   }
 
-  console.log(`[RAG] Generated ${chunks.length} semantic chunks from "${title}"`);
 
   const embeddings = await generateEmbeddings(chunks);
 
@@ -90,7 +89,6 @@ export async function upsertDocument(text: string, title: string, source: string
   for (let i = 0; i < vectors.length; i += batchSize) {
     const batch = vectors.slice(i, i + batchSize);
     await index.upsert({ records: batch as any, namespace: PORTFOLIO_NAMESPACE });
-    console.log(`[RAG] Upserted batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(vectors.length / batchSize)}`);
   }
 
   return { success: true, chunksCount: chunks.length };
@@ -116,7 +114,6 @@ export async function retrieveContext(query: string, topK = 5): Promise<Retrieve
   });
 
   if (!results.matches || results.matches.length === 0) {
-    console.log("[RAG] No matches found in Pinecone.");
     return [];
   }
 
@@ -129,9 +126,6 @@ export async function retrieveContext(query: string, topK = 5): Promise<Retrieve
     }))
     .filter((chunk) => chunk.text);
 
-  console.log(
-    `[RAG] Retrieved ${relevantChunks.length}/${results.matches.length} chunks above threshold ${RELEVANCE_THRESHOLD}`
-  );
 
   return relevantChunks;
 }
@@ -149,19 +143,19 @@ export function buildRAGPrompt(
   const contextSection =
     retrievedChunks.length > 0
       ? retrievedChunks
-          .map(
-            (chunk, i) =>
-              `[Source ${i + 1} | Relevance: ${(chunk.score * 100).toFixed(1)}%]\n${chunk.text}`
-          )
-          .join("\n\n---\n\n")
+        .map(
+          (chunk, i) =>
+            `[Source ${i + 1} | Relevance: ${(chunk.score * 100).toFixed(1)}%]\n${chunk.text}`
+        )
+        .join("\n\n---\n\n")
       : "(No relevant portfolio data found for this query)";
 
   const memorySection =
     conversationHistory.length > 0
       ? conversationHistory
-          .slice(-10) // Last 10 messages (5 pairs)
-          .map((msg) => `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}`)
-          .join("\n")
+        .slice(-10) // Last 10 messages (5 pairs)
+        .map((msg) => `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}`)
+        .join("\n")
       : "(No previous conversation)";
 
   return `You are "AskNova" — an intelligent AI assistant embedded in Sumit Kumar's portfolio website.
@@ -186,7 +180,7 @@ INSTRUCTIONS:
 2. If the answer is NOT in the retrieved data, respond: "I don't have that information in the portfolio data."
 3. Use the CONVERSATION MEMORY to understand follow-up questions and maintain context continuity.
 4. Be professional, concise (3-5 sentences max), and recruiter-friendly.
-5. For greetings, respond warmly: "Hello! I'm AskNova, Sumit's AI portfolio assistant. Ask me about his skills, experience, projects, or education!"
+5. For greetings, respond warmly: "Hello! I'm AskNova, AI assistant. Ask me about his skills, experience, projects, or education!"
 6. Format responses using markdown when listing skills, projects, or achievements.
 7. Always be accurate — cite specific details from the data when possible.`;
 }

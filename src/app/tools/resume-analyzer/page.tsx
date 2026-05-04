@@ -1,14 +1,52 @@
 'use client'
 import { useState } from 'react'
-import axios from 'axios'
+import { Loader2 } from 'lucide-react'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
 
 export default function ResumeAnalyzer() {
   const [jd, setJd] = useState('')
   const [response, setResponse] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const analyzeResume = async () => {
-    const res = await axios.post('/api/analyze', { jd })
-    setResponse(res.data.result)
+    setIsLoading(true)
+    setResponse('')
+    
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jd })
+      })
+
+      if (!res.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      if (res.headers.get('Content-Type')?.includes('application/json')) {
+        const data = await res.json()
+        setResponse(data.result)
+      } else {
+        const reader = res.body?.getReader()
+        if (!reader) return
+        
+        const decoder = new TextDecoder()
+        let done = false
+
+        while (!done) {
+          const { value, done: doneReading } = await reader.read()
+          done = doneReading
+          const chunkValue = decoder.decode(value, { stream: true })
+          setResponse((prev) => prev + chunkValue)
+        }
+      }
+    } catch {
+      setResponse("An error occurred while analyzing the resume.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -19,11 +57,23 @@ export default function ResumeAnalyzer() {
         placeholder="Paste job description here..."
         value={jd}
         onChange={(e) => setJd(e.target.value)}
+        disabled={isLoading}
       />
-      <button className="mt-4 px-4 py-2 bg-black text-white rounded" onClick={analyzeResume}>
-        Analyze
+      <button 
+        className="mt-4 px-6 py-2.5 bg-black dark:bg-white text-white dark:text-black font-medium rounded-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[140px] hover:bg-gray-800 dark:hover:bg-gray-200 active:scale-95 transition-all duration-200" 
+        onClick={analyzeResume}
+        disabled={isLoading || !jd.trim()}
+      >
+        {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+        {isLoading ? 'Analyzing...' : 'Analyze'}
       </button>
-      {response && <div className="mt-6 p-4 bg-gray-100 rounded">{response}</div>}
+      {response && (
+        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg prose prose-sm dark:prose-invert max-w-none break-words">
+          <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+            {response}
+          </Markdown>
+        </div>
+      )}
     </div>
   )
 }

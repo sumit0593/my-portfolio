@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Sumit Kumar | AI-Powered Full Stack Developer",
-  description: "Portfolio powered by Next.js, OpenAI, and 3D Web",
+  description: "Portfolio powered by Next.js, Gemini AI, and 3D Web",
 };
 
 export default function RootLayout({

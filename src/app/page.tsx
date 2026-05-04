@@ -7,10 +7,9 @@ import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[#030014] text-white selection:bg-indigo-500/30">
-      {/* Theme Toggle (optional, could just keep it for those who want light mode, though 3D looks best in dark) */}
-      <div className="absolute top-4 right-4 z-50 mix-blend-difference">
-        {/* <ThemeToggle /> currently commented out to keep full control of aesthetics */}
+    <div className="relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30">
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
       </div>
 
       <main className="flex flex-col items-center justify-center w-full">

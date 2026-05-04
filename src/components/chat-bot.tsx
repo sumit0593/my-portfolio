@@ -49,7 +49,7 @@ export function ChatBot() {
         ]);
     }, []);
 
-    if (!session) return null;
+    // if (!session) return null;
 
     // Helper to extract text content from a message's parts
     const getMessageText = (m: (typeof messages)[number]) => {
@@ -65,8 +65,8 @@ export function ChatBot() {
     return (
         <div className="fixed bottom-6 right-6 z-50">
             {isOpen ? (
-                <Card className="w-80 shadow-2xl flex flex-col h-[400px] border-border/50 animate-in slide-in-from-bottom-5 fade-in-50 duration-300">
-                    <CardHeader className="p-3 border-b border-border/50 bg-muted/50 flex flex-row items-center justify-between pb-3">
+                <Card className="w-80 shadow-2xl flex flex-col h-[400px] border border-border bg-card backdrop-blur-none animate-in slide-in-from-bottom-5 fade-in-50 duration-300" style={{ opacity: 1 }}>
+                    <CardHeader className="p-3 border-b border-border bg-muted flex flex-row items-center justify-between pb-3">
                         <CardTitle className="text-sm font-medium flex items-center gap-2">
                             <MessageCircle className="h-4 w-4 text-primary" />
                             AI Assistant
@@ -80,7 +80,7 @@ export function ChatBot() {
                             <X className="h-4 w-4" />
                         </Button>
                     </CardHeader>
-                    <CardContent className="flex-1 p-4 flex flex-col bg-background/50 overflow-hidden">
+                    <CardContent className="flex-1 p-4 flex flex-col bg-background overflow-hidden">
                         <div className="flex-1 overflow-y-auto w-full mb-4 space-y-3 pr-2 custom-scrollbar">
                             {messages.map((m) => (
                                 <div
@@ -88,9 +88,9 @@ export function ChatBot() {
                                     className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                                 >
                                     <div
-                                        className={`p-3 rounded-lg text-sm max-w-[85%] ${m.role === "user"
+                                        className={`p-3 rounded-lg text-sm max-w-[85%] shadow-sm ${m.role === "user"
                                             ? "bg-primary text-primary-foreground rounded-tr-none"
-                                            : "bg-primary/10 text-foreground rounded-tl-none"
+                                            : "bg-muted text-foreground border border-border rounded-tl-none"
                                             }`}
                                     >
                                         <div className="prose prose-sm dark:prose-invert max-w-none break-words">
@@ -103,7 +103,7 @@ export function ChatBot() {
                             ))}
                             {isLoading && (
                                 <div className="flex justify-start">
-                                    <div className="bg-primary/10 text-foreground p-3 rounded-lg rounded-tl-none text-sm inline-block max-w-[85%]">
+                                    <div className="bg-muted text-foreground border border-border p-3 rounded-lg rounded-tl-none text-sm inline-block max-w-[85%]">
                                         <Loader2 className="h-4 w-4 animate-spin opacity-50" />
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@ export function ChatBot() {
                                 onChange={handleInputChange}
                                 placeholder="Write your query here..."
                                 disabled={isLoading}
-                                className="flex-1 text-sm rounded-md border border-input bg-transparent px-3 py-2 shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
+                                className="flex-1 text-sm rounded-md border border-input bg-background text-foreground px-3 py-2 shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50 placeholder:text-muted-foreground"
                             />
                             <Button type="submit" disabled={isLoading} size="sm" className="px-3">
                                 Send
@@ -138,17 +138,12 @@ export function ChatBot() {
                 </Card>
             ) : (
                 <div className="relative flex flex-col items-end">
-                    {/* Bouncing Tooltip with Dancing GIF */}
+                    {/* Bouncing Tooltip */}
                     <div className="absolute bottom-full mb-4 right-0 flex flex-col items-end animate-bounce">
                         <div className="bg-primary text-primary-foreground px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-3 whitespace-nowrap cursor-pointer hover:scale-105 transition-transform" onClick={() => setIsOpen(true)}>
-                            {/* <img
-                                src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif"
-                                alt="Dancing AI"
-                                className="w-10 h-10 rounded-full object-cover border-2 border-primary-foreground/30 bg-background"
-                            /> */}
                             <div className="text-left">
                                 <p className="text-sm font-bold leading-none mb-1">Hi there! 👋</p>
-                                <p className="text-xs font-medium opacity-90 leading-none">I'm your AI Assistant Nova</p>
+                                <p className="text-xs font-medium opacity-90 leading-none">I&apos;m your AI Assistant Nova</p>
                             </div>
                         </div>
                         {/* Pointer Tail */}

@@ -28,7 +28,7 @@ export function ExperienceSection() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={containerRef} className="relative w-full bg-[#030014] py-32 px-4 md:px-0">
+    <section ref={containerRef} className="relative w-full bg-background py-32 px-4 md:px-0">
       <div className="max-w-5xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 mb-20 text-center">
           Experience Timeline
@@ -36,7 +36,7 @@ export function ExperienceSection() {
 
         <div className="relative">
           {/* Central Line */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2" />
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-border -translate-x-1/2" />
           
           <motion.div 
             className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 -translate-x-1/2 origin-top"
@@ -49,7 +49,7 @@ export function ExperienceSection() {
               className={`relative flex items-center justify-between mb-16 md:mb-24 ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} flex-col w-full`}
             >
               {/* Timeline Dot */}
-              <div className="absolute left-6 md:left-1/2 w-5 h-5 rounded-full bg-[#030014] border-4 border-indigo-500 -translate-x-1/2 z-10 shadow-[0_0_15px_rgba(79,70,229,1)]" />
+              <div className="absolute left-6 md:left-1/2 w-5 h-5 rounded-full bg-background border-4 border-indigo-500 -translate-x-1/2 z-10 shadow-[0_0_15px_rgba(79,70,229,1)]" />
 
               <div className="hidden md:block md:w-[45%]" />
               
@@ -60,13 +60,13 @@ export function ExperienceSection() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className={`w-full md:w-[45%] pl-16 md:pl-0 ${index % 2 === 0 ? "md:text-right md:pr-12" : "md:text-left md:pl-12"}`}
               >
-                <div className="p-8 rounded-2xl bg-[#0f172a]/50 border border-white/5 backdrop-blur-sm hover:border-indigo-500/30 transition-colors shadow-xl">
+                <div className="p-8 rounded-2xl bg-card/50 border border-border backdrop-blur-sm hover:border-indigo-500/30 transition-colors shadow-xl">
                   <span className="text-indigo-400 font-mono text-sm tracking-wider mb-3 block">
                     {exp.year}
                   </span>
-                  <h3 className="text-2xl font-bold text-white mb-2">{exp.role}</h3>
-                  <h4 className="text-lg text-slate-300 font-medium mb-4">{exp.company}</h4>
-                  <p className="text-slate-400 font-light leading-relaxed">
+                  <h3 className="text-2xl font-bold text-foreground mb-2">{exp.role}</h3>
+                  <h4 className="text-lg text-muted-foreground font-medium mb-4">{exp.company}</h4>
+                  <p className="text-muted-foreground font-light leading-relaxed">
                     {exp.description}
                   </p>
                 </div>

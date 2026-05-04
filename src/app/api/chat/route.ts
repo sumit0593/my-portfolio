@@ -38,18 +38,14 @@ export async function POST(req: Request) {
     const sessionId =
       req.headers.get("x-session-id") || "default-session";
 
-    console.log(`[Chat] Query: "${userQuery}" | Session: ${sessionId}`);
 
 
     let retrievedChunks: any[] = [];
     try {
       retrievedChunks = await retrieveContext(userQuery, 5);
 
-    } catch (err) {
-      console.warn(
-        "[Chat] Retrieval failed, proceeding without context:",
-        err
-      );
+    } catch {
+      // Retrieval failed, proceed without context
     }
 
 
@@ -106,8 +102,7 @@ export async function POST(req: Request) {
               send({ type: "text-delta", id: textId, delta: text });
             }
           }
-        } catch (err) {
-          console.error("[Chat] Stream error:", err);
+        } catch {
           send({ type: "error", errorText: "Generation failed." });
         }
 
@@ -138,8 +133,7 @@ export async function POST(req: Request) {
         "X-Vercel-AI-UI-Message-Stream": "v1",
       },
     });
-  } catch (error) {
-    console.error("Chat API Error:", error);
+  } catch {
     return new Response(
       JSON.stringify({
         error: "Failed to process chat request. Please try again.",

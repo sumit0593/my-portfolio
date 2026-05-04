@@ -10,7 +10,7 @@ export function HeroSection() {
   const router = useRouter();
 
   return (
-    <section className="relative w-full h-screen bg-[#030014] overflow-hidden">
+    <section className="relative w-full h-screen bg-background overflow-hidden">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
@@ -35,12 +35,12 @@ export function HeroSection() {
           </div>
 
           <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 mb-6 drop-shadow-[0_0_15px_rgba(79,70,229,0.5)] leading-tight">
-            Frontend
-            <br className="md:hidden" /> Architect
+            Architect
+            {/* <br className="md:hidden" /> Architect */}
           </h1>
 
-          <p className="text-lg md:text-2xl text-slate-300 font-light mb-10 max-w-2xl mx-auto">
-            Crafting immersive digital experiences where <span className="font-semibold text-white">code</span> meets <span className="font-semibold text-blue-400">imagination</span>.
+          <p className="text-lg md:text-2xl text-muted-foreground font-light mb-10 max-w-2xl mx-auto">
+            Crafting immersive digital experiences where <span className="font-semibold text-foreground">code</span> meets <span className="font-semibold text-blue-400">imagination</span>.
           </p>
 
           <motion.div
@@ -51,11 +51,14 @@ export function HeroSection() {
           >
             <button
               onClick={() => router.push("/login")}
-              className="px-8 py-3 rounded-full bg-indigo-600 text-white font-medium hover:bg-indigo-500 transition-all shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:shadow-[0_0_30px_rgba(79,70,229,0.8)]"
+              className="px-8 py-3 rounded-full bg-indigo-600 text-white font-medium hover:bg-indigo-500 transition-all shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:shadow-[0_0_30px_rgba(79,70,229,0.8)] cursor-pointer"
             >
               Click me to Explore My Work
             </button>
-            <button className="px-8 py-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-white font-medium hover:bg-white/10 hover:border-white/20 transition-all">
+            <button
+              onClick={() => document.getElementById("contact-section")?.scrollIntoView({ behavior: "smooth" })}
+              className="px-8 py-3 rounded-full bg-foreground/5 border border-foreground/10 backdrop-blur-md text-foreground font-medium hover:bg-foreground/10 hover:border-foreground/20 transition-all cursor-pointer"
+            >
               Contact Me
             </button>
           </motion.div>
@@ -69,7 +72,7 @@ export function HeroSection() {
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center z-10 pointer-events-none"
       >
-        <span className="text-xs text-white/50 mb-2 tracking-widest uppercase">Scroll</span>
+        <span className="text-xs text-foreground/50 mb-2 tracking-widest uppercase">Scroll</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-indigo-500 to-transparent animate-pulse" />
       </motion.div>
     </section>

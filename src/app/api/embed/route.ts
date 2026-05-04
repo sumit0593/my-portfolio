@@ -43,11 +43,9 @@ export async function POST(req: Request) {
       chunksCount: result.chunksCount,
     });
   } catch (error: any) {
-    console.error("[Embed] Pipeline Error:", error);
     return NextResponse.json(
       {
         error: error.message || "Unknown error during embedding pipeline.",
-        details: error.stack,
       },
       { status: 500 }
     );

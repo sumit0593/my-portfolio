@@ -71,7 +71,8 @@ export async function POST(req: Request) {
       config: {
         systemInstruction: systemPrompt,
         temperature: 0.15,
-        maxOutputTokens: 1024,
+        topP: 0.8,
+        maxOutputTokens: 512,
       },
     });
 
@@ -102,8 +103,14 @@ export async function POST(req: Request) {
               send({ type: "text-delta", id: textId, delta: text });
             }
           }
-        } catch {
-          send({ type: "error", errorText: "Generation failed." });
+        } catch (streamErr: any) {
+          const errMsg = streamErr?.message || "";
+          const isRateLimit = errMsg.includes("429") || errMsg.toLowerCase().includes("rate") || errMsg.toLowerCase().includes("quota");
+          const fallback = isRateLimit
+            ? "AI services are currently busy. Please try again after a short interval."
+            : "I'm having trouble generating a response right now. Please try again.";
+          send({ type: "text-delta", id: textId, delta: fallback });
+          fullResponse += fallback;
         }
 
 
@@ -133,12 +140,15 @@ export async function POST(req: Request) {
         "X-Vercel-AI-UI-Message-Stream": "v1",
       },
     });
-  } catch {
+  } catch (err: any) {
+    const errMsg = err?.message || "";
+    const isRateLimit = errMsg.includes("429") || errMsg.toLowerCase().includes("rate") || errMsg.toLowerCase().includes("quota");
+    const userMessage = isRateLimit
+      ? "AI services are currently busy or rate-limited. Please try again after some time."
+      : "Failed to process chat request. Please try again.";
     return new Response(
-      JSON.stringify({
-        error: "Failed to process chat request. Please try again.",
-      }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      JSON.stringify({ error: userMessage }),
+      { status: isRateLimit ? 429 : 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }

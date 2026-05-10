@@ -17,8 +17,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sumit Kumar | AI-Powered Full Stack Developer",
-  description: "Portfolio powered by Next.js, Gemini AI, and 3D Web",
+  title: "Sumit Kumar | GenAI Full Stack Architect",
+  description: "Premium AI Engineer portfolio showcasing scalable Enterprise AI, RAG platforms, and modern Full Stack architecture.",
+  keywords: ["GenAI Engineer", "Full Stack AI Developer", "Multi-Agent Engineer", "RAG Engineer", "AI Full Stack Developer"],
+  openGraph: {
+    title: "Sumit Kumar | GenAI Full Stack Architect",
+    description: "Premium AI Engineer portfolio showcasing scalable Enterprise AI, RAG platforms, and modern Full Stack architecture.",
+    type: "website",
+    url: "https://my-portfolio-six-gold-86.vercel.app/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sumit Kumar | GenAI Full Stack Architect",
+    description: "Premium AI Engineer portfolio showcasing scalable Enterprise AI, RAG platforms, and modern Full Stack architecture.",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Sumit Kumar",
+  jobTitle: "GenAI Full Stack Architect",
+  url: "https://my-portfolio-six-gold-86.vercel.app/",
+  sameAs: [
+    "https://github.com/sumit0593",
+    "https://linkedin.com/in/sumit0593"
+  ]
 };
 
 export default function RootLayout({
@@ -28,7 +52,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

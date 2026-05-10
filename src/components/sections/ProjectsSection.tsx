@@ -7,42 +7,74 @@ import { ExternalLink, Github, X, ChevronRight } from "lucide-react";
 const PROJECTS = [
   {
     id: 1,
-    title: "Kent RiseEngine",
-    subtitle: "AI-Powered Enterprise Platform",
-    tech: ["React", "Node.js", "Zoho Analytics", "OCR", "JWT"],
-    color: "from-blue-500 to-cyan-400",
+    title: "Scam Guard AI",
+    subtitle: "AI Security / Scam Detection Platform",
+    tech: ["Streamlit", "Gemini", "Python", "Transformers"],
+    color: "from-red-500 to-orange-400",
     description:
-      "Built an AI-based invoice parser to automate data extraction and improve processing accuracy. Created validation schemas, components, and UI to ensure clean, consistent, and reliable data. Integrated Zoho Analytics dashboards with role-based and criteria-based views for real-time business insights.",
+      "A cutting-edge AI security platform designed to detect and prevent digital scams in real-time. Built with advanced NLP models to analyze text, emails, and URLs for malicious intent, providing a high-performance scalable API and modern dashboard.",
     highlights: [
-      "OCR-based invoice parsing automation",
-      "Role-based Zoho Analytics dashboards",
-      "Secure JWT & OAuth2 authentication",
+      "Real-time text & URL anomaly detection",
+      "High-performance NLP analysis",
+      "Actionable security metrics & dashboard",
     ],
-    link: "#",
-    github: "#",
+    link: "https://scam-detector-ai.streamlit.app/",
+    github: "https://github.com/sumit0593/scam_guard_ai",
   },
   {
     id: 2,
-    title: "Cam Attendance",
-    subtitle: "Full-Stack HR Attendance System",
-    tech: ["Angular", "Spring Boot", "REST APIs", "Data Pipelines"],
-    color: "from-purple-500 to-pink-400",
+    title: "HireFlow AI",
+    subtitle: "Generative AI / RAG Platform",
+    tech: ["Streamlit", "Pinecone", "Gemini", "LangChain", "Python"],
+    color: "from-blue-500 to-cyan-400",
     description:
-      "Maintained and enhanced a full-stack attendance platform used by thousands of employees and clients. Managed backend services and REST APIs along with frontend modules for real-time HR data tracking. Integrated automated data pipelines to sync and validate check-ins, leave logs, and key HR metrics.",
+      "An intelligent AI Resume Search platform using RAG (Retrieval-Augmented Generation) architecture. It automates resume parsing, creates vector embeddings for semantic search, and provides recruiters with an ATS-style analytics interface to match candidates instantly.",
     highlights: [
-      "Real-time HR data tracking",
-      "Automated data pipelines",
-      "Used by thousands of employees",
+      "Automated resume parsing pipeline",
+      "Vector/semantic search with Pinecone",
+      "ATS-style analytics & recruiter use-cases",
     ],
-    link: "#",
-    github: "#",
+    link: "https://hireflow---ai-resume-search-gw6ot8m2ph3huktrjcaz35.streamlit.app/",
+    github: "https://github.com/sumit0593/HireFlow---AI-Resume-Search",
   },
   {
     id: 3,
+    title: "Kent RiseEngine",
+    subtitle: "Enterprise AI & LLM Automation",
+    tech: ["React", "Node.js", "AWS Textract", "Mistral LLM", "Zoho Analytics"],
+    color: "from-indigo-500 to-purple-500",
+    description:
+      "An enterprise-grade AI invoice parser leveraging AWS Textract and Mistral LLM to automate data extraction. Features role-based dashboards, robust validation schemas, and real-time business insights integrated with Zoho Analytics.",
+    highlights: [
+      "AWS Textract & Mistral LLM pipeline",
+      "Role-based Zoho Analytics dashboards",
+      "Enterprise load balancing & scalability",
+    ],
+    link: "https://risengine.com/sign-in",
+    github: "#",
+  },
+  {
+    id: 4,
+    title: "Kent Cam Attendance",
+    subtitle: "Enterprise HRMS & Scalable Systems",
+    tech: ["Angular", "Spring Boot", "REST APIs", "Data Pipelines"],
+    color: "from-emerald-500 to-teal-400",
+    description:
+      "A highly scalable HR attendance automation system handling thousands of concurrent employees. Integrates automated data pipelines, real-time sync, and robust REST APIs for reliable enterprise-level attendance tracking.",
+    highlights: [
+      "Real-time employee data sync",
+      "Support for thousands of concurrent users",
+      "Automated attendance data pipelines",
+    ],
+    link: "https://www.kentcam.com/camattendance/thank-you",
+    github: "#",
+  },
+  {
+    id: 5,
     title: "TIOS Revamp",
     subtitle: "Legacy HRMS Modernization",
     tech: ["Next.js", "TypeScript", "Tailwind CSS"],
-    color: "from-emerald-500 to-teal-400",
+    color: "from-amber-500 to-orange-400",
     description:
       "Migrated a legacy HRMS to a modern modular architecture using Next.js. Improved performance, maintainability, and scalability by redesigning the UI/UX and restructuring the entire codebase for better developer experience.",
     highlights: [
@@ -54,17 +86,17 @@ const PROJECTS = [
     github: "#",
   },
   {
-    id: 4,
+    id: 6,
     title: "Portfolio AI",
     subtitle: "RAG-Powered Personal Portfolio",
     tech: ["Next.js", "Gemini", "Pinecone", "Three.js", "Tailwind"],
-    color: "from-orange-500 to-amber-400",
+    color: "from-fuchsia-500 to-pink-500",
     description:
-      "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone. Includes a 3D hero section, resume analyzer tool, dark mode support, and streaming AI responses for an interactive user experience.",
+      "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone. Includes an AI resume insights generator, dark mode support, and premium Framer Motion animations.",
     highlights: [
-      "RAG chatbot with Gemini",
-      "Vector search with Pinecone",
-      "3D visuals with Three.js",
+      "RAG chatbot with streaming responses",
+      "Vector search with Pinecone embeddings",
+      "Premium 3D & glassmorphism UI",
     ],
     link: "https://my-portfolio-six-gold-86.vercel.app/",
     github: "https://github.com/sumit0593/my-portfolio",
@@ -266,7 +298,7 @@ export function ProjectsSection() {
 
       {/* Project Cards Grid */}
       <div className="relative z-10 w-full max-w-6xl px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {PROJECTS.map((project) => (
             <ProjectCard
               key={project.id}

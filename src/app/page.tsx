@@ -4,6 +4,9 @@ import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { TotalExperienceSection } from "@/components/sections/TotalExperienceSection";
+import { AIToolsSection } from "@/components/sections/AIToolsSection";
+import { AIResumeInsightsSection } from "@/components/sections/AIResumeInsightsSection";
 
 export default function Home() {
   return (
@@ -15,16 +18,18 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center w-full">
         <HeroSection />
         
-        {/* 3D Projects Showcase */}
+        <TotalExperienceSection />
+
         <ProjectsSection />
         
-        {/* 3D Skills Orbit */}
         <SkillsSection />
+        
+        <AIToolsSection />
 
-        {/* Experience Timeline */}
         <ExperienceSection />
+        
+        <AIResumeInsightsSection />
 
-        {/* Contact Section */}
         <ContactSection />
       </main>
     </div>

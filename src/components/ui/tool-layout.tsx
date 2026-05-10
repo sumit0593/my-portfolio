@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, ArrowLeft, FileSearch, CheckCircle2, Lock } from "lucide-react";
+import { Loader2, ArrowLeft, CheckCircle2, Lock, LucideIcon } from "lucide-react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -11,13 +11,35 @@ import { Container } from "@/components/ui/container";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
-export default function ResumeAnalyzer() {
+interface ToolLayoutProps {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  iconColor: string;
+  iconBg: string;
+  placeholder: string;
+  toolId: string;
+  buttonText: string;
+  buttonLoadingText: string;
+}
+
+export default function ToolLayout({
+  title,
+  description,
+  icon: Icon,
+  iconColor,
+  iconBg,
+  placeholder,
+  toolId,
+  buttonText,
+  buttonLoadingText
+}: ToolLayoutProps) {
   const { data: session, status } = useSession();
   const [jd, setJd] = useState("");
   const [response, setResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const analyzeResume = async () => {
+  const executeTool = async () => {
     if (!session) return;
     setIsLoading(true);
     setResponse("");
@@ -26,7 +48,7 @@ export default function ResumeAnalyzer() {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jd, tool: "resume-analyzer" }),
+        body: JSON.stringify({ jd, tool: toolId }),
       });
 
       if (!res.ok) {
@@ -55,7 +77,7 @@ export default function ResumeAnalyzer() {
         }
       }
     } catch {
-      setResponse("An error occurred while analyzing the resume.");
+      setResponse("An error occurred while generating the response.");
     } finally {
       setIsLoading(false);
     }
@@ -74,14 +96,14 @@ export default function ResumeAnalyzer() {
           </Link>
 
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-500/10 text-blue-500 mb-6">
-              <FileSearch className="w-8 h-8" />
+            <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${iconBg} ${iconColor} mb-6`}>
+              <Icon className="w-8 h-8" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              AI Resume Analyzer
+              {title}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Paste a Job Description below to see how well my resume matches the role. The AI will generate an ATS score and identify key strengths and gaps.
+              {description}
             </p>
           </div>
 
@@ -89,10 +111,10 @@ export default function ResumeAnalyzer() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
             <div className="relative z-10">
-              <label className="block text-sm font-medium mb-2">Job Description</label>
+              <label className="block text-sm font-medium mb-2">Input Details</label>
               <textarea
                 className="w-full h-48 p-4 bg-muted/50 border rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
-                placeholder="Paste the target job description here..."
+                placeholder={placeholder}
                 value={jd}
                 onChange={(e) => setJd(e.target.value)}
                 disabled={isLoading || status !== "authenticated"}
@@ -106,12 +128,12 @@ export default function ResumeAnalyzer() {
                 {status === "authenticated" ? (
                   <Button
                     size="lg"
-                    onClick={analyzeResume}
+                    onClick={executeTool}
                     disabled={isLoading || !jd.trim()}
                     className="w-full sm:w-auto font-semibold px-8"
                   >
                     {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                    {isLoading ? "Analyzing Match..." : "Analyze Match"}
+                    {isLoading ? buttonLoadingText : buttonText}
                   </Button>
                 ) : (
                   <Button size="lg" disabled variant="secondary" className="w-full sm:w-auto gap-2">
@@ -126,7 +148,7 @@ export default function ResumeAnalyzer() {
             <div className="bg-card border rounded-3xl p-6 md:p-10 shadow-lg animate-in slide-in-from-bottom-4 duration-500">
               <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 border-b pb-4">
                 <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">AI</span>
-                Analysis Results
+                Results
               </h3>
               <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal">
                 <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>

@@ -85,7 +85,7 @@ export default function Navbar() {
         </Link>
 
         {/* Center Navigation */}
-        <div className="hidden md:flex gap-1">
+        <div className="hidden md:flex gap-1 items-center">
           {sections.map(({ id, label }) => (
             <Button
               key={id}
@@ -95,10 +95,14 @@ export default function Navbar() {
                 "hover:bg-primary/10 hover:text-primary"
               )}
               onClick={() => {
-                document
-                  .getElementById(id)
-                  ?.scrollIntoView({ behavior: "smooth" });
-                setActive(id);
+                if (window.location.pathname !== "/dashboard") {
+                  router.push(`/dashboard#${id}`);
+                } else {
+                  document
+                    .getElementById(id)
+                    ?.scrollIntoView({ behavior: "smooth" });
+                  setActive(id);
+                }
               }}
             >
               {label}
@@ -107,6 +111,13 @@ export default function Navbar() {
               )}
             </Button>
           ))}
+          <div className="h-4 w-px bg-border mx-2" />
+          <Button variant="ghost" asChild className="hover:text-primary hover:bg-primary/10">
+            <Link href="/tools">AI Tools</Link>
+          </Button>
+          <Button variant="ghost" asChild className="hover:text-primary hover:bg-primary/10">
+            <Link href="/services">Services</Link>
+          </Button>
         </div>
 
         {/* Right Actions */}

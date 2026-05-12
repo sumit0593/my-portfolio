@@ -1,5 +1,7 @@
 "use client";
 
+import { LayoutDashboard, Settings, LogOut } from "lucide-react";
+
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -17,6 +19,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import { SignOutModal } from "@/components/auth/sign-out-modal";
 
 const sections = [
   { id: "home", label: "Home" },
@@ -32,6 +35,7 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [active, setActive] = useState("home");
+  const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -64,10 +68,9 @@ export default function Navbar() {
     [session?.user?.name]
   );
 
-  if (status === "loading") return <p>Loading...</p>;
-
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-background/70 backdrop-blur-md border-b border-border shadow-sm">
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border shadow-sm">
       <Container className="flex justify-between items-center py-3">
         {/* Left Logo */}
         <Link
@@ -124,7 +127,9 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <ThemeToggle /> {/* ✅ Theme toggle button here */}
 
-          {session ? (
+          {status === "loading" ? (
+            <div className="h-9 w-9 rounded-full border-2 border-primary/50 border-t-primary animate-spin shadow-sm" />
+          ) : session ? (
             <>
               <span className="hidden sm:block text-sm font-medium">
                 Welcome, {firstName} 🎉
@@ -141,28 +146,45 @@ export default function Navbar() {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
+                <DropdownMenuContent className="w-64 p-2 rounded-2xl shadow-xl border-border/50 bg-card/95 backdrop-blur-md" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal px-2 py-1.5">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{session.user?.name || "Guest"}</p>
-                      <p className="text-xs leading-none text-muted-foreground">
+                      <p className="text-sm font-semibold leading-none">{session.user?.name || "Guest"}</p>
+                      <p className="text-xs leading-none text-muted-foreground mt-1">
                         {session.user?.email || "guest@example.com"}
                       </p>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => router.push("/dashboard")}>
-                    Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => router.push("/settings")}>
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="text-red-600 focus:text-red-500 cursor-pointer"
-                    onClick={() => signOut({ callbackUrl: "/" })}
+                  <DropdownMenuSeparator className="my-2 bg-border/50" />
+                  <DropdownMenuItem 
+                    className="flex items-center gap-2 cursor-pointer rounded-xl px-2 py-2 hover:bg-muted focus:bg-muted transition-colors"
+                    onClick={() => router.push("/dashboard")}
                   >
-                    Log out
+                    <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
+                      <LayoutDashboard className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium text-sm">Dashboard</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="flex items-center gap-2 cursor-pointer rounded-xl px-2 py-2 hover:bg-muted focus:bg-muted transition-colors mt-1"
+                    onClick={() => router.push("/settings")}
+                  >
+                    <div className="p-1.5 rounded-lg bg-muted text-muted-foreground">
+                      <Settings className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium text-sm">Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="my-2 bg-border/50" />
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 text-red-600 focus:text-red-500 cursor-pointer rounded-xl px-2 py-2 hover:bg-red-50 focus:bg-red-50 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 transition-colors"
+                    onClick={() => {
+                      setIsSignOutModalOpen(true);
+                    }}
+                  >
+                    <div className="p-1.5 rounded-lg bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-500">
+                      <LogOut className="w-4 h-4" />
+                    </div>
+                    <span className="font-medium text-sm">Log out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -178,6 +200,12 @@ export default function Navbar() {
           )}
         </div>
       </Container>
-    </nav>
+      </nav>
+
+      <SignOutModal 
+        isOpen={isSignOutModalOpen} 
+        onClose={() => setIsSignOutModalOpen(false)} 
+      />
+    </>
   );
 }

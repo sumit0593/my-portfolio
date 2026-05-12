@@ -13,11 +13,13 @@ import { Badge } from "@/components/ui/badge";
 import { Github, Linkedin, Mail, Phone, ExternalLink, Award, Trophy, Download, Eye, FileText, Bot, Briefcase, ArrowRight, Code, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { ImagesBadge } from "@/components/ui/images-badge";
+import Loading from "@/app/loading";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <Loading />;
   if (!session) redirect("/login");
 
   const containerVariants = {
@@ -36,11 +38,13 @@ export default function Dashboard() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-background">
-        {/* Background Decorative Elements */}
-        <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-primary/10 via-background to-background pointer-events-none -z-10" />
-        <div className="absolute top-[20%] right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none -z-10 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-blue-500/5 blur-[150px] pointer-events-none -z-10 -translate-x-1/3" />
+      <div className="relative min-h-screen bg-background overflow-x-hidden">
+        {/* Background Decorative Elements — clipped to prevent horizontal overflow */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
+          <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-primary/10 via-background to-background" />
+          <div className="absolute top-[20%] right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[120px] translate-x-1/3" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-blue-500/5 blur-[150px] -translate-x-1/3" />
+        </div>
 
         <main className="pt-24 pb-16 relative z-10">
           <Container className="space-y-16 sm:space-y-20 md:space-y-24">
@@ -240,7 +244,7 @@ export default function Dashboard() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm text-muted-foreground leading-relaxed">React.js, Next.js, Python, TypeScript, JavaScript, Node.js, Express.js, Tailwind CSS, MUI.</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">React.js, Next.js, MERN Stack, Python, FastAPI, TypeScript, Node.js, Tailwind CSS, MUI.</p>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -293,9 +297,9 @@ export default function Dashboard() {
                       </CardHeader>
                       <CardContent className="flex-1">
                         <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-4 marker:text-primary break-words">
-                          <li>Integrated OCR-based invoice parsing to automate data extraction.</li>
-                          <li>Implemented server load balancing using NGINX for high availability.</li>
-                          <li>Built Zoho Analytics dashboards and JWT/OAuth2 RBAC authentication.</li>
+                          <li>Engineered an AI-driven OCR invoice parsing microservice using AWS Textract and Node.js, automating data extraction and reducing manual processing time by 40%.</li>
+                          <li>Architected high-availability server infrastructure using NGINX load balancing, optimizing traffic distribution and maintaining 99.9% uptime.</li>
+                          <li>Implemented secure RBAC authentication via JWT and OAuth2, integrating seamlessly with dynamic Zoho Analytics dashboards.</li>
                         </ul>
                       </CardContent>
                     </Card>
@@ -318,9 +322,9 @@ export default function Dashboard() {
                       </CardHeader>
                       <CardContent className="flex-1">
                         <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-4 marker:text-purple-500 break-words">
-                          <li>Revamped the HRMS platform using Next.js and TypeScript.</li>
-                          <li>Developed scalable UI components for the Hectare platform.</li>
-                          <li>Automated tests using Cypress and Playwright.</li>
+                          <li>Spearheaded the legacy-to-modern migration of an enterprise HRMS platform using Next.js and TypeScript, significantly improving UI rendering speeds.</li>
+                          <li>Developed scalable MERN-stack UI components for the US Toll Authority (Hectare), improving system maintainability and UX.</li>
+                          <li>Established robust CI/CD testing pipelines using Cypress and Playwright, reducing QA cycles by automating workflows.</li>
                         </ul>
                       </CardContent>
                     </Card>
@@ -334,14 +338,19 @@ export default function Dashboard() {
               <div className="space-y-8">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b pb-4 border-border/50 gap-4">
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Featured Work</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Enterprises's Work</h2>
                     <p className="text-muted-foreground mt-2">Enterprise systems and GenAI solutions</p>
                   </div>
-                  <Button variant="outline" asChild className="group">
-                    <Link href="/projects" className="flex items-center gap-2">
-                      View All Projects <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
+                  <ImagesBadge
+                    href="/projects"
+                    text="View All Projects"
+                    images={[
+                      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
+                      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop"
+                    ]}
+                    className="group"
+                  />
                 </div>
 
                 <motion.div
@@ -363,7 +372,7 @@ export default function Dashboard() {
                       </CardHeader>
                       <CardContent className="flex-1">
                         <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-                          Built an AI-based invoice parser to automate data extraction. Created React/Node.js validation layers and dynamic Zoho Analytics dashboards with role-based access.
+                          Designed a robust Node.js/Express.js backend to support an AI invoice parser using AWS Textract. Integrated custom validation schemas and real-time Zoho Analytics synchronization.
                         </p>
                       </CardContent>
                       <CardFooter className="pt-0">
@@ -389,7 +398,7 @@ export default function Dashboard() {
                       </CardHeader>
                       <CardContent className="flex-1">
                         <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-                          Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Designed Spring Boot microservices and robust REST APIs.
+                          Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Designed Spring Boot microservices, Angular modules, and robust REST APIs.
                         </p>
                       </CardContent>
                       <CardFooter className="pt-0">
@@ -414,7 +423,7 @@ export default function Dashboard() {
                       </CardHeader>
                       <CardContent className="flex-1">
                         <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-                          Migrated a monolithic legacy HRMS to a modern, modular architecture using Next.js. Improved UI performance, code maintainability, and developer experience.
+                          Migrated an enterprise monolithic legacy HRMS to a modern Next.js architecture. Developed scalable MERN-stack UI components and established robust CI/CD testing pipelines using Cypress.
                         </p>
                       </CardContent>
                       <CardFooter className="pt-0">

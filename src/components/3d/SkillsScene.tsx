@@ -11,7 +11,7 @@ const SKILL_GROUPS = [
     color: "#3b82f6", // Blue
     radius: 3.5,
     speed: 0.3,
-    skills: ["React.js", "Next.js", "Python", "TypeScript", "JavaScript", "Node.js", "Express.js", "Tailwind CSS", "MUI"],
+    skills: ["React.js", "Next.js", "Python", "TypeScript", "MERN Stack", "JavaScript", "Node.js", "Express.js", "Tailwind CSS"],
   },
   {
     category: "Database & Storage",

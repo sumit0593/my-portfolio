@@ -10,16 +10,16 @@ const EXPERIENCES = [
     role: "Software Engineer",
     company: "Kent RO Systems Pvt Ltd",
     location: "Noida, India",
-    description: "Integrated OCR-based invoice parsing to automate data extraction. Architected NGINX load balancing, built secure JWT/OAuth2 authentication, and developed dynamic Zoho Analytics dashboards for enterprise data tracking.",
-    skills: ["React", "Node.js", "AWS Textract", "Mistral LLM", "Zoho Analytics"]
+    description: "Engineered an AI-driven OCR invoice parsing microservice using AWS Textract and Node.js, automating data extraction. Architected high-availability server infrastructure using NGINX load balancing. Implemented secure RBAC authentication via JWT/OAuth2 and developed dynamic Zoho Analytics dashboards.",
+    skills: ["Node.js", "React", "AWS Textract", "Mistral LLM", "NGINX"]
   },
   {
     year: "Aug 2023 - Mar 2024",
     role: "Associate Software Developer",
     company: "TechnoIdentity",
     location: "Hyderabad, India",
-    description: "Revamped HRMS platform using Next.js and TypeScript, significantly improving UI performance. Developed scalable UI components for the Hectare platform and automated end-to-end test cases using Cypress and Playwright.",
-    skills: ["Next.js", "TypeScript", "Tailwind CSS", "Cypress", "Playwright"]
+    description: "Spearheaded the legacy-to-modern migration of an enterprise HRMS platform using Next.js and TypeScript. Developed scalable MERN-stack UI components for the US Toll Authority (Hectare). Established robust CI/CD testing pipelines using Cypress and Playwright.",
+    skills: ["Next.js", "MERN Stack", "TypeScript", "Cypress", "Playwright"]
   }
 ];
 

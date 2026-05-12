@@ -7,7 +7,7 @@ const ECOSYSTEM = [
   {
     category: "LLMs & GenAI",
     icon: Cpu,
-    tools: ["OpenAI", "Gemini", "Claude", "Mistral", "Hugging Face"],
+    tools: ["OpenAI", "Gemini", "Claude", "Mistral", "AWS Textract", "Hugging Face"],
     color: "from-blue-500 to-indigo-500",
   },
   {
@@ -25,13 +25,13 @@ const ECOSYSTEM = [
   {
     category: "Cloud & DevOps",
     icon: Server,
-    tools: ["AWS", "Docker", "Jenkins", "NGINX", "Vercel"],
+    tools: ["AWS", "Docker", "Jenkins", "CI/CD", "NGINX", "Vercel"],
     color: "from-orange-500 to-amber-500",
   },
   {
     category: "Backend & APIs",
     icon: Boxes,
-    tools: ["Node.js", "Python", "FastAPI", "Spring Boot", "GraphQL"],
+    tools: ["Node.js", "Python", "FastAPI", "MERN Stack", "Spring Boot", "GraphQL"],
     color: "from-cyan-500 to-blue-500",
   },
   {

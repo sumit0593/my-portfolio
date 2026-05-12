@@ -24,8 +24,8 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-card w-full max-w-5xl h-[90vh] rounded-2xl shadow-2xl border flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm sm:p-4 animate-in fade-in duration-200">
+      <div className="bg-card w-full h-[100dvh] sm:h-[90vh] max-w-5xl sm:rounded-2xl shadow-2xl border-0 sm:border flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
         
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b bg-muted/30">
@@ -36,17 +36,17 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 <Maximize2 className="w-4 h-4 mr-2" /> Open Full Screen
               </a>
             </Button>
-            <Button size="sm" asChild>
+            <Button size="sm" asChild className="hidden sm:flex">
               <a href="/resume/Sumit_Kumar_GenAI_Full_Stack.pdf" download>
                 <Download className="w-4 h-4 mr-2" /> Download PDF
               </a>
             </Button>
-            <Button variant="secondary" size="sm" asChild>
+            <Button variant="secondary" size="sm" asChild className="hidden sm:flex">
               <a href="/resume/Sumit_Kumar_GenAI_Full_Stack.docx" download>
                 <Download className="w-4 h-4 mr-2" /> Download DOCX
               </a>
             </Button>
-            <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full">
+            <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full shrink-0">
               <X className="w-5 h-5" />
             </Button>
           </div>

@@ -43,3 +43,8 @@ tsc-errors.txt
 
 # custom logs
 dev-output.log
+
+# Generated Data & Indices
+data/processed/minisearch-index.json
+error.json
+models.json

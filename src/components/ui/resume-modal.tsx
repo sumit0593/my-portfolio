@@ -41,6 +41,11 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 <Download className="w-4 h-4 mr-2" /> Download PDF
               </a>
             </Button>
+            <Button variant="secondary" size="sm" asChild>
+              <a href="/resume/Sumit_Kumar_GenAI_Full_Stack.docx" download>
+                <Download className="w-4 h-4 mr-2" /> Download DOCX
+              </a>
+            </Button>
             <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full">
               <X className="w-5 h-5" />
             </Button>
@@ -50,13 +55,20 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         {/* Content - PDF Viewer */}
         <div className="flex-1 bg-muted/20 relative">
           {/* Mobile fallback message */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center sm:hidden bg-background">
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center sm:hidden bg-background gap-3">
              <p className="mb-4 text-muted-foreground">PDF preview may not work well on mobile browsers.</p>
-             <Button asChild>
-              <a href="/resume/Sumit_Kumar_GenAI_Full_Stack.pdf" download>
-                <Download className="w-4 h-4 mr-2" /> Download Resume
-              </a>
-             </Button>
+             <div className="flex flex-col w-full max-w-xs gap-3">
+               <Button asChild>
+                <a href="/resume/Sumit_Kumar_GenAI_Full_Stack.pdf" download>
+                  <Download className="w-4 h-4 mr-2" /> Download PDF
+                </a>
+               </Button>
+               <Button variant="secondary" asChild>
+                <a href="/resume/Sumit_Kumar_GenAI_Full_Stack.docx" download>
+                  <Download className="w-4 h-4 mr-2" /> Download DOCX
+                </a>
+               </Button>
+             </div>
           </div>
           
           <iframe 

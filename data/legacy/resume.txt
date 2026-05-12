@@ -72,4 +72,4 @@ Full Stack Web Developer, Newton School 	 May 2022 — Mar 2023
 •	Trained in modern full-stack web technologies with a strong focus on building AI-powered web applications. 
 •	Gained hands-on experience with HTML, CSS, JavaScript, React, Next.js, Node.js, Express.js, MongoDB, and Git. 
 •	Actively participated in DSA coding contests, improving problem-solving and algorithmic thinking. 
-•	Collaborated on group projects and real-world development challenges, strengthening teamwork and practical development skills. 
+•	Collaborated on group projects and real-world development challenges, strengthening teamwork and practical development skills.

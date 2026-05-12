@@ -10,7 +10,7 @@ export default function SectionWrapper({ id, children, className }: SectionWrapp
   return (
     <section
       id={id}
-      className={`min-h-screen flex items-center justify-center p-12 ${className}`}
+      className={`flex items-center justify-center p-4 sm:p-8 md:p-12 ${className}`}
     >
       {children}
     </section>

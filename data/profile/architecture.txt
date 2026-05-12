@@ -1,0 +1,10 @@
+ARCHITECTURE EXPERTISE
+
+Enterprise Automation & Architecture
+•	RAG Architecture (Retrieval-Augmented Generation) & Hybrid Search Systems.
+•	LLM Orchestration and multi-agent workflows.
+•	Vector Database Architecture (Pinecone, ChromaDB).
+•	Scalable System Design and Microservices using Next.js & Node.js.
+•	High Availability load balancing with NGINX.
+•	Secure authentication architecture using OAuth2 and JWT.
+•	Data pipeline automation for enterprise syncing (Zoho Analytics, HRMS).

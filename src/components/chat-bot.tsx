@@ -33,9 +33,30 @@ export function ChatBot() {
         setInput(e.target.value);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
+
+        const text = input.trim().toLowerCase();
+        if (text === "quit" || text === "exit()") {
+            setMessages([
+                {
+                    id: "init-msg",
+                    role: "assistant",
+                    parts: [
+                        { type: "text", text: "Chat memory cleared! How can I help you explore Sumit's portfolio?" }
+                    ],
+                },
+            ]);
+            setInput("");
+            try {
+                await fetch("/api/chat/clear", { method: "POST" });
+            } catch (err) {
+                console.error("Failed to clear server session:", err);
+            }
+            return;
+        }
+
         sendMessage({ text: input });
         setInput("");
     };
@@ -155,7 +176,7 @@ export function ChatBot() {
                                     type="text"
                                     value={input}
                                     onChange={handleInputChange}
-                                    placeholder="Ask anything..."
+                                    placeholder="Ask anything... (type 'quit' to clear memory)"
                                     disabled={isLoading}
                                     className="flex-1 text-sm rounded-xl border border-input bg-card text-foreground px-4 py-2.5 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 disabled:opacity-50 placeholder:text-muted-foreground"
                                 />

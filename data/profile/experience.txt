@@ -1,0 +1,13 @@
+PROFESSIONAL EXPERIENCE
+
+Software Engineer, Kent RO Systems Pvt Ltd 	 Apr 2024 — Present
+•	Integrated OCR-based invoice parsing to automate data extraction and validation, reducing manual effort and improving accuracy. 
+•	Implemented server load balancing using NGINX, ensuring high availability, optimized traffic distribution, and improved system stability. 
+•	Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters, enhancing decision-making and data accessibility across departments. 
+•	Developed secure authentication and role-based access control using JWT and OAuth2 for internal and external stakeholders. 
+•	Improved API performance, optimized backend logic, and strengthened system scalability across the Kent RiseEngine platform. 
+
+Associate Software Developer, TechnoIdentity 	 Aug 2023 — Mar 2024
+•	Revamped the HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience. 
+•	Developed scalable and reusable UI components for the Hectare (US Toll Authority) platform, enhancing system reliability and maintainability. 
+•	Automated end-to-end test cases using Cypress and Playwright, reducing manual QA effort and improving testing efficiency.

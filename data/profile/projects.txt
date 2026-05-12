@@ -1,0 +1,24 @@
+PROJECTS
+
+Kent Risengine, Internal 	 
+•	Built an AI-based invoice parser in RiseEngine to automate data extraction and improve processing accuracy. 
+•	Created validation schemas, components and UI using React and Node.js to ensure clean, consistent and reliable data. 
+•	Integrated Zoho Analytics dashboards with role-based and criteria-based views for real-time insights. 
+
+Cam Attendance, Internal/Client 	 
+•	Maintained and enhanced a full-stack attendance platform used by thousands of employees and clients. 
+•	Managed backend services and REST APIs (Spring Boot) along with frontend modules (Angular) for real-time HR data tracking. 
+•	Integrated automated data pipelines to sync and validate check-ins, leave logs, and key HR metrics. 
+
+TIOS Revamp, Internal 	 
+•	Migrated a legacy HRMS to a modern modular architecture using Next.js. 
+•	Improved performance, maintainability, and scalability by redesigning the UI/UX and restructuring the entire codebase. 
+
+Scam Guard AI (Open Source/Personal)
+•	A cutting-edge AI security platform designed to detect and prevent digital scams in real-time. Built with Gemini and advanced NLP Transformers to analyze text, emails, and URLs for malicious intent.
+
+HireFlow AI (Open Source/Personal)
+•	An intelligent AI Resume Search platform using RAG (Retrieval-Augmented Generation) architecture. Automates resume parsing, creates vector embeddings for semantic search, and provides recruiters with an ATS-style analytics interface to match candidates instantly.
+
+Portfolio AI (Open Source/Personal)
+•	A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone. Includes an AI resume insights generator, dark mode, 3D visuals, and premium Framer Motion animations.

@@ -63,7 +63,7 @@ function SkillNode({ skill, orbitRadius, speed, color, angleOffset }: any) {
 
   useFrame((state, delta) => {
     if (groupRef.current && !hovered) {
-      // Rotate around the center
+      // orbit around center
       groupRef.current.rotation.y -= delta * speed;
     }
   });
@@ -108,7 +108,7 @@ function SkillNode({ skill, orbitRadius, speed, color, angleOffset }: any) {
 function SkillOrbit({ group }: { group: any }) {
   return (
     <group>
-      {/* Orbit path line */}
+      {/* orbit ring */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <ringGeometry args={[group.radius - 0.02, group.radius + 0.02, 128]} />
         <meshBasicMaterial color={group.color} transparent opacity={0.15} side={THREE.DoubleSide} />
@@ -140,8 +140,7 @@ export function SkillsScene() {
   });
 
   return (
-    <group rotation={[0.2, 0, 0]}> {/* Tilt the entire system slightly */}
-      {/* Central Core */}
+    <group rotation={[0.2, 0, 0]}>
       <Sphere 
         ref={coreRef} 
         args={[1.5, 32, 32]}

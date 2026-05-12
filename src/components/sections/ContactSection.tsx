@@ -60,7 +60,7 @@ export function ContactSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="w-full max-w-2xl bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p- p-2 shadow-[0_0_50px_rgba(79,70,229,0.15)] relative overflow-hidden"
+        className="w-full max-w-2xl bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-[0_0_50px_rgba(79,70,229,0.15)] relative overflow-hidden"
       >
         {/* Terminal Header */}
         <div className="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10 rounded-t-xl mb-4">

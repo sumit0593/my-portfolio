@@ -8,7 +8,7 @@ export function AIResumeInsightsSection() {
     <section className="relative w-full py-24 bg-background overflow-hidden border-t border-border/50">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
       
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
         <div className="text-center mb-16">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-md">
             <span className="text-sm font-medium text-indigo-300 tracking-wide flex items-center justify-center gap-2">

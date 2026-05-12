@@ -1,0 +1,9 @@
+SERVICES AND FREELANCE OFFERINGS
+
+•	AI Chatbot Development: Custom conversational agents for customer support, portfolio assistants, and enterprise data retrieval.
+•	RAG Pipeline Development: Building semantic search systems over enterprise data using Vector Databases and LLMs.
+•	Multi-Agent Systems: Designing autonomous agent networks (CrewAI, LangGraph) for complex workflow automation.
+•	Next.js AI Integration: Full stack web development with seamless AI tool integration.
+•	Enterprise AI Automation: Custom OCR invoice parsers, automated data extraction, and AI-driven analytics.
+•	LLM API Integration: Gemini, OpenAI, Claude orchestration for your platform.
+•	AI Solutions Architecture: Consulting on scalable AI deployment and ML Ops (Docker, AWS).

@@ -1,0 +1,15 @@
+KEY ACHIEVEMENTS
+
+•	Delivered automation and AI-driven enhancements across platforms, improving accuracy, reliability, and workflow efficiency. 
+•	Built secure Node.js authentication with role-based login, user management (create/delete), and integrated AWS certificate handling. 
+•	Improved system scalability and uptime through optimized server load handling, high-performance APIs, and refined backend logic. 
+•	Enhanced decision-making by implementing structured analytics dashboards and improving data visibility across departments. 
+•	Strengthened platform architecture with modular codebases, reusable components, and improved cross-service data flow. 
+
+EDUCATION
+
+MTech – Computer Science 	 2022 — 2024
+Monad University
+
+B.E – Mechanical Engineering 	               2012 — 2016
+RGPV

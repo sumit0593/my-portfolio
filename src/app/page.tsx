@@ -5,6 +5,7 @@ import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { TotalExperienceSection } from "@/components/sections/TotalExperienceSection";
+import { ResumeDownloadSection } from "@/components/sections/ResumeDownloadSection";
 import { AIToolsSection } from "@/components/sections/AIToolsSection";
 import { AIResumeInsightsSection } from "@/components/sections/AIResumeInsightsSection";
 
@@ -19,6 +20,8 @@ export default function Home() {
         <HeroSection />
         
         <TotalExperienceSection />
+
+        <ResumeDownloadSection />
 
         <ProjectsSection />
         

@@ -89,7 +89,7 @@ export default function ServicesPage() {
         <Container>
           {/* Hero Section */}
           <div className="text-center mb-20 max-w-3xl mx-auto">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
@@ -98,7 +98,7 @@ export default function ServicesPage() {
               <SparklesIcon className="w-4 h-4" />
               <span className="text-sm font-medium">Available for Freelance & Contract</span>
             </motion.div>
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -106,29 +106,29 @@ export default function ServicesPage() {
             >
               Engineering <span className="text-gradient">Services</span>
             </motion.h1>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg md:text-xl text-muted-foreground leading-relaxed"
             >
-              From intelligent Multi-Agent Systems to highly scalable enterprise web applications. 
+              From intelligent Multi-Agent Systems to highly scalable enterprise web applications.
               Let's build software that drives real business value.
             </motion.p>
           </div>
 
           {/* Trust Indicators */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24 border-y border-border/50 py-8"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-24 border-y border-border/50 py-8"
           >
             <div className="flex flex-col items-center justify-center text-center gap-2">
               <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-foreground mb-2">
                 <Globe className="w-5 h-5" />
               </div>
-              <h4 className="font-bold text-xl">5+ Years</h4>
+              <h4 className="font-bold text-xl">4+ Years</h4>
               <p className="text-xs text-muted-foreground uppercase tracking-wider">Experience</p>
             </div>
             <div className="flex flex-col items-center justify-center text-center gap-2">
@@ -165,7 +165,7 @@ export default function ServicesPage() {
                   <h2 className="text-3xl font-bold tracking-tight">{category.category}</h2>
                 </div>
 
-                <motion.div 
+                <motion.div
                   variants={containerVariants}
                   initial="hidden"
                   whileInView="show"
@@ -206,7 +206,7 @@ export default function ServicesPage() {
           </div>
 
           {/* Final CTA */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

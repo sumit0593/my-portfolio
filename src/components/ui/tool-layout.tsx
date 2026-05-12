@@ -145,15 +145,22 @@ export default function ToolLayout({
           </div>
 
           {response && (
-            <div className="bg-card border rounded-3xl p-6 md:p-10 shadow-lg animate-in slide-in-from-bottom-4 duration-500">
-              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 border-b pb-4">
-                <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">AI</span>
-                Results
-              </h3>
-              <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal">
-                <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-                  {response}
-                </Markdown>
+            <div className="animate-in slide-in-from-bottom-4 duration-500">
+              {/* AI Response Header */}
+              <div className="flex items-center gap-3 mb-3 px-1">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-md">
+                  AI
+                </div>
+                <span className="text-sm font-semibold text-foreground">Nova AI Response</span>
+                <div className="h-px flex-1 bg-border/50" />
+              </div>
+              {/* Response bubble styled like chatbot */}
+              <div className="bg-card border border-border rounded-2xl rounded-tl-sm p-6 md:p-8 shadow-lg">
+                <div className="prose prose-slate dark:prose-invert max-w-none text-sm md:text-base prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal break-words">
+                  <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                    {response}
+                  </Markdown>
+                </div>
               </div>
             </div>
           )}

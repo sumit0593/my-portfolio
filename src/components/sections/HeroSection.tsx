@@ -36,7 +36,6 @@ export function HeroSection() {
 
           <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 mb-6 drop-shadow-[0_0_15px_rgba(79,70,229,0.5)] leading-tight">
             Architect
-            {/* <br className="md:hidden" /> Architect */}
           </h1>
 
           <p className="text-lg md:text-2xl text-muted-foreground font-light mb-10 max-w-2xl mx-auto">

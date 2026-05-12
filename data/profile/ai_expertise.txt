@@ -1,0 +1,12 @@
+AI EXPERTISE
+
+PG Certification in Gen AI and Multi-Agent Systems, IIT Mandi - TIH	 Dec 2025 — Present
+•	Core Curriculum: Mastered advanced Prompt Engineering, NLP fundamentals, and Retrieval-Augmented Generation (RAG) pipelines using Vector Databases.
+•	Agentic AI & Fine-Tuning: Architected autonomous Multi-Agent Systems (MAS) using LangChain, CrewAI, AutoGen, LlamaIndex and fine-tuned Large Language Models.
+•	Key Learnings & Deployment: Applied Deep Learning foundations and Transformer architectures to build and deploy scalable GenAI models via FastAPI.  
+
+Generative AI Focus
+•	Building intelligent multi-agent workflows using CrewAI and LangGraph.
+•	Semantic search optimization and metadata-driven hybrid RAG implementation (BM25 + Pinecone).
+•	Vector databases including Pinecone, FAISS, and ChromaDB.
+•	Prompt orchestration, zero-shot, few-shot, and chain-of-thought methodologies.

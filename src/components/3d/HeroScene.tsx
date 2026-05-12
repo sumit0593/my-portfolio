@@ -12,7 +12,7 @@ function ParticleField() {
     const count = 3000;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count * 3; i += 3) {
-      // random point in sphere
+      // place points uniformly within a sphere
       const u = Math.random();
       const v = Math.random();
       const theta = u * 2.0 * Math.PI;
@@ -34,7 +34,7 @@ function ParticleField() {
     }
     const { mouse } = state;
     if (ref.current) {
-        // slight parallax based on mouse
+        // add subtle parallax on mouse move
         ref.current.position.x = THREE.MathUtils.lerp(ref.current.position.x, mouse.x * 0.5, 0.05);
         ref.current.position.y = THREE.MathUtils.lerp(ref.current.position.y, mouse.y * 0.5, 0.05);
     }

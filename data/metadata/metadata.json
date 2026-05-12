@@ -1,0 +1,200 @@
+{
+  "personal_info": {
+    "name": "Sumit Kumar",
+    "title": "GenAI & Multi-Agent Engineer | Full Stack Web Developer",
+    "location": "Noida, India",
+    "phone": "7011676185",
+    "email": "sumitsumitsumit163@gmail.com",
+    "contact": {
+      "github": "https://github.com/sumit0593",
+      "linkedin": "https://linkedin.com/in/sumit0593",
+      "portfolio": "https://my-portfolio-six-gold-86.vercel.app/"
+    },
+    "summary": "Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures."
+  },
+  "skills": {
+    "gen_ai_and_llms": ["RAG Pipelines", "Prompt Engineering", "Zero-shot", "Few-shot", "Chain-of-Thought", "LLM Fine-Tuning", "Transformers"],
+    "agentic_frameworks": ["Multi-Agent Systems", "LangChain", "LlamaIndex", "LangGraph", "CrewAI", "AutoGen", "ReAct Agents"],
+    "ai_development": ["Gemini", "OpenAI", "Claude", "Hugging Face", "FastAPI", "RESTful APIs", "JWT Authentication"],
+    "databases_and_storage": ["Pinecone", "ChromaDB", "FAISS", "MySQL", "PostgreSQL", "MongoDB"],
+    "full_stack_core": ["React.js", "Next.js", "Python", "TypeScript", "JavaScript", "Node.js", "Express.js", "Tailwind CSS", "MUI", "Angular"],
+    "deployment_and_mlops": ["Docker", "AWS", "Jenkins", "CI/CD", "LangSmith", "LangFuse", "NGINX", "Vercel"],
+    "tools_and_utilities": ["Git", "GitHub", "GitLab", "Postman", "VS Code", "Cursor AI", "Jupyter", "Anaconda"]
+  },
+  "experience": [
+    {
+      "role": "Software Engineer",
+      "company": "Kent RO Systems Pvt Ltd",
+      "duration": "Apr 2024 - Present",
+      "location": "Noida, India",
+      "highlights": [
+        "Integrated OCR-based invoice parsing to automate data extraction and validation, reducing manual effort and improving accuracy.",
+        "Implemented server load balancing using NGINX, ensuring high availability, optimized traffic distribution, and improved system stability.",
+        "Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters."
+      ],
+      "tags": ["React", "Node.js", "AWS Textract", "Mistral LLM", "Zoho Analytics", "NGINX", "JWT", "OAuth2"]
+    },
+    {
+      "role": "Associate Software Developer",
+      "company": "TechnoIdentity",
+      "duration": "Aug 2023 - Mar 2024",
+      "location": "Hyderabad, India",
+      "highlights": [
+        "Revamped HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience.",
+        "Automated end-to-end test cases using Cypress and Playwright."
+      ],
+      "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Cypress", "Playwright"]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Scam Guard AI",
+      "category": "AI Security Platform",
+      "project_type": "Open Source",
+      "domain": "Cybersecurity",
+      "description": "A cutting-edge AI security platform designed to detect and prevent digital scams in real-time.",
+      "tech_stack": ["Streamlit", "Gemini", "Python", "Transformers"],
+      "deployment_platforms": ["Streamlit Cloud"],
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Real-time threat detection",
+      "priority_score": 9,
+      "github": "https://github.com/sumit0593/scam_guard_ai",
+      "live_url": "https://scam-detector-ai.streamlit.app/",
+      "architecture_tags": ["NLP", "Transformers", "LLM Orchestration"],
+      "semantic_tags": ["AI Security", "Scam Detection", "NLP", "Real-time Analysis"],
+      "recruiter_keywords": ["Python", "GenAI", "Security"],
+      "ai_capabilities": ["Malicious text analysis", "URL scanning"]
+    },
+    {
+      "title": "HireFlow AI",
+      "category": "Generative AI / RAG Platform",
+      "project_type": "Open Source",
+      "domain": "HR Tech",
+      "description": "An intelligent AI Resume Search platform using RAG architecture.",
+      "tech_stack": ["Streamlit", "Pinecone", "Gemini", "LangChain", "Python"],
+      "deployment_platforms": ["Streamlit Cloud"],
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Automated ATS filtering",
+      "priority_score": 10,
+      "github": "https://github.com/sumit0593/HireFlow---AI-Resume-Search",
+      "live_url": "https://hireflow---ai-resume-search-gw6ot8m2ph3huktrjcaz35.streamlit.app/",
+      "architecture_tags": ["RAG Architecture", "Hybrid Search", "Vector Database"],
+      "semantic_tags": ["RAG", "Resume Search", "Vector Database", "ATS Analytics"],
+      "recruiter_keywords": ["RAG", "LangChain", "Pinecone"],
+      "ai_capabilities": ["Semantic Search", "Resume Parsing"]
+    },
+    {
+      "title": "Kent RiseEngine",
+      "category": "Enterprise AI & LLM Automation",
+      "project_type": "Enterprise / Internal",
+      "domain": "Enterprise Tech",
+      "description": "An enterprise-grade AI invoice parser built with React and Node.js.",
+      "tech_stack": ["React", "Node.js", "Zoho Analytics", "OCR", "JWT", "OAuth2"],
+      "deployment_platforms": ["AWS"],
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Automated invoice processing",
+      "priority_score": 8,
+      "architecture_tags": ["Microservices", "Secure Auth"],
+      "semantic_tags": ["Enterprise AI", "OCR", "LLM Automation"],
+      "recruiter_keywords": ["Node.js", "React", "Enterprise"],
+      "ai_capabilities": ["OCR Parsing", "Data Extraction"]
+    },
+    {
+      "title": "Portfolio AI",
+      "category": "RAG-Powered Personal Portfolio",
+      "project_type": "Open Source",
+      "domain": "Personal Branding",
+      "description": "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone.",
+      "tech_stack": ["Next.js", "Gemini", "Pinecone", "Three.js", "Tailwind CSS", "Framer Motion"],
+      "deployment_platforms": ["Vercel"],
+      "complexity_level": "Medium",
+      "experience_level": "Intermediate",
+      "business_impact": "High engagement",
+      "priority_score": 8,
+      "github": "https://github.com/sumit0593/my-portfolio",
+      "live_url": "https://my-portfolio-six-gold-86.vercel.app/",
+      "architecture_tags": ["Next.js AI System", "Vector DB"],
+      "semantic_tags": ["RAG Chatbot", "Vector Search", "3D Web", "AI Portfolio"],
+      "recruiter_keywords": ["Next.js", "React", "Gemini", "Pinecone"],
+      "ai_capabilities": ["Streaming Chatbot", "RAG"]
+    }
+  ],
+  "services": [
+    "AI Chatbot Development",
+    "RAG Pipeline Development",
+    "Multi-Agent Systems",
+    "AI Resume Screening",
+    "Semantic Search Systems",
+    "Next.js AI Integration",
+    "Enterprise AI Automation",
+    "LLM API Integration"
+  ],
+  "certifications": [
+    {
+      "title": "PG Certification in Gen AI and Multi-Agent Systems",
+      "institution": "IIT Mandi - TIH",
+      "duration": "Dec 2025 — Present"
+    }
+  ],
+  "achievements": [
+    "Delivered automation and AI-driven enhancements across platforms.",
+    "Built secure Node.js authentication with role-based login.",
+    "Improved system scalability and uptime through optimized load handling."
+  ],
+  "metrics": {
+    "total_years_experience": "4+",
+    "gen_ai_experience": "2+",
+    "full_stack_experience": "3+",
+    "enterprise_projects": "10+"
+  },
+  "recruiter_profile": {
+    "ideal_roles": ["AI Engineer", "GenAI Engineer", "Full Stack AI Developer"]
+  },
+  "semantic_profile": {
+    "primary_focus": "GenAI & Multi-Agent Systems"
+  },
+  "ai_specializations": [
+    "RAG Systems", "Multi-Agent Systems", "LLM Orchestration", "Semantic Search", 
+    "Hybrid Retrieval", "Prompt Engineering", "Agentic AI", "Vector Databases", 
+    "AI Automation", "Enterprise AI"
+  ],
+  "architecture_expertise": [
+    "RAG Architecture", "Hybrid Search Systems", "Semantic Retrieval Pipelines", 
+    "LLM Orchestration", "Vector Database Architecture", "Agentic Workflows", 
+    "Scalable AI Systems", "AI API Architecture", "Next.js AI Systems"
+  ],
+  "industries": ["Enterprise SaaS", "HR Tech", "Cybersecurity"],
+  "deployment_skills": ["Docker", "AWS", "Vercel", "CI/CD"],
+  "freelance_services": ["AI Chatbots", "RAG Platforms"],
+  "recruiter_keywords": [
+    "AI Engineer", "GenAI Engineer", "Full Stack AI Developer", "LLM Engineer", 
+    "RAG Engineer", "AI Platform Engineer", "Multi-Agent Engineer", "LangChain Developer"
+  ],
+  "semantic_tags": [
+    "RAG", "Hybrid Search", "Semantic Retrieval", "Enterprise AI", "AI Automation", 
+    "LLM Engineering", "Prompt Engineering", "Vector Search", "AI Platform", 
+    "MCP", "Agentic AI", "Multi-Agent Systems"
+  ],
+  "impact_metrics": {
+    "manual_effort_reduction": "60%",
+    "latency_optimization": "15%",
+    "enterprise_scale": "thousands_of_users",
+    "automation_improvement": "40%",
+    "api_optimization": true,
+    "high_availability": true
+  },
+  "priority_ranking": {
+    "HireFlow AI": 10,
+    "Scam Guard AI": 9,
+    "Kent RiseEngine": 8,
+    "Portfolio AI": 8
+  },
+  "index_version": "v3",
+  "embedding_model": "models/embedding-001",
+  "dimension": 3072,
+  "last_indexed": "",
+  "chunk_strategy": "semantic-v2"
+}

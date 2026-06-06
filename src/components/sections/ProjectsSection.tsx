@@ -7,6 +7,55 @@ import { ExternalLink, Github, X, ChevronRight } from "lucide-react";
 const PROJECTS = [
   {
     id: 1,
+    title: "AI Loan Advisor Chatbot",
+    subtitle: "Multi-Agent Lending Evaluation Platform",
+    tech: ["LangGraph", "Gemini API", "FastAPI", "React 19", "Tailwind CSS 4", "Recharts 3", "SQLite"],
+    color: "from-teal-500 to-emerald-400",
+    description:
+      "A full-stack intelligent lending evaluation application. It uses a multi-agent orchestration graph (built with LangGraph and the Gemini API) to assess borrower profiles, determine loan product eligibility, perform EMI/tenure repayment simulations, and verify lending compliance.",
+    highlights: [
+      "Multi-Agent Orchestration Graph built with LangGraph & Gemini API",
+      "Interactive tenure amortization & repayment simulations via Recharts 3",
+      "Robust FastAPI backend storing users, sessions, audits, and prompts in SQLite",
+    ],
+    link: "https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/",
+    github: "https://github.com/sumit0593/AI-Loan-Advisor-Chatbot",
+    envVars: {
+      backend: [
+        { name: "GEMINI_API_KEY", description: "Your Google Gemini API Key", value: "XXX" },
+        { name: "DATABASE_URL", description: "Connection string to SQLite", value: "XXX" },
+        { name: "JWT_SECRET", description: "Secret key used to sign Auth tokens", value: "XXX" },
+        { name: "PORT", description: "Dynamic port listener for ASGI server", value: "XXX" },
+        { name: "HOST", description: "Bind address for backend server", value: "XXX" }
+      ],
+      frontend: [
+        { name: "VITE_BACKEND_URL", description: "Base URL of the deployed FastAPI backend API", value: "XXX" }
+      ]
+    },
+    setupSteps: [
+      {
+        title: "1. Run the Backend",
+        commands: [
+          "cd backend",
+          "python -m venv .venv",
+          "# On Windows: .venv\\Scripts\\activate   # On macOS/Linux: source .venv/bin/activate",
+          "pip install -r requirements.txt",
+          "uvicorn main:app --reload --port 8000"
+        ]
+      },
+      {
+        title: "2. Run the Frontend",
+        commands: [
+          "cd ../frontend",
+          "npm install",
+          "npm run dev"
+        ]
+      }
+    ],
+    deployment: "This repository includes configuration files to deploy the full stack completely free with persistent data: Backend on Railway (with SQLite volume) and Frontend on Vercel."
+  },
+  {
+    id: 2,
     title: "Scam Guard AI",
     subtitle: "AI Security / Scam Detection Platform",
     tech: ["Streamlit", "Gemini", "Prompt Engineering", "NLP Pipelines", "LLM Orchestration"],
@@ -22,7 +71,7 @@ const PROJECTS = [
     github: "https://github.com/sumit0593/scam_guard_ai",
   },
   {
-    id: 2,
+    id: 3,
     title: "HireFlow AI",
     subtitle: "Generative AI / RAG Platform",
     tech: ["FastAPI", "BM25", "RAGAS", "HuggingFace", "RRF", "Streamlit", "Pinecone", "Gemini", "LangChain"],
@@ -38,7 +87,7 @@ const PROJECTS = [
     github: "https://github.com/sumit0593/HireFlow---AI-Resume-Search",
   },
   {
-    id: 3,
+    id: 4,
     title: "Portfolio AI",
     subtitle: "RAG-Powered Personal Portfolio",
     tech: ["Next.js", "Gemini", "Pinecone", "Three.js", "Tailwind"],
@@ -120,6 +169,10 @@ function ProjectModal({
   project: (typeof PROJECTS)[number];
   onClose: () => void;
 }) {
+  const [activeTab, setActiveTab] = useState<"overview" | "setup">("overview");
+
+  const hasSetup = "envVars" in project || "setupSteps" in project || "deployment" in project;
+
   return (
     <>
       {/* Backdrop */}
@@ -135,7 +188,7 @@ function ProjectModal({
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
         <motion.div
           layoutId={`card-${project.id}`}
-          className="relative w-full max-w-2xl bg-card/95 backdrop-blur-2xl border border-border rounded-3xl overflow-hidden shadow-2xl shadow-indigo-500/10 pointer-events-auto"
+          className="relative w-full max-w-2xl bg-card/95 backdrop-blur-2xl border border-border rounded-3xl overflow-hidden shadow-2xl shadow-indigo-500/10 pointer-events-auto flex flex-col max-h-[90vh]"
         >
           {/* Close Button */}
           <button
@@ -147,58 +200,192 @@ function ProjectModal({
 
           {/* Gradient Banner */}
           <div
-            className={`h-48 bg-gradient-to-br ${project.color} relative`}
+            className={`h-40 bg-gradient-to-br ${project.color} relative shrink-0 flex items-end p-6`}
           >
             <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute bottom-6 left-6">
-              <h2 className="text-3xl font-extrabold text-white drop-shadow-lg">
+            <div className="relative z-10">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-white drop-shadow-lg leading-tight">
                 {project.title}
               </h2>
               <p className="text-white/80 text-sm mt-1">{project.subtitle}</p>
             </div>
           </div>
 
+          {/* Tabs header if project has setup */}
+          {hasSetup && (
+            <div className="flex border-b border-border/50 bg-muted/10 shrink-0 px-6 pt-3">
+              <button
+                onClick={() => setActiveTab("overview")}
+                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${
+                  activeTab === "overview"
+                    ? "text-indigo-400 border-b-2 border-indigo-400"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Overview
+              </button>
+              <button
+                onClick={() => setActiveTab("setup")}
+                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${
+                  activeTab === "setup"
+                    ? "text-indigo-400 border-b-2 border-indigo-400"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Setup & Config
+              </button>
+            </div>
+          )}
+
           {/* Body */}
-          <div className="p-6 space-y-6">
-            {/* Description */}
-            <p className="text-muted-foreground leading-relaxed text-sm">
-              {project.description}
-            </p>
+          <div className="p-6 space-y-6 overflow-y-auto flex-1 max-h-[55vh]">
+            {activeTab === "overview" ? (
+              <>
+                {/* Description */}
+                <p className="text-muted-foreground leading-relaxed text-sm">
+                  {project.description}
+                </p>
 
-            {/* Highlights */}
-            <div>
-              <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">
-                Key Highlights
-              </h4>
-              <ul className="space-y-2">
-                {project.highlights.map((h, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
-                    <span className={`mt-1.5 w-2 h-2 rounded-full bg-gradient-to-r ${project.color} shrink-0`} />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            </div>
+                {/* Highlights */}
+                <div>
+                  <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">
+                    Key Highlights
+                  </h4>
+                  <ul className="space-y-2">
+                    {project.highlights.map((h, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+                        <span className={`mt-1.5 w-2 h-2 rounded-full bg-gradient-to-r ${project.color} shrink-0`} />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-            {/* Tech Stack */}
-            <div>
-              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">
-                Tech Stack
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {project.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="text-xs px-3 py-1.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-500/20"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
+                {/* Tech Stack */}
+                <div>
+                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">
+                    Tech Stack
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="text-xs px-3 py-1.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-500/20"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Setup & Config Tab content */}
+                {"envVars" in project && project.envVars && (
+                  <div className="space-y-4">
+                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+                      Environment Variables Configuration
+                    </h4>
+                    {project.envVars.backend && (
+                      <div className="space-y-2">
+                        <h5 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          Backend Variables (.env)
+                        </h5>
+                        <div className="border border-border/50 rounded-xl overflow-hidden text-xs bg-muted/10">
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse min-w-[450px]">
+                              <thead>
+                                <tr className="border-b border-border/50 bg-muted/30">
+                                  <th className="p-2.5 font-semibold text-muted-foreground w-1/3">Variable Name</th>
+                                  <th className="p-2.5 font-semibold text-muted-foreground w-1/3">Description</th>
+                                  <th className="p-2.5 font-semibold text-muted-foreground w-1/3">Example Value</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {project.envVars.backend.map((env: any, idx: number) => (
+                                  <tr key={idx} className="border-b border-border/30 last:border-0 hover:bg-muted/5">
+                                    <td className="p-2.5 font-mono text-indigo-400 select-all">{env.name}</td>
+                                    <td className="p-2.5 text-muted-foreground">{env.description}</td>
+                                    <td className="p-2.5 font-mono text-foreground/80">{env.value}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {project.envVars.frontend && (
+                      <div className="space-y-2 mt-4">
+                        <h5 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                          Frontend Variables (.env)
+                        </h5>
+                        <div className="border border-border/50 rounded-xl overflow-hidden text-xs bg-muted/10">
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse min-w-[450px]">
+                              <thead>
+                                <tr className="border-b border-border/50 bg-muted/30">
+                                  <th className="p-2.5 font-semibold text-muted-foreground w-1/3">Variable Name</th>
+                                  <th className="p-2.5 font-semibold text-muted-foreground w-1/3">Description</th>
+                                  <th className="p-2.5 font-semibold text-muted-foreground w-1/3">Example Value</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {project.envVars.frontend.map((env: any, idx: number) => (
+                                  <tr key={idx} className="border-b border-border/30 last:border-0 hover:bg-muted/5">
+                                    <td className="p-2.5 font-mono text-indigo-400 select-all">{env.name}</td>
+                                    <td className="p-2.5 text-muted-foreground">{env.description}</td>
+                                    <td className="p-2.5 font-mono text-foreground/80">{env.value}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-            {/* Action Buttons */}
-            <div className="flex gap-3 pt-2">
+                {"setupSteps" in project && project.setupSteps && (
+                  <div className="space-y-4 pt-2">
+                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+                      Local Development Setup
+                    </h4>
+                    {project.setupSteps.map((step: any, idx: number) => (
+                      <div key={idx} className="space-y-2">
+                        <h5 className="text-xs font-semibold text-foreground">
+                          {step.title}
+                        </h5>
+                        <div className="bg-black/90 font-mono text-[11px] text-emerald-400/90 p-4 rounded-2xl border border-border/50 leading-relaxed overflow-x-auto">
+                          {step.commands.map((cmd: string, cmdIdx: number) => (
+                            <div key={cmdIdx} className="whitespace-pre">{cmd}</div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {"deployment" in project && project.deployment && (
+                  <div className="space-y-2 pt-2">
+                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+                      Cloud Deployment Instructions
+                    </h4>
+                    <p className="text-muted-foreground text-xs leading-relaxed bg-indigo-500/5 border border-indigo-500/10 p-4 rounded-2xl">
+                      {project.deployment}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Footer (fixed at bottom of modal) */}
+          <div className="p-6 bg-card/50 border-t border-border/50 shrink-0">
+            <div className="flex gap-3">
               <a
                 href={project.link}
                 target="_blank"

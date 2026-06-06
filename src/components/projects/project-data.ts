@@ -14,6 +14,19 @@ export type Project = {
 
 export const PROJECTS_DATA: Project[] = [
   {
+    id: "ai-loan-advisor",
+    title: "AI Loan Advisor Chatbot",
+    category: "Full Stack",
+    description: "A full-stack intelligent lending evaluation application. It uses a multi-agent orchestration graph (built with LangGraph and the Gemini API) to assess borrower profiles, determine loan product eligibility, perform EMI/tenure repayment simulations, and verify lending compliance.",
+    techStack: ["React 19", "Vite 8", "LangGraph", "Gemini API", "FastAPI", "SQLite", "SQLAlchemy", "Tailwind CSS 4", "Recharts 3"],
+    liveUrl: "https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/",
+    githubUrl: "https://github.com/sumit0593/AI-Loan-Advisor-Chatbot",
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop",
+    featured: true,
+    architecture: ["Multi-Agent Graph", "FastAPI ASGI", "SQLite Database"],
+    aiFeatures: ["LangGraph Orchestration", "Gemini AI Engine"]
+  },
+  {
     id: "hireflow-ai",
     title: "HireFlow AI",
     category: "GenAI",

@@ -6,6 +6,7 @@ import Providers from "./providers";
 import { ChatBot } from "@/components/chat-bot";
 import { Analytics } from '@vercel/analytics/next';
 import NextTopLoader from 'nextjs-toploader';
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,6 +82,7 @@ export default function RootLayout({
               shadow="0 0 10px hsl(var(--primary)),0 0 5px hsl(var(--primary))"
               zIndex={1600}
             />
+            <ScrollProgress />
             {children}
             <ChatBot />
             <Analytics />

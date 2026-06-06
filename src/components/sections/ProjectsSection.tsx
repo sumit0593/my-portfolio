@@ -1,8 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, X, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { ExternalLink, Github, X, ChevronRight, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+// High-performance background meteor animation from Aceternity UI
+export const Meteors = ({ number = 20, className }: { number?: number; className?: string }) => {
+  const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>([]);
+
+  useEffect(() => {
+    const styles = Array.from({ length: number }).map(() => ({
+      top: -10,
+      left: Math.floor(Math.random() * 800) - 400 + "px",
+      animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
+      animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
+    }));
+    setMeteorStyles(styles);
+  }, [number]);
+
+  return (
+    <>
+      {meteorStyles.map((style, idx) => (
+        <span
+          key={"meteor" + idx}
+          className={cn(
+            "animate-meteor absolute h-0.5 w-0.5 rounded-[9999px] bg-slate-500 shadow-[0_0_0_1px_#ffffff10] rotate-[215deg]",
+            "before:content-[''] before:absolute before:top-1/2 before:-translate-y-[50%] before:w-[50px] before:h-[1px] before:bg-gradient-to-r before:from-indigo-500/40 before:to-transparent",
+            className
+          )}
+          style={style}
+        />
+      ))}
+    </>
+  );
+};
 
 const PROJECTS = [
   {
@@ -22,14 +55,14 @@ const PROJECTS = [
     github: "https://github.com/sumit0593/AI-Loan-Advisor-Chatbot",
     envVars: {
       backend: [
-        { name: "GEMINI_API_KEY", description: "Your Google Gemini API Key", value: "XXX" },
-        { name: "DATABASE_URL", description: "Connection string to SQLite", value: "XXX" },
-        { name: "JWT_SECRET", description: "Secret key used to sign Auth tokens", value: "XXX" },
-        { name: "PORT", description: "Dynamic port listener for ASGI server", value: "XXX" },
-        { name: "HOST", description: "Bind address for backend server", value: "XXX" }
+        { name: "GEMINI_API_KEY", description: "Your Google Gemini API Key", value: "[Required]" },
+        { name: "DATABASE_URL", description: "Connection string to SQLite", value: "sqlite:///./loan_advisor.db (local) or sqlite:////data/loan_advisor.db (Railway volume)" },
+        { name: "JWT_SECRET", description: "Secret key used to sign Auth tokens", value: "[Any long secure random string]" },
+        { name: "PORT", description: "Dynamic port listener for ASGI server", value: "8000" },
+        { name: "HOST", description: "Bind address for backend server", value: "0.0.0.0" }
       ],
       frontend: [
-        { name: "VITE_BACKEND_URL", description: "Base URL of the deployed FastAPI backend API", value: "XXX" }
+        { name: "VITE_BACKEND_URL", description: "Base URL of the deployed FastAPI backend API", value: "https://<service-name>.<environment>.up.railway.app" }
       ]
     },
     setupSteps: [
@@ -111,54 +144,194 @@ function ProjectCard({
   project: (typeof PROJECTS)[number];
   onSelect: () => void;
 }) {
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Smooth springs for tilt matching Aceternity 3D Card
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [12, -12]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-12, 12]), { stiffness: 300, damping: 30 });
+
+  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
+    const clientX = event.clientX - left;
+    const clientY = event.clientY - top;
+    
+    setMouseX(clientX);
+    setMouseY(clientY);
+    
+    x.set((clientX - width / 2) / width);
+    y.set((clientY - height / 2) / height);
+  }
+
+  function handleMouseEnter() {
+    setIsHovered(true);
+  }
+
+  function handleMouseLeave() {
+    setIsHovered(false);
+    x.set(0);
+    y.set(0);
+  }
+
+  // Get project shadow color based on its color gradient string
+  const getShadowColor = () => {
+    if (project.color.includes("teal")) return "rgba(20, 184, 166, 0.15)";
+    if (project.color.includes("red")) return "rgba(239, 68, 68, 0.15)";
+    if (project.color.includes("blue")) return "rgba(59, 130, 246, 0.15)";
+    if (project.color.includes("fuchsia")) return "rgba(217, 70, 239, 0.15)";
+    return "rgba(99, 102, 241, 0.15)";
+  };
+
   return (
-    <motion.div
-      layoutId={`card-${project.id}`}
-      onClick={onSelect}
-      className="group relative rounded-2xl border border-border bg-card/60 backdrop-blur-xl overflow-hidden cursor-pointer"
-      whileHover={{ y: -8, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+    <div 
+      className="w-full flex justify-center py-4"
+      style={{ perspective: "1000px" }}
     >
-      {/* Gradient Banner */}
-      <div
-        className={`h-44 bg-gradient-to-br ${project.color} relative overflow-hidden`}
+      <motion.div
+        layoutId={`card-${project.id}`}
+        onClick={onSelect}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="group relative rounded-3xl border border-border bg-card/40 backdrop-blur-xl overflow-hidden cursor-pointer flex flex-col justify-between h-full transition-all duration-300 hover:border-indigo-500/40 hover:shadow-2xl shadow-md w-full [transform-style:preserve-3d]"
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+          boxShadow: isHovered ? `0 20px 40px -15px ${getShadowColor()}` : "none"
+        }}
       >
-        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300" />
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full flex items-center gap-2">
-            <span className="text-white text-sm font-semibold tracking-wide">
-              View Details
-            </span>
-            <ChevronRight className="w-4 h-4 text-white" />
+        {/* Meteors Background overlay on hover */}
+        {isHovered && (
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+            <Meteors number={12} />
+          </div>
+        )}
+
+        {/* Aceternity Spotlight Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+          style={{
+            background: `radial-gradient(350px circle at ${mouseX}px ${mouseY}px, rgba(99, 102, 241, 0.08), transparent 80%)`
+          }}
+        />
+
+        <div className="flex flex-col h-full [transform-style:preserve-3d] z-10">
+          {/* Gradient Banner with Grid Mesh */}
+          <div 
+            className={`h-40 bg-gradient-to-br ${project.color} relative overflow-hidden shrink-0 transition-transform duration-300 ease-out [transform-style:preserve-3d]`}
+            style={{
+              transform: isHovered ? "translateZ(30px)" : "translateZ(0px)"
+            }}
+          >
+            {/* Grid blueprint overlay */}
+            <div 
+              className="absolute inset-0 opacity-15"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+                `,
+                backgroundSize: '16px 16px'
+              }}
+            />
+            <div className="absolute inset-0 bg-black/35 group-hover:bg-black/15 transition-colors duration-300" />
+            
+            {/* Preview Badge */}
+            <div className="absolute top-4 left-4 z-20">
+              <span className="text-[10px] font-bold tracking-widest uppercase bg-black/55 backdrop-blur-md text-white/95 px-2.5 py-1 rounded-full border border-white/15">
+                Preview {project.id}
+              </span>
+            </div>
+
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+              <div className="bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full flex items-center gap-2">
+                <span className="text-white text-xs font-bold tracking-wide uppercase">
+                  Explore Project
+                </span>
+                <ChevronRight className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            {/* Glowing bottom-right bubble */}
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500" />
+          </div>
+
+          {/* Content */}
+          <div className="p-6 flex flex-col flex-1 justify-between [transform-style:preserve-3d]">
+            <div className="space-y-3 [transform-style:preserve-3d]">
+              <h3 
+                className="text-lg font-bold text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300 [transform-style:preserve-3d]"
+                style={{
+                  transform: isHovered ? "translateZ(40px)" : "translateZ(0px)",
+                  transition: "transform 0.3s ease-out"
+                }}
+              >
+                {project.title}
+              </h3>
+              <p 
+                className="text-xs font-semibold text-indigo-400 tracking-wide uppercase"
+                style={{
+                  transform: isHovered ? "translateZ(35px)" : "translateZ(0px)",
+                  transition: "transform 0.3s ease-out"
+                }}
+              >
+                {project.subtitle}
+              </p>
+              <p 
+                className="text-xs text-muted-foreground leading-relaxed line-clamp-2"
+                style={{
+                  transform: isHovered ? "translateZ(20px)" : "translateZ(0px)",
+                  transition: "transform 0.3s ease-out"
+                }}
+              >
+                {project.description}
+              </p>
+            </div>
+
+            <div className="mt-5 space-y-4 [transform-style:preserve-3d]">
+              {/* Tech stack badges */}
+              <div 
+                className="flex flex-wrap gap-1.5"
+                style={{
+                  transform: isHovered ? "translateZ(30px)" : "translateZ(0px)",
+                  transition: "transform 0.3s ease-out"
+                }}
+              >
+                {project.tech.slice(0, 4).map((t) => (
+                  <span
+                    key={t}
+                    className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/10"
+                  >
+                    {t}
+                  </span>
+                ))}
+                {project.tech.length > 4 && (
+                  <span className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-muted text-muted-foreground border border-border">
+                    +{project.tech.length - 4}
+                  </span>
+                )}
+              </div>
+
+              {/* Read more link footer */}
+              <div 
+                className="flex items-center justify-between pt-3 border-t border-border/50 text-[11px] font-bold text-indigo-400 group-hover:text-indigo-300"
+                style={{
+                  transform: isHovered ? "translateZ(25px)" : "translateZ(0px)",
+                  transition: "transform 0.3s ease-out"
+                }}
+              >
+                <span>View details & config</span>
+                <ChevronRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-300" />
+              </div>
+            </div>
           </div>
         </div>
-        {/* Floating glow orb */}
-        <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
-      </div>
-
-      {/* Content */}
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-foreground mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
-          {project.title}
-        </h3>
-        <p className="text-sm text-muted-foreground mb-4">{project.subtitle}</p>
-        <div className="flex flex-wrap gap-2">
-          {project.tech.slice(0, 3).map((t) => (
-            <span
-              key={t}
-              className="text-xs px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-500/20"
-            >
-              {t}
-            </span>
-          ))}
-          {project.tech.length > 3 && (
-            <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground border border-border">
-              +{project.tech.length - 3}
-            </span>
-          )}
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
@@ -430,15 +603,26 @@ export function ProjectsSection() {
         <h2 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 mb-4">
           Featured Work
         </h2>
-        <p className="text-muted-foreground max-w-lg mx-auto text-lg font-light">
+        <p className="text-muted-foreground max-w-lg mx-auto text-lg font-light mb-6">
           Click on a project to explore details and tech stack.
         </p>
+
+        {/* Top View All Projects Icon Link */}
+        <div className="pointer-events-auto flex justify-center">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group cursor-pointer"
+          >
+            <span>View All Projects</span>
+            <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
       </div>
 
-      {/* Project Cards Grid */}
+      {/* Project Cards Grid (Previews 1, 2, and 3) */}
       <div className="relative z-10 w-full max-w-6xl px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.map((project) => (
+          {PROJECTS.slice(0, 3).map((project) => (
             <ProjectCard
               key={project.id}
               project={project}
@@ -446,6 +630,17 @@ export function ProjectsSection() {
             />
           ))}
         </div>
+      </div>
+
+      {/* Bottom CTA to View All Projects */}
+      <div className="relative z-10 mt-16 text-center">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-indigo-600/15 hover:bg-indigo-600/25 text-indigo-300 hover:text-white border border-indigo-500/30 hover:border-indigo-400/50 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/25 font-semibold group cursor-pointer"
+        >
+          <span>View All Projects</span>
+          <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform duration-300" />
+        </Link>
       </div>
 
       {/* Expanded Modal */}

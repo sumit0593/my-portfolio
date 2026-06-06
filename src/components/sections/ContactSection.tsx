@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Terminal, Send, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { Terminal, Send, CheckCircle2, Loader2, AlertCircle, Mail, Phone, Linkedin, Github } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function ContactSection() {
@@ -54,6 +54,55 @@ export function ContactSection() {
           Ping me on the terminal or use the AI Assistant in the bottom right corner for help.
         </p>
       </div>
+
+      {/* Direct Contact Options */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-2xl mb-12 px-2"
+      >
+        <a
+          href="mailto:sumitsumitsumit163@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+        >
+          <Mail className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-sm font-semibold text-foreground/90">Email</span>
+        </a>
+
+        <a
+          href="tel:7011676185"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+        >
+          <Phone className="w-5 h-5 text-green-500 group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-sm font-semibold text-foreground/90">Call</span>
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/sumit-kumar0509/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+        >
+          <Linkedin className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-sm font-semibold text-foreground/90">LinkedIn</span>
+        </a>
+
+        <a
+          href="https://github.com/sumit0593"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+        >
+          <Github className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-sm font-semibold text-foreground/90">GitHub</span>
+        </a>
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 50 }}

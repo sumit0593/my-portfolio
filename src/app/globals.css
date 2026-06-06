@@ -53,6 +53,7 @@
 
   --animate-blob: blob 7s infinite;
   --animate-shimmer: shimmer 2s linear infinite;
+  --animate-meteor: meteor 5s linear infinite;
 }
 
 @keyframes blob {
@@ -83,6 +84,20 @@
   }
 }
 
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-500px);
+    opacity: 0;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -95,19 +110,21 @@ body {
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(15, 23, 42, 0.15);
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+  background: linear-gradient(180deg, #6366f1, #a855f7); /* Highlighted Indigo to purple gradient */
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-foreground);
+  background: linear-gradient(180deg, #818cf8, #c084fc);
 }
 
 .glass {

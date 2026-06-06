@@ -9,6 +9,7 @@ import { ResumeDownloadSection } from "@/components/sections/ResumeDownloadSecti
 import { AIToolsSection } from "@/components/sections/AIToolsSection";
 import { AIResumeInsightsSection } from "@/components/sections/AIResumeInsightsSection";
 
+
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-background text-foreground selection:bg-indigo-500/30">
@@ -18,22 +19,23 @@ export default function Home() {
 
       <main className="flex flex-col items-center justify-center w-full">
         <HeroSection />
-        
+
         <TotalExperienceSection />
 
         <ResumeDownloadSection />
 
         <ProjectsSection />
-        
+
         <SkillsSection />
-        
+
         <AIToolsSection />
 
         <ExperienceSection />
-        
+
         <AIResumeInsightsSection />
 
         <ContactSection />
+
       </main>
     </div>
   );

@@ -51,7 +51,7 @@ const PROJECTS = [
       "Interactive tenure amortization & repayment simulations via Recharts 3",
       "Robust FastAPI backend storing users, sessions, audits, and prompts in SQLite",
     ],
-    link: "https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/",
+    link: "https://ai-loan-advisor-chatbot-six.vercel.app/",
     github: "https://github.com/sumit0593/AI-Loan-Advisor-Chatbot",
     envVars: {
       backend: [
@@ -159,10 +159,10 @@ function ProjectCard({
     const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
     const clientX = event.clientX - left;
     const clientY = event.clientY - top;
-    
+
     setMouseX(clientX);
     setMouseY(clientY);
-    
+
     x.set((clientX - width / 2) / width);
     y.set((clientY - height / 2) / height);
   }
@@ -187,7 +187,7 @@ function ProjectCard({
   };
 
   return (
-    <div 
+    <div
       className="w-full flex justify-center py-4"
       style={{ perspective: "1000px" }}
     >
@@ -213,7 +213,7 @@ function ProjectCard({
         )}
 
         {/* Aceternity Spotlight Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
           style={{
             background: `radial-gradient(350px circle at ${mouseX}px ${mouseY}px, rgba(99, 102, 241, 0.08), transparent 80%)`
@@ -222,14 +222,14 @@ function ProjectCard({
 
         <div className="flex flex-col h-full [transform-style:preserve-3d] z-10">
           {/* Gradient Banner with Grid Mesh */}
-          <div 
+          <div
             className={`h-40 bg-gradient-to-br ${project.color} relative overflow-hidden shrink-0 transition-transform duration-300 ease-out [transform-style:preserve-3d]`}
             style={{
               transform: isHovered ? "translateZ(30px)" : "translateZ(0px)"
             }}
           >
             {/* Grid blueprint overlay */}
-            <div 
+            <div
               className="absolute inset-0 opacity-15"
               style={{
                 backgroundImage: `
@@ -240,7 +240,7 @@ function ProjectCard({
               }}
             />
             <div className="absolute inset-0 bg-black/35 group-hover:bg-black/15 transition-colors duration-300" />
-            
+
             {/* Preview Badge */}
             <div className="absolute top-4 left-4 z-20">
               <span className="text-[10px] font-bold tracking-widest uppercase bg-black/55 backdrop-blur-md text-white/95 px-2.5 py-1 rounded-full border border-white/15">
@@ -263,7 +263,7 @@ function ProjectCard({
           {/* Content */}
           <div className="p-6 flex flex-col flex-1 justify-between [transform-style:preserve-3d]">
             <div className="space-y-3 [transform-style:preserve-3d]">
-              <h3 
+              <h3
                 className="text-lg font-bold text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300 [transform-style:preserve-3d]"
                 style={{
                   transform: isHovered ? "translateZ(40px)" : "translateZ(0px)",
@@ -272,7 +272,7 @@ function ProjectCard({
               >
                 {project.title}
               </h3>
-              <p 
+              <p
                 className="text-xs font-semibold text-indigo-400 tracking-wide uppercase"
                 style={{
                   transform: isHovered ? "translateZ(35px)" : "translateZ(0px)",
@@ -281,7 +281,7 @@ function ProjectCard({
               >
                 {project.subtitle}
               </p>
-              <p 
+              <p
                 className="text-xs text-muted-foreground leading-relaxed line-clamp-2"
                 style={{
                   transform: isHovered ? "translateZ(20px)" : "translateZ(0px)",
@@ -294,7 +294,7 @@ function ProjectCard({
 
             <div className="mt-5 space-y-4 [transform-style:preserve-3d]">
               {/* Tech stack badges */}
-              <div 
+              <div
                 className="flex flex-wrap gap-1.5"
                 style={{
                   transform: isHovered ? "translateZ(30px)" : "translateZ(0px)",
@@ -317,7 +317,7 @@ function ProjectCard({
               </div>
 
               {/* Read more link footer */}
-              <div 
+              <div
                 className="flex items-center justify-between pt-3 border-t border-border/50 text-[11px] font-bold text-indigo-400 group-hover:text-indigo-300"
                 style={{
                   transform: isHovered ? "translateZ(25px)" : "translateZ(0px)",
@@ -389,21 +389,19 @@ function ProjectModal({
             <div className="flex border-b border-border/50 bg-muted/10 shrink-0 px-6 pt-3">
               <button
                 onClick={() => setActiveTab("overview")}
-                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${
-                  activeTab === "overview"
+                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${activeTab === "overview"
                     ? "text-indigo-400 border-b-2 border-indigo-400"
                     : "text-muted-foreground hover:text-foreground"
-                }`}
+                  }`}
               >
                 Overview
               </button>
               <button
                 onClick={() => setActiveTab("setup")}
-                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${
-                  activeTab === "setup"
+                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${activeTab === "setup"
                     ? "text-indigo-400 border-b-2 border-indigo-400"
                     : "text-muted-foreground hover:text-foreground"
-                }`}
+                  }`}
               >
                 Setup & Config
               </button>

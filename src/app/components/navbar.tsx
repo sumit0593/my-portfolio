@@ -39,7 +39,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/login");
+      router.push(`/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`);
     }
   }, [status, router]);
 

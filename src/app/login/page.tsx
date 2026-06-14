@@ -1,6 +1,7 @@
 "use client";
 
 import { GalleryVerticalEnd } from "lucide-react"
+import { Suspense } from "react";
 
 import { LoginForm } from "@/components/auth/login-form"
 import { ThemeToggle } from "@/components/ui/toggle"
@@ -18,7 +19,9 @@ export default function LoginPage() {
           </div>
           Showcase Hub.
         </a>
-        <LoginForm />
+        <Suspense fallback={<div className="text-center text-sm text-muted-foreground">Loading form...</div>}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   )

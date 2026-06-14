@@ -10,7 +10,7 @@ import Link from "next/link";
 export function ProjectCard({ project }: { project: Project }) {
   return (
     <CardContainer className="inter-var w-full max-w-md">
-      <CardBody className="bg-card/40 backdrop-blur-md relative group/card dark:hover:shadow-2xl dark:hover:shadow-primary/20 border-border/50 w-full sm:w-[26rem] h-auto rounded-3xl p-6 border transition-all duration-300">
+      <CardBody className="bg-card/75 dark:bg-card/40 backdrop-blur-md relative group/card dark:hover:shadow-2xl dark:hover:shadow-primary/20 border-border/80 dark:border-border/50 w-full sm:w-[26rem] h-auto rounded-3xl p-6 border transition-all duration-300">
         <div className="flex justify-between items-start mb-2">
           <CardItem
             translateZ="50"
@@ -50,7 +50,7 @@ export function ProjectCard({ project }: { project: Project }) {
         <CardItem translateZ="40" className="w-full mb-5">
           <div className="flex flex-wrap gap-2">
             {project.techStack.slice(0, 4).map((tech) => (
-              <Badge key={tech} variant="secondary" className="bg-secondary/50 text-xs text-foreground/80 font-medium">
+              <Badge key={tech} variant="secondary" className="bg-muted text-xs text-foreground/80 font-medium border border-border/40">
                 {tech}
               </Badge>
             ))}
@@ -60,22 +60,20 @@ export function ProjectCard({ project }: { project: Project }) {
           </div>
         </CardItem>
 
-        {(project.aiFeatures || project.architecture) && (
           <CardItem translateZ="30" className="w-full mb-8 space-y-2.5">
             {project.aiFeatures && (
-               <div className="flex items-center gap-2 text-xs font-medium text-purple-400/90 bg-purple-500/10 w-fit px-2 py-1 rounded-md border border-purple-500/20">
+               <div className="flex items-center gap-2 text-xs font-medium text-purple-700 dark:text-purple-300 bg-purple-500/10 dark:bg-purple-500/20 w-fit px-2 py-1 rounded-md border border-purple-500/20 dark:border-purple-500/30">
                  <Sparkles className="w-3.5 h-3.5" />
                  <span>{project.aiFeatures[0]}</span>
                </div>
             )}
             {project.architecture && (
-               <div className="flex items-center gap-2 text-xs font-medium text-emerald-400/90 bg-emerald-500/10 w-fit px-2 py-1 rounded-md border border-emerald-500/20">
+               <div className="flex items-center gap-2 text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 dark:bg-emerald-500/20 w-fit px-2 py-1 rounded-md border border-emerald-500/20 dark:border-emerald-500/30">
                  <Cpu className="w-3.5 h-3.5" />
                  <span>{project.architecture[0]}</span>
                </div>
             )}
           </CardItem>
-        )}
 
         <div className="flex justify-between items-center mt-auto pt-4 border-t border-border/50">
           <CardItem

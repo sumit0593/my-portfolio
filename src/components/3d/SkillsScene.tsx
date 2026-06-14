@@ -80,7 +80,8 @@ function SkillNode({
   angleOffset, 
   onHoverSkill, 
   onHoverCategory, 
-  onHoverColor 
+  onHoverColor,
+  onClickSkill 
 }: any) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -113,6 +114,10 @@ function SkillNode({
               onHoverCategory(null);
               onHoverColor(null);
             }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClickSkill?.(skill, category, color);
+            }}
             scale={hovered ? 1.4 : 1}
           >
             <meshStandardMaterial 
@@ -124,7 +129,7 @@ function SkillNode({
             />
           </Sphere>
           
-          <Html position={[0, 0.7, 0]} center distanceFactor={14}>
+          <Html position={[0, 0.7, 0]} center distanceFactor={14} wrapperClass="pointer-events-none">
             <div 
               style={{ 
                 borderColor: hovered ? "#ffffff" : `${color}30`,
@@ -153,12 +158,14 @@ function SkillOrbit({
   group, 
   onHoverSkill, 
   onHoverCategory, 
-  onHoverColor 
+  onHoverColor,
+  onClickSkill 
 }: { 
   group: any; 
   onHoverSkill: (skill: string | null) => void;
   onHoverCategory: (category: string | null) => void;
   onHoverColor: (color: string | null) => void;
+  onClickSkill?: (skill: string | null, category: string | null, color: string | null) => void;
 }) {
   return (
     <group rotation={[group.tiltX, 0, group.tiltZ]}>
@@ -180,6 +187,7 @@ function SkillOrbit({
           onHoverSkill={onHoverSkill}
           onHoverCategory={onHoverCategory}
           onHoverColor={onHoverColor}
+          onClickSkill={onClickSkill}
         />
       ))}
     </group>
@@ -189,11 +197,13 @@ function SkillOrbit({
 export function SkillsScene({ 
   onHoverSkill, 
   onHoverCategory, 
-  onHoverColor 
+  onHoverColor,
+  onClickSkill 
 }: { 
   onHoverSkill: (skill: string | null) => void;
   onHoverCategory: (category: string | null) => void;
   onHoverColor: (color: string | null) => void;
+  onClickSkill?: (skill: string | null, category: string | null, color: string | null) => void;
 }) {
   const coreRef = useRef<THREE.Mesh>(null);
   const outerCoreRef = useRef<THREE.Mesh>(null);
@@ -233,6 +243,10 @@ export function SkillsScene({
           onHoverCategory(null);
           onHoverColor(null);
         }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClickSkill?.("Tech Core", "Skills Hub", "#6366f1");
+        }}
       >
         <meshStandardMaterial 
           color="#312e81" 
@@ -248,7 +262,7 @@ export function SkillsScene({
         <meshBasicMaterial color="#818cf8" wireframe transparent opacity={coreHovered ? 0.6 : 0.3} />
       </mesh>
 
-      <Html position={[0, 0, 0]} center distanceFactor={10}>
+      <Html position={[0, 0, 0]} center distanceFactor={10} wrapperClass="pointer-events-none">
         <div className={`px-4 py-1.5 rounded-2xl bg-indigo-950/85 backdrop-blur-md border border-indigo-500/30 text-indigo-300 text-xs font-bold tracking-widest uppercase select-none pointer-events-none transition-all duration-500 ${
           coreHovered ? "scale-115 border-indigo-400 bg-indigo-900 text-white shadow-[0_0_20px_rgba(99,102,241,0.6)]" : "opacity-80"
         }`}>
@@ -263,6 +277,7 @@ export function SkillsScene({
           onHoverSkill={onHoverSkill}
           onHoverCategory={onHoverCategory}
           onHoverColor={onHoverColor}
+          onClickSkill={onClickSkill}
         />
       ))}
     </group>

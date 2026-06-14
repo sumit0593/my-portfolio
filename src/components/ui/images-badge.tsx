@@ -48,20 +48,13 @@ export function ImagesBadge({
   const tabWidth = folderSize.width * 0.375;
   const tabHeight = folderSize.height * 0.25;
 
-  const Component = href ? "a" : "div";
+  const wrapperClass = cn(
+    "inline-flex cursor-pointer items-center gap-2 perspective-[1000px] transform-3d",
+    className,
+  );
 
-  return (
-    <Component
-      href={href}
-      target={target}
-      rel={target === "_blank" ? "noopener noreferrer" : undefined}
-      className={cn(
-        "inline-flex cursor-pointer items-center gap-2 perspective-[1000px] transform-3d",
-        className,
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+  const folderContent = (
+    <>
       {/* Folder Container */}
       <motion.div
         className="relative"
@@ -172,6 +165,33 @@ export function ImagesBadge({
       <span className="text-sm font-medium text-neutral-700 dark:text-neutral-200">
         {text}
       </span>
-    </Component>
+    </>
+  );
+
+  const Link = require("next/link").default;
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        target={target}
+        rel={target === "_blank" ? "noopener noreferrer" : undefined}
+        className={wrapperClass}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {folderContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div
+      className={wrapperClass}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {folderContent}
+    </div>
   );
 }

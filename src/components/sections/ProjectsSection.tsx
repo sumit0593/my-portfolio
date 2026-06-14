@@ -197,7 +197,7 @@ function ProjectCard({
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="group relative rounded-3xl border border-border bg-card/40 backdrop-blur-xl overflow-hidden cursor-pointer flex flex-col justify-between h-full transition-all duration-300 hover:border-indigo-500/40 hover:shadow-2xl shadow-md w-full [transform-style:preserve-3d]"
+        className="group relative rounded-3xl border border-border/80 dark:border-border/50 bg-card/75 dark:bg-card/40 backdrop-blur-xl overflow-hidden cursor-pointer flex flex-col justify-between h-full transition-all duration-300 hover:border-indigo-500/40 hover:shadow-2xl shadow-md w-full [transform-style:preserve-3d]"
         style={{
           rotateX,
           rotateY,
@@ -264,7 +264,7 @@ function ProjectCard({
           <div className="p-6 flex flex-col flex-1 justify-between [transform-style:preserve-3d]">
             <div className="space-y-3 [transform-style:preserve-3d]">
               <h3
-                className="text-lg font-bold text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300 [transform-style:preserve-3d]"
+                className="text-lg font-bold text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-purple-600 dark:group-hover:from-blue-400 dark:group-hover:to-purple-400 transition-all duration-300 [transform-style:preserve-3d]"
                 style={{
                   transform: isHovered ? "translateZ(40px)" : "translateZ(0px)",
                   transition: "transform 0.3s ease-out"
@@ -273,7 +273,7 @@ function ProjectCard({
                 {project.title}
               </h3>
               <p
-                className="text-xs font-semibold text-indigo-400 tracking-wide uppercase"
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 tracking-wide uppercase"
                 style={{
                   transform: isHovered ? "translateZ(35px)" : "translateZ(0px)",
                   transition: "transform 0.3s ease-out"
@@ -304,7 +304,7 @@ function ProjectCard({
                 {project.tech.slice(0, 4).map((t) => (
                   <span
                     key={t}
-                    className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/10"
+                    className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20"
                   >
                     {t}
                   </span>
@@ -318,7 +318,7 @@ function ProjectCard({
 
               {/* Read more link footer */}
               <div
-                className="flex items-center justify-between pt-3 border-t border-border/50 text-[11px] font-bold text-indigo-400 group-hover:text-indigo-300"
+                className="flex items-center justify-between pt-3 border-t border-border/50 text-[11px] font-bold text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-300"
                 style={{
                   transform: isHovered ? "translateZ(25px)" : "translateZ(0px)",
                   transition: "transform 0.3s ease-out"
@@ -476,7 +476,7 @@ function ProjectModal({
                               <tbody>
                                 {project.envVars.backend.map((env: any, idx: number) => (
                                   <tr key={idx} className="border-b border-border/30 last:border-0 hover:bg-muted/5">
-                                    <td className="p-2.5 font-mono text-indigo-400 select-all">{env.name}</td>
+                                    <td className="p-2.5 font-mono text-indigo-600 dark:text-indigo-400 select-all">{env.name}</td>
                                     <td className="p-2.5 text-muted-foreground">{env.description}</td>
                                     <td className="p-2.5 font-mono text-foreground/80">{env.value}</td>
                                   </tr>
@@ -506,7 +506,7 @@ function ProjectModal({
                               <tbody>
                                 {project.envVars.frontend.map((env: any, idx: number) => (
                                   <tr key={idx} className="border-b border-border/30 last:border-0 hover:bg-muted/5">
-                                    <td className="p-2.5 font-mono text-indigo-400 select-all">{env.name}</td>
+                                    <td className="p-2.5 font-mono text-indigo-600 dark:text-indigo-400 select-all">{env.name}</td>
                                     <td className="p-2.5 text-muted-foreground">{env.description}</td>
                                     <td className="p-2.5 font-mono text-foreground/80">{env.value}</td>
                                   </tr>
@@ -608,7 +608,7 @@ export function ProjectsSection() {
         {/* Top View All Projects Icon Link */}
         <div className="pointer-events-auto flex justify-center">
           <Link
-            href="/projects"
+            href="/projects?from=home"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group cursor-pointer"
           >
             <span>View All Projects</span>
@@ -633,7 +633,7 @@ export function ProjectsSection() {
       {/* Bottom CTA to View All Projects */}
       <div className="relative z-10 mt-16 text-center">
         <Link
-          href="/projects"
+          href="/projects?from=home"
           className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-indigo-600/15 hover:bg-indigo-600/25 text-indigo-300 hover:text-white border border-indigo-500/30 hover:border-indigo-400/50 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/25 font-semibold group cursor-pointer"
         >
           <span>View All Projects</span>

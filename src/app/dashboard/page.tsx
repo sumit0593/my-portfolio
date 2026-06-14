@@ -358,7 +358,7 @@ export default function Dashboard() {
                   initial="hidden"
                   whileInView="show"
                   viewport={{ once: true, margin: "-100px" }}
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl"
                 >
                   <motion.div variants={itemVariants} className="h-full">
                     <Card className="flex flex-col h-full hover:border-primary/50 hover:shadow-lg transition-all group overflow-hidden">
@@ -406,31 +406,6 @@ export default function Dashboard() {
                           <Badge variant="outline" className="bg-background/50">Spring Boot</Badge>
                           <Badge variant="outline" className="bg-background/50">Angular</Badge>
                           <Badge variant="outline" className="bg-background/50">REST APIs</Badge>
-                        </div>
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-
-                  <motion.div variants={itemVariants} className="h-full">
-                    <Card className="flex flex-col h-full hover:border-amber-500/50 hover:shadow-lg transition-all group overflow-hidden">
-                      <div className="h-2 bg-gradient-to-r from-amber-500 to-orange-500 w-full group-hover:h-3 transition-all" />
-                      <CardHeader className="pt-6">
-                        <CardTitle className="flex justify-between items-start text-xl">
-                          <span>TIOS Revamp</span>
-                          <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 border-0">Internal</Badge>
-                        </CardTitle>
-                        <CardDescription className="text-sm font-medium text-muted-foreground">Legacy System Migration</CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex-1">
-                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-                          Migrated an enterprise monolithic legacy HRMS to a modern Next.js architecture. Developed scalable MERN-stack UI components and established robust CI/CD testing pipelines using Cypress.
-                        </p>
-                      </CardContent>
-                      <CardFooter className="pt-0">
-                        <div className="flex flex-wrap gap-2 w-full">
-                          <Badge variant="outline" className="bg-background/50">Next.js</Badge>
-                          <Badge variant="outline" className="bg-background/50">TypeScript</Badge>
-                          <Badge variant="outline" className="bg-background/50">Tailwind CSS</Badge>
                         </div>
                       </CardFooter>
                     </Card>

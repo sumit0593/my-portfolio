@@ -10,11 +10,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -32,7 +36,7 @@ export function LoginForm({
                   type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => signIn("credentials", { callbackUrl: "/dashboard" })}
+                  onClick={() => signIn("credentials", { callbackUrl })}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -46,7 +50,7 @@ export function LoginForm({
                   type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+                  onClick={() => signIn("github", { callbackUrl })}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -61,7 +65,7 @@ export function LoginForm({
                   type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                  onClick={() => signIn("google", { callbackUrl })}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path

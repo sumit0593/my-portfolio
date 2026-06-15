@@ -5,6 +5,14 @@ import NotFoundAnimation from "@/components/ui/not-found-animation";
 import Link from "next/link";
 
 export default function NotFound() {
+  const handleGoBack = () => {
+    if (typeof window !== "undefined" && document.referrer && document.referrer.includes(window.location.host)) {
+      window.history.back();
+    } else {
+      window.location.href = "/";
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center">
       <NotFoundAnimation />
@@ -12,9 +20,14 @@ export default function NotFound() {
       <p className="text-muted-foreground mb-6">
         Oops! The page you’re looking for doesn’t exist.
       </p>
-      <Button variant="outline" asChild>
-        <Link href="/">Go Home</Link>
-      </Button>
+      <div className="flex gap-4 justify-center">
+        <Button variant="default" onClick={handleGoBack} className="cursor-pointer">
+          Go Back
+        </Button>
+        <Button variant="outline" asChild className="cursor-pointer">
+          <Link href="/">Go Home</Link>
+        </Button>
+      </div>
     </div>
   );
 }

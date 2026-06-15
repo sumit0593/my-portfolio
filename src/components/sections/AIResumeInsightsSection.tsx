@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Target, Zap, Activity } from "lucide-react";
+import { Sparkles, Target, Activity } from "lucide-react";
 
 export function AIResumeInsightsSection() {
   return (

@@ -389,7 +389,7 @@ function ProjectModal({
             <div className="flex border-b border-border/50 bg-muted/10 shrink-0 px-6 pt-3">
               <button
                 onClick={() => setActiveTab("overview")}
-                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${activeTab === "overview"
+                className={`pb-3 px-4 text-sm font-semibold transition-all relative cursor-pointer ${activeTab === "overview"
                     ? "text-indigo-400 border-b-2 border-indigo-400"
                     : "text-muted-foreground hover:text-foreground"
                   }`}
@@ -398,7 +398,7 @@ function ProjectModal({
               </button>
               <button
                 onClick={() => setActiveTab("setup")}
-                className={`pb-3 px-4 text-sm font-semibold transition-all relative ${activeTab === "setup"
+                className={`pb-3 px-4 text-sm font-semibold transition-all relative cursor-pointer ${activeTab === "setup"
                     ? "text-indigo-400 border-b-2 border-indigo-400"
                     : "text-muted-foreground hover:text-foreground"
                   }`}
@@ -561,7 +561,7 @@ function ProjectModal({
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-sm font-semibold transition-colors shadow-lg shadow-indigo-500/20"
+                className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-sm font-semibold transition-colors shadow-lg shadow-indigo-500/20 cursor-pointer"
               >
                 <ExternalLink className="w-4 h-4" />
                 Live Demo
@@ -570,7 +570,7 @@ function ProjectModal({
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 py-3 rounded-xl text-sm font-semibold transition-colors border border-border"
+                className="flex-1 flex items-center justify-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 py-3 rounded-xl text-sm font-semibold transition-colors border border-border cursor-pointer"
               >
                 <Github className="w-4 h-4" />
                 Source Code

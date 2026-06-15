@@ -115,7 +115,7 @@ export function SkillsSection() {
         {isTouchDevice && tappedSkill && (
           <button
             onClick={dismissMobileCard}
-            className="ml-auto p-1 rounded-full hover:bg-muted transition-colors"
+            className="ml-auto p-1 rounded-full hover:bg-muted transition-colors cursor-pointer"
             aria-label="Close"
           >
             <X className="w-3.5 h-3.5 text-muted-foreground" />

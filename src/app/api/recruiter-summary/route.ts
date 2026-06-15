@@ -4,8 +4,7 @@ import { ai, CHAT_MODEL } from "@/lib/gemini";
 import fs from "fs";
 import path from "path";
 
-// Predefined roles we can precompute/cache
-const PRECOMPUTED_ROLES = ["ai engineer", "full stack engineer", "genai engineer", "freelancer"];
+
 
 async function getBaseContext() {
   const metaPath = path.join(process.cwd(), "data", "metadata", "metadata.json");

@@ -70,7 +70,7 @@ function processMetadata(): SearchDocument[] {
   return docs;
 }
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     const docs = [...processProfileDir(), ...processMetadata()];
 

@@ -82,7 +82,7 @@ export function ProjectCard({ project }: { project: Project }) {
             as={Link}
             href={project.githubUrl || "#"}
             target={project.githubUrl ? "_blank" : undefined}
-            className={`px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 ${!project.githubUrl ? "opacity-30 cursor-not-allowed pointer-events-none" : "hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"}`}
+            className={`px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 ${!project.githubUrl ? "opacity-30 cursor-not-allowed pointer-events-none" : "hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"}`}
           >
             <Github className="w-4 h-4" />
             Code
@@ -93,7 +93,7 @@ export function ProjectCard({ project }: { project: Project }) {
             as={Link}
             href={project.liveUrl || "#"}
             target={project.liveUrl ? "_blank" : undefined}
-            className={`px-4 py-2 rounded-xl bg-primary text-white text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 shadow-lg shadow-primary/20 ${!project.liveUrl ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
+            className={`px-4 py-2 rounded-xl bg-primary text-white text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 shadow-lg shadow-primary/20 ${!project.liveUrl ? "opacity-30 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
           >
             Live Demo
             <ExternalLink className="w-4 h-4" />

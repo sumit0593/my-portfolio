@@ -66,7 +66,7 @@ export async function POST(req: Request) {
               send({ type: "text-delta", id: textId, delta: text });
             }
           }
-        } catch (streamErr: any) {
+        } catch {
           if (!abortController.signal.aborted) {
             send({ type: "text-delta", id: textId, delta: "I'm having trouble connecting right now. Please try again." });
           }

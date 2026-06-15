@@ -28,7 +28,20 @@ function ProjectsContent() {
       {!fromHome ? (
         <Navbar />
       ) : (
-        <div className="fixed top-4 right-4 z-50">
+        <div className="absolute top-4 left-4 right-4 z-50 flex justify-between items-center px-4 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-card/75 dark:bg-card/40 border border-border/80 dark:border-border/50 text-foreground hover:bg-muted/80 hover:text-foreground transition-all duration-300 font-semibold group cursor-pointer shadow-sm hover:scale-105"
+            >
+              <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
+              <span>Back to Home</span>
+            </Link>
+          </motion.div>
           <ThemeToggle />
         </div>
       )}
@@ -38,22 +51,6 @@ function ProjectsContent() {
         <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
 
         <Container className="flex flex-col items-center">
-          {fromHome && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className="w-full max-w-6xl px-4 mb-8 self-start"
-            >
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-card/75 dark:bg-card/40 border border-border/80 dark:border-border/50 text-foreground hover:bg-muted/80 hover:text-foreground transition-all duration-300 font-semibold group cursor-pointer shadow-sm hover:scale-105"
-              >
-                <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
-                <span>Back to Home</span>
-              </Link>
-            </motion.div>
-          )}
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

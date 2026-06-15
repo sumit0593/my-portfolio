@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, Code, Database, Server, Cpu, Layers, ArrowRight, CheckCircle2, Workflow, Globe, ShieldCheck } from "lucide-react";
+import { Bot, Code, ArrowRight, Workflow, Globe, ShieldCheck } from "lucide-react";
 import Navbar from "@/app/components/navbar";
 import { Container } from "@/components/ui/container";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -113,7 +113,7 @@ export default function ServicesPage() {
               className="text-lg md:text-xl text-muted-foreground leading-relaxed"
             >
               From intelligent Multi-Agent Systems to highly scalable enterprise web applications.
-              Let's build software that drives real business value.
+              {"Let's build software that drives real business value."}
             </motion.p>
           </div>
 
@@ -216,7 +216,7 @@ export default function ServicesPage() {
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Have a custom requirement?</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-                Every enterprise is unique. Whether you need a team augmentation or a specialized architectural review, I'm here to help.
+                {"Every enterprise is unique. Whether you need a team augmentation or a specialized architectural review, I'm here to help."}
               </p>
               <Button size="lg" className="bg-primary text-primary-foreground text-lg px-8 py-6 rounded-xl hover:scale-105 transition-transform shadow-xl shadow-primary/20" asChild>
                 <Link href="/dashboard#contact">Book a Free Consultation</Link>
@@ -230,7 +230,7 @@ export default function ServicesPage() {
   );
 }
 
-function SparklesIcon(props: any) {
+function SparklesIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -253,7 +253,7 @@ function SparklesIcon(props: any) {
   );
 }
 
-function LayerIcon(props: any) {
+function LayerIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

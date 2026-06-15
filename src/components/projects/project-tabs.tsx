@@ -19,7 +19,7 @@ export function ProjectTabs({ categories, activeCategory, onTabChange }: TabProp
             key={category}
             onClick={() => onTabChange(category)}
             className={cn(
-              "relative px-5 py-2.5 rounded-full text-sm font-medium transition-colors outline-none",
+              "relative px-5 py-2.5 rounded-full text-sm font-medium transition-colors outline-none cursor-pointer",
               isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
             style={{ WebkitTapHighlightColor: "transparent" }}

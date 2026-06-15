@@ -1,6 +1,6 @@
 import { getPortfolioIndex, PORTFOLIO_NAMESPACE, PineconeMetadata } from "../pinecone";
 import { generateEmbeddings } from "../embeddings";
-import { minisearchManager, SearchDocument } from "../search/minisearch";
+import { minisearchManager } from "../search/minisearch";
 import { classifyQuery, QueryIntent } from "../router/queryClassifier";
 import { globalCache } from "../cache";
 
@@ -40,7 +40,7 @@ export interface RetrievedChunk {
   text: string;
   score: number;
   source: string;
-  metadata?: any;
+  metadata?: PineconeMetadata;
 }
 
 const K = 60; // RRF Constant
@@ -59,7 +59,7 @@ function computeRRF(rankPinecone: number, rankBM25: number): number {
  */
 function applyMetadataBoost(chunk: RetrievedChunk, intent: QueryIntent): number {
   let boost = 0;
-  const metadata = chunk.metadata || {};
+  const metadata = chunk.metadata || ({} as PineconeMetadata);
 
   // Boost based on priority score
   if (metadata.priority_score) {
@@ -127,7 +127,7 @@ export async function retrieveHybridContext(query: string, topK = 5): Promise<{ 
         text: match.metadata?.text as string,
         score: match.score || 0, // Temporary score
         source: match.metadata?.source as string,
-        metadata: match.metadata
+        metadata: match.metadata as PineconeMetadata
       },
       rankP: index + 1,
       rankB: 0
@@ -145,7 +145,7 @@ export async function retrieveHybridContext(query: string, topK = 5): Promise<{ 
           text: match.text,
           score: match.score || 0,
           source: match.source,
-          metadata: match
+          metadata: match as unknown as PineconeMetadata
         },
         rankP: 0,
         rankB: index + 1
@@ -154,7 +154,7 @@ export async function retrieveHybridContext(query: string, topK = 5): Promise<{ 
   });
 
   // 4. Calculate Final Scores and apply boosts
-  let fusedChunks = Array.from(fusionMap.values()).map(item => {
+  const fusedChunks = Array.from(fusionMap.values()).map(item => {
     const rrfScore = computeRRF(item.rankP, item.rankB);
     item.chunk.score = applyMetadataBoost({ ...item.chunk, score: rrfScore }, intent);
     return item.chunk;
@@ -174,7 +174,7 @@ export async function retrieveHybridContext(query: string, topK = 5): Promise<{ 
 
 export function buildOrchestratedPrompt(
   retrievedChunks: RetrievedChunk[],
-  conversationHistory: any[],
+  conversationHistory: ChatMessage[],
   userQuery: string,
   intent: QueryIntent
 ): string {
@@ -182,7 +182,7 @@ export function buildOrchestratedPrompt(
     retrievedChunks.length > 0
       ? retrievedChunks
         .map(
-          (chunk, i) =>
+          (chunk) =>
             `[Source: ${chunk.source} | Score: ${(chunk.score * 100).toFixed(1)}]\n${chunk.text}`
         )
         .join("\n\n---\n\n")

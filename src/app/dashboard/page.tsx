@@ -1,7 +1,6 @@
 // app/dashboard/page.tsx
 "use client";
 
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -10,7 +9,7 @@ import SectionWrapper from "../components/section-wrapper";
 import { Container } from "@/components/ui/container";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Github, Linkedin, Mail, Phone, ExternalLink, Award, Trophy, Download, Eye, FileText, Bot, Briefcase, ArrowRight, Code, Sparkles } from "lucide-react";
+import { Github, Linkedin, Mail, Phone, Award, Trophy, Bot, Briefcase, ArrowRight, Code, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ImagesBadge } from "@/components/ui/images-badge";
@@ -187,7 +186,7 @@ export default function Dashboard() {
 
                     <div className="mt-6 sm:mt-8 p-4 sm:p-6 rounded-2xl bg-primary/5 border border-primary/10 italic text-foreground/90 font-medium relative text-sm sm:text-base">
                       <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-purple-500 rounded-l-2xl" />
-                      "Driven by continuous learning and innovation, with a strong interest in building next-generation AI platforms, intelligent assistants, and scalable GenAI products that deliver measurable business impact."
+                      {"Driven by continuous learning and innovation, with a strong interest in building next-generation AI platforms, intelligent assistants, and scalable GenAI products that deliver measurable business impact."}
                     </div>
                   </div>
                 </div>
@@ -338,7 +337,7 @@ export default function Dashboard() {
               <div className="space-y-8">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b pb-4 border-border/50 gap-4">
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Enterprises's Work</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">{"Enterprises's Work"}</h2>
                     <p className="text-muted-foreground mt-2">Enterprise systems and GenAI solutions</p>
                   </div>
                   <ImagesBadge
@@ -549,7 +548,7 @@ export default function Dashboard() {
                 <div className="relative z-10 text-center max-w-3xl mx-auto">
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4">Ready to Innovate?</h2>
                   <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-10">
-                    Whether you need a scalable Multi-Agent System, an enterprise RAG pipeline, or a full-stack SaaS application, I'm ready to help you build the future.
+                    {"Whether you need a scalable Multi-Agent System, an enterprise RAG pipeline, or a full-stack SaaS application, I'm ready to help you build the future."}
                   </p>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">

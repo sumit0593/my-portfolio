@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Download, Eye, Bot, Sparkles, FileStack } from "lucide-react";
+import { Download, Eye, Bot, Sparkles, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ResumeModal from "@/components/ui/resume-modal";
 

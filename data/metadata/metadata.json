@@ -10,16 +10,76 @@
       "linkedin": "https://linkedin.com/in/sumit0593",
       "portfolio": "https://my-portfolio-six-gold-86.vercel.app/"
     },
-    "summary": "Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures."
+    "summary": "Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures. Experienced in remote freelancing on the Handshake platform, utilizing Lotus and Maia II workflows."
   },
   "skills": {
-    "gen_ai_and_llms": ["RAG Pipelines", "Prompt Engineering", "Zero-shot", "Few-shot", "Chain-of-Thought", "LLM Fine-Tuning", "Transformers"],
-    "agentic_frameworks": ["Multi-Agent Systems", "LangChain", "LlamaIndex", "LangGraph", "CrewAI", "AutoGen", "ReAct Agents"],
-    "ai_development": ["Gemini", "OpenAI", "Claude", "Hugging Face", "FastAPI", "RESTful APIs", "JWT Authentication"],
-    "databases_and_storage": ["Pinecone", "ChromaDB", "FAISS", "MySQL", "PostgreSQL", "MongoDB"],
-    "full_stack_core": ["React.js", "Next.js", "Python", "TypeScript", "JavaScript", "Node.js", "Express.js", "Tailwind CSS", "MUI", "Angular"],
-    "deployment_and_mlops": ["Docker", "AWS", "Jenkins", "CI/CD", "LangSmith", "LangFuse", "NGINX", "Vercel"],
-    "tools_and_utilities": ["Git", "GitHub", "GitLab", "Postman", "VS Code", "Cursor AI", "Jupyter", "Anaconda"]
+    "gen_ai_and_llms": [
+      "RAG Pipelines",
+      "Prompt Engineering",
+      "Zero-shot",
+      "Few-shot",
+      "Chain-of-Thought",
+      "LLM Fine-Tuning",
+      "Transformers"
+    ],
+    "agentic_frameworks": [
+      "Multi-Agent Systems",
+      "LangChain",
+      "LlamaIndex",
+      "LangGraph",
+      "CrewAI",
+      "AutoGen",
+      "ReAct Agents"
+    ],
+    "ai_development": [
+      "Gemini",
+      "OpenAI",
+      "Claude",
+      "Hugging Face",
+      "FastAPI",
+      "RESTful APIs",
+      "JWT Authentication"
+    ],
+    "databases_and_storage": [
+      "Pinecone",
+      "ChromaDB",
+      "FAISS",
+      "MySQL",
+      "PostgreSQL",
+      "MongoDB"
+    ],
+    "full_stack_core": [
+      "React.js",
+      "Next.js",
+      "Python",
+      "TypeScript",
+      "JavaScript",
+      "Node.js",
+      "Express.js",
+      "Tailwind CSS",
+      "MUI",
+      "Angular"
+    ],
+    "deployment_and_mlops": [
+      "Docker",
+      "AWS",
+      "Jenkins",
+      "CI/CD",
+      "LangSmith",
+      "LangFuse",
+      "NGINX",
+      "Vercel"
+    ],
+    "tools_and_utilities": [
+      "Git",
+      "GitHub",
+      "GitLab",
+      "Postman",
+      "VS Code",
+      "Cursor AI",
+      "Jupyter",
+      "Anaconda"
+    ]
   },
   "experience": [
     {
@@ -32,7 +92,16 @@
         "Implemented server load balancing using NGINX, ensuring high availability, optimized traffic distribution, and improved system stability.",
         "Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters."
       ],
-      "tags": ["React", "Node.js", "AWS Textract", "Mistral LLM", "Zoho Analytics", "NGINX", "JWT", "OAuth2"]
+      "tags": [
+        "React",
+        "Node.js",
+        "AWS Textract",
+        "Mistral LLM",
+        "Zoho Analytics",
+        "NGINX",
+        "JWT",
+        "OAuth2"
+      ]
     },
     {
       "role": "Associate Software Developer",
@@ -43,28 +112,119 @@
         "Revamped HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience.",
         "Automated end-to-end test cases using Cypress and Playwright."
       ],
-      "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Cypress", "Playwright"]
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Cypress",
+        "Playwright"
+      ]
     }
   ],
   "projects": [
+    {
+      "title": "AI Loan Advisor Chatbot",
+      "category": "GenAI / Multi-Agent",
+      "project_type": "Open Source",
+      "domain": "Fintech / Lending",
+      "description": "A full-stack intelligent lending evaluation application using a multi-agent orchestration graph (LangGraph & Gemini API) to assess borrower profiles, determine loan product eligibility, perform simulations, and verify lending compliance.",
+      "tech_stack": [
+        "React 19",
+        "Vite 8",
+        "LangGraph",
+        "Gemini API",
+        "FastAPI",
+        "SQLite",
+        "SQLAlchemy",
+        "Tailwind CSS 4",
+        "Recharts 3"
+      ],
+      "live_url": "https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/",
+      "github": "https://github.com/sumit0593/AI-Loan-Advisor-Chatbot",
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Automated lending evaluation & repayment simulations",
+      "priority_score": 10,
+      "architecture_tags": [
+        "Multi-Agent Graph",
+        "FastAPI ASGI",
+        "SQLite Database"
+      ],
+      "semantic_tags": [
+        "GenAI",
+        "Multi-Agent Systems",
+        "Fintech",
+        "LangGraph"
+      ],
+      "recruiter_keywords": [
+        "LangGraph",
+        "Gemini API",
+        "FastAPI",
+        "Multi-Agent Systems"
+      ],
+      "ai_capabilities": [
+        "Lending Compliance Verification",
+        "Borrower Profile Assessment"
+      ]
+    },
+    {
+      "title": "Project Lotus (Handshake Platform)",
+      "category": "Enterprise",
+      "project_type": "Freelance Remote Project",
+      "description": "Freelance engagement on Handshake (Project Lotus) to analyze and refine complex software codebases using Maia II.",
+      "tech_stack": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "Maia II"
+      ],
+      "semantic_tags": [
+        "Freelance Projects",
+        "Consulting",
+        "Independent Work"
+      ]
+    },
     {
       "title": "Scam Guard AI",
       "category": "AI Security Platform",
       "project_type": "Open Source",
       "domain": "Cybersecurity",
       "description": "A cutting-edge AI security platform designed to detect and prevent digital scams in real-time.",
-      "tech_stack": ["Streamlit", "Gemini", "Python", "Transformers"],
-      "deployment_platforms": ["Streamlit Cloud"],
+      "tech_stack": [
+        "Streamlit",
+        "Gemini",
+        "Python",
+        "Transformers"
+      ],
+      "deployment_platforms": [
+        "Streamlit Cloud"
+      ],
       "complexity_level": "High",
       "experience_level": "Advanced",
       "business_impact": "Real-time threat detection",
       "priority_score": 9,
       "github": "https://github.com/sumit0593/scam_guard_ai",
       "live_url": "https://scam-detector-ai.streamlit.app/",
-      "architecture_tags": ["NLP", "Transformers", "LLM Orchestration"],
-      "semantic_tags": ["AI Security", "Scam Detection", "NLP", "Real-time Analysis"],
-      "recruiter_keywords": ["Python", "GenAI", "Security"],
-      "ai_capabilities": ["Malicious text analysis", "URL scanning"]
+      "architecture_tags": [
+        "NLP",
+        "Transformers",
+        "LLM Orchestration"
+      ],
+      "semantic_tags": [
+        "AI Security",
+        "Scam Detection",
+        "NLP",
+        "Real-time Analysis"
+      ],
+      "recruiter_keywords": [
+        "Python",
+        "GenAI",
+        "Security"
+      ],
+      "ai_capabilities": [
+        "Malicious text analysis",
+        "URL scanning"
+      ]
     },
     {
       "title": "HireFlow AI",
@@ -72,18 +232,42 @@
       "project_type": "Open Source",
       "domain": "HR Tech",
       "description": "An intelligent AI Resume Search platform using RAG architecture.",
-      "tech_stack": ["Streamlit", "Pinecone", "Gemini", "LangChain", "Python"],
-      "deployment_platforms": ["Streamlit Cloud"],
+      "tech_stack": [
+        "Streamlit",
+        "Pinecone",
+        "Gemini",
+        "LangChain",
+        "Python"
+      ],
+      "deployment_platforms": [
+        "Streamlit Cloud"
+      ],
       "complexity_level": "High",
       "experience_level": "Advanced",
       "business_impact": "Automated ATS filtering",
       "priority_score": 10,
       "github": "https://github.com/sumit0593/HireFlow---AI-Resume-Search",
       "live_url": "https://hireflow---ai-resume-search-gw6ot8m2ph3huktrjcaz35.streamlit.app/",
-      "architecture_tags": ["RAG Architecture", "Hybrid Search", "Vector Database"],
-      "semantic_tags": ["RAG", "Resume Search", "Vector Database", "ATS Analytics"],
-      "recruiter_keywords": ["RAG", "LangChain", "Pinecone"],
-      "ai_capabilities": ["Semantic Search", "Resume Parsing"]
+      "architecture_tags": [
+        "RAG Architecture",
+        "Hybrid Search",
+        "Vector Database"
+      ],
+      "semantic_tags": [
+        "RAG",
+        "Resume Search",
+        "Vector Database",
+        "ATS Analytics"
+      ],
+      "recruiter_keywords": [
+        "RAG",
+        "LangChain",
+        "Pinecone"
+      ],
+      "ai_capabilities": [
+        "Semantic Search",
+        "Resume Parsing"
+      ]
     },
     {
       "title": "Kent RiseEngine",
@@ -91,16 +275,39 @@
       "project_type": "Enterprise / Internal",
       "domain": "Enterprise Tech",
       "description": "An enterprise-grade AI invoice parser built with React and Node.js.",
-      "tech_stack": ["React", "Node.js", "Zoho Analytics", "OCR", "JWT", "OAuth2"],
-      "deployment_platforms": ["AWS"],
+      "tech_stack": [
+        "React",
+        "Node.js",
+        "Zoho Analytics",
+        "OCR",
+        "JWT",
+        "OAuth2"
+      ],
+      "deployment_platforms": [
+        "AWS"
+      ],
       "complexity_level": "High",
       "experience_level": "Advanced",
       "business_impact": "Automated invoice processing",
       "priority_score": 8,
-      "architecture_tags": ["Microservices", "Secure Auth"],
-      "semantic_tags": ["Enterprise AI", "OCR", "LLM Automation"],
-      "recruiter_keywords": ["Node.js", "React", "Enterprise"],
-      "ai_capabilities": ["OCR Parsing", "Data Extraction"]
+      "architecture_tags": [
+        "Microservices",
+        "Secure Auth"
+      ],
+      "semantic_tags": [
+        "Enterprise AI",
+        "OCR",
+        "LLM Automation"
+      ],
+      "recruiter_keywords": [
+        "Node.js",
+        "React",
+        "Enterprise"
+      ],
+      "ai_capabilities": [
+        "OCR Parsing",
+        "Data Extraction"
+      ]
     },
     {
       "title": "Portfolio AI",
@@ -108,18 +315,43 @@
       "project_type": "Open Source",
       "domain": "Personal Branding",
       "description": "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone.",
-      "tech_stack": ["Next.js", "Gemini", "Pinecone", "Three.js", "Tailwind CSS", "Framer Motion"],
-      "deployment_platforms": ["Vercel"],
+      "tech_stack": [
+        "Next.js",
+        "Gemini",
+        "Pinecone",
+        "Three.js",
+        "Tailwind CSS",
+        "Framer Motion"
+      ],
+      "deployment_platforms": [
+        "Vercel"
+      ],
       "complexity_level": "Medium",
       "experience_level": "Intermediate",
       "business_impact": "High engagement",
       "priority_score": 8,
       "github": "https://github.com/sumit0593/my-portfolio",
       "live_url": "https://my-portfolio-six-gold-86.vercel.app/",
-      "architecture_tags": ["Next.js AI System", "Vector DB"],
-      "semantic_tags": ["RAG Chatbot", "Vector Search", "3D Web", "AI Portfolio"],
-      "recruiter_keywords": ["Next.js", "React", "Gemini", "Pinecone"],
-      "ai_capabilities": ["Streaming Chatbot", "RAG"]
+      "architecture_tags": [
+        "Next.js AI System",
+        "Vector DB"
+      ],
+      "semantic_tags": [
+        "RAG Chatbot",
+        "Vector Search",
+        "3D Web",
+        "AI Portfolio"
+      ],
+      "recruiter_keywords": [
+        "Next.js",
+        "React",
+        "Gemini",
+        "Pinecone"
+      ],
+      "ai_capabilities": [
+        "Streaming Chatbot",
+        "RAG"
+      ]
     }
   ],
   "services": [
@@ -151,32 +383,76 @@
     "enterprise_projects": "10+"
   },
   "recruiter_profile": {
-    "ideal_roles": ["AI Engineer", "GenAI Engineer", "Full Stack AI Developer"]
+    "ideal_roles": [
+      "AI Engineer",
+      "GenAI Engineer",
+      "Full Stack AI Developer"
+    ]
   },
   "semantic_profile": {
     "primary_focus": "GenAI & Multi-Agent Systems"
   },
   "ai_specializations": [
-    "RAG Systems", "Multi-Agent Systems", "LLM Orchestration", "Semantic Search", 
-    "Hybrid Retrieval", "Prompt Engineering", "Agentic AI", "Vector Databases", 
-    "AI Automation", "Enterprise AI"
+    "RAG Systems",
+    "Multi-Agent Systems",
+    "LLM Orchestration",
+    "Semantic Search",
+    "Hybrid Retrieval",
+    "Prompt Engineering",
+    "Agentic AI",
+    "Vector Databases",
+    "AI Automation",
+    "Enterprise AI"
   ],
   "architecture_expertise": [
-    "RAG Architecture", "Hybrid Search Systems", "Semantic Retrieval Pipelines", 
-    "LLM Orchestration", "Vector Database Architecture", "Agentic Workflows", 
-    "Scalable AI Systems", "AI API Architecture", "Next.js AI Systems"
+    "RAG Architecture",
+    "Hybrid Search Systems",
+    "Semantic Retrieval Pipelines",
+    "LLM Orchestration",
+    "Vector Database Architecture",
+    "Agentic Workflows",
+    "Scalable AI Systems",
+    "AI API Architecture",
+    "Next.js AI Systems"
   ],
-  "industries": ["Enterprise SaaS", "HR Tech", "Cybersecurity"],
-  "deployment_skills": ["Docker", "AWS", "Vercel", "CI/CD"],
-  "freelance_services": ["AI Chatbots", "RAG Platforms"],
+  "industries": [
+    "Enterprise SaaS",
+    "HR Tech",
+    "Cybersecurity"
+  ],
+  "deployment_skills": [
+    "Docker",
+    "AWS",
+    "Vercel",
+    "CI/CD"
+  ],
+  "freelance_services": [
+    "AI Chatbots",
+    "RAG Platforms"
+  ],
   "recruiter_keywords": [
-    "AI Engineer", "GenAI Engineer", "Full Stack AI Developer", "LLM Engineer", 
-    "RAG Engineer", "AI Platform Engineer", "Multi-Agent Engineer", "LangChain Developer"
+    "AI Engineer",
+    "GenAI Engineer",
+    "Full Stack AI Developer",
+    "LLM Engineer",
+    "RAG Engineer",
+    "AI Platform Engineer",
+    "Multi-Agent Engineer",
+    "LangChain Developer"
   ],
   "semantic_tags": [
-    "RAG", "Hybrid Search", "Semantic Retrieval", "Enterprise AI", "AI Automation", 
-    "LLM Engineering", "Prompt Engineering", "Vector Search", "AI Platform", 
-    "MCP", "Agentic AI", "Multi-Agent Systems"
+    "RAG",
+    "Hybrid Search",
+    "Semantic Retrieval",
+    "Enterprise AI",
+    "AI Automation",
+    "LLM Engineering",
+    "Prompt Engineering",
+    "Vector Search",
+    "AI Platform",
+    "MCP",
+    "Agentic AI",
+    "Multi-Agent Systems"
   ],
   "impact_metrics": {
     "manual_effort_reduction": "60%",

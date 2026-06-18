@@ -39,7 +39,7 @@ export function AIResumeInsightsSection() {
                 <h3 className="text-2xl font-bold">Executive Summary</h3>
               </div>
               <p className="text-muted-foreground leading-relaxed text-lg mb-6">
-                A highly proficient Full Stack & GenAI Engineer with a strong focus on enterprise scalable architecture. Exhibits exceptional skills in integrating modern LLMs, developing robust RAG pipelines, and optimizing high-throughput systems. Consistent track record of delivering AI-driven solutions that automate workflows and enhance business intelligence.
+                A highly proficient Full Stack & GenAI Engineer with a strong focus on enterprise scalable architecture. Exhibits exceptional skills in integrating modern LLMs, developing robust RAG pipelines, and optimizing high-throughput systems. Consistent track record of delivering AI-driven solutions that automate workflows and enhance business intelligence. Experienced in freelance remote engagements on the Handshake platform, specializing in codebase refactoring and workflow optimization using Maia II.
               </p>
             </div>
             

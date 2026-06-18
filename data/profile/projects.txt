@@ -14,6 +14,14 @@ TIOS Revamp, Internal
 •	Migrated a legacy HRMS to a modern modular architecture using Next.js. 
 •	Improved performance, maintainability, and scalability by redesigning the UI/UX and restructuring the entire codebase. 
 
+AI Loan Advisor Chatbot (Open Source/Personal)
+•	A full-stack intelligent lending evaluation application using a multi-agent orchestration graph (built with LangGraph and the Gemini API) to assess borrower profiles, determine loan product eligibility, perform EMI/tenure repayment simulations, and verify lending compliance.
+•	Built a robust FastAPI backend microservice storing users, sessions, audits, and prompts in SQLite. Features interactive tenure amortization & repayment simulations via Recharts 3.
+
+Project Lotus (Handshake Platform - Freelance Remote)
+•	Freelance remote software engineering engagement to analyze and refine complex enterprise software codebases.
+•	Leveraged AI-assisted development tools including Maia II for codebase analysis, refactoring legacy components, and developer workflow acceleration.
+
 Scam Guard AI (Open Source/Personal)
 •	A modular, real-time AI security platform designed to detect and prevent digital scams. Built with Gemini and advanced NLP Transformers utilizing a configurable prompt engineering architecture and LLM orchestration pipeline.
 •	Features a Streamlit dashboard, a robust experimentation workflow, and an extensible Python-based decision engine for analyzing texts, emails, and URLs.

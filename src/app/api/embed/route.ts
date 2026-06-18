@@ -82,6 +82,14 @@ export async function POST() {
     await ensureIndex();
     const index = getPortfolioIndex();
 
+    // Clear existing namespace in Pinecone to delete stale/removed records
+    try {
+      await index.namespace(PORTFOLIO_NAMESPACE).deleteAll();
+      console.log("[Pinecone] Cleared namespace:", PORTFOLIO_NAMESPACE);
+    } catch (e) {
+      console.warn("[Pinecone] Could not clear namespace:", e);
+    }
+
     // 2. Generate Embeddings in Batches
     const texts = docs.map(d => d.text);
     const embeddings = await generateEmbeddings(texts);

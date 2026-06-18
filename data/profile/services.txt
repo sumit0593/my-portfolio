@@ -7,3 +7,4 @@ SERVICES AND FREELANCE OFFERINGS
 •	Enterprise AI Automation: Custom OCR invoice parsers, automated data extraction, and AI-driven analytics.
 •	LLM API Integration: Gemini, OpenAI, Claude orchestration for your platform.
 •	AI Solutions Architecture: Consulting on scalable AI deployment and ML Ops (Docker, AWS).
+•	Freelance Software Development (Handshake Platform): Analyze and refine complex software codebases under Project Lotus using Maia II workflows.

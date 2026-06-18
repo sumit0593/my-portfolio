@@ -1,0 +1,39 @@
+WEBSITE NAVIGATION, ROUTES, RESUME DOWNLOADS & GITHUB LINKS
+
+ROUTES AND NAVIGATION
+•	Main Dashboard Page (/ or /dashboard): This is the main single-page hub of the portfolio. Once logged in (GitHub, Google, or Guest Login), it contains the following sections:
+	- Home/Hero (#home): Introduction, headline, and profile welcome message.
+	- Experience Metric Section: Highlights the years of experience, projects, etc.
+	- Resume Download Section: Options to preview or download Sumit's resume.
+	- Projects Section (#projects): Grid showcasing major featured projects.
+	- Skills Section (#skills): Lists GenAI, Agentic, Full-Stack, Database, and DevOps skills.
+	- AI Tools Section: Showcases custom AI features like the AI Resume Insights.
+	- Experience Section (#experience): Chronological work history.
+	- Contact Section (#contact): Contact details and a form to message Sumit.
+•	Projects Listing Page (/projects): A separate page for filtering projects by tags: All, GenAI, Frontend, Backend, Full Stack, and Enterprise. Features a responsive project carousel and quick links.
+•	AI Tools Marketplace (/tools): Marketplace page listing interactive AI tools.
+	- Resume Analyzer Tool (/tools/resume-analyzer): A page for analyzing resumes against job descriptions.
+	- Stubs for other tools: AI Resume Builder, JD Matcher, LinkedIn Summary Generator, Cover Letter Generator, Skill Gap Analyzer, Interview Prep Q&A, Portfolio Description Optimizer, Cold Email Generator, AI Prompt Generator.
+•	Services Page (/services): Detailed list of Sumit's services, such as AI Chatbot development, RAG platforms, Multi-Agent Systems, and Full-Stack integrations.
+
+HOW TO NAVIGATE (HOW TO GO & CHECK)
+•	To navigate between sections on the main page, click the links in the top Navbar (Home, About, Skills, Experience, Projects, Gallery, Contact) or add the anchor tag directly to the URL (e.g. /dashboard#skills).
+•	To check the AI Tools Marketplace, click the "AI Tools" link in the Navbar or visit /tools.
+•	To check the Services page, click "Services" in the Navbar or visit /services.
+•	To view project details, navigate to the Projects section on the Home page or go to /projects.
+•	To access user settings or log out, click the profile avatar dropdown in the upper right corner of the Navbar.
+
+HOW TO DOWNLOAD SUMIT'S RESUME
+•	The Resume Download section is located on the main page (/dashboard) below the Experience Metrics.
+•	To preview the resume on-screen, click the "Preview Resume" button.
+•	To download the resume in PDF format, click the "PDF Version" button or go directly to /resume/Sumit_Kumar_GenAI_Full_Stack.pdf.
+•	To download the resume in Word DOCX format, click the "DOCX Version" button or go directly to /resume/Sumit_Kumar_GenAI_Full_Stack.docx.
+
+HOW TO CHECK GITHUB URL AND PROJECT CODEBASES
+•	Sumit's general GitHub profile is located at: https://github.com/sumit0593.
+•	Each project card in the Projects Section or on the /projects page has a "GitHub" button that links directly to its source code repository.
+•	Specific project repository URLs are as follows:
+	- AI Loan Advisor Chatbot: https://github.com/sumit0593/AI-Loan-Advisor-Chatbot (Live Demo: https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/)
+	- Scam Guard AI: https://github.com/sumit0593/scam_guard_ai (Live Demo: https://scam-detector-ai.streamlit.app/)
+	- HireFlow AI: https://github.com/sumit0593/HireFlow---AI-Resume-Search (Live Demo: https://hireflow---ai-resume-search-gw6ot8m2ph3huktrjcaz35.streamlit.app/)
+	- Portfolio AI (This website): https://github.com/sumit0593/my-portfolio (Live Demo: https://my-portfolio-six-gold-86.vercel.app/)

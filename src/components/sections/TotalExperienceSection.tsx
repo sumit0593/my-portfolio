@@ -66,7 +66,7 @@ const STATS = [
 
 export function TotalExperienceSection() {
   return (
-    <section className="relative w-full py-20 bg-background overflow-hidden border-y border-border">
+    <section className="relative w-full py-10 md:py-16 lg:py-20 bg-background overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
 

@@ -962,7 +962,7 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover, isExploring = fa
   const targetZRef = useRef(config.radius * 3.1);
 
   // Helper: schedule auto-rotate resume after a delay
-  const scheduleAutoRotateResume = useCallback((delayMs = 4000) => {
+  const scheduleAutoRotateResume = useCallback((delayMs = 1000) => {
     if (autoRotateTimeoutRef.current) {
       clearTimeout(autoRotateTimeoutRef.current);
     }
@@ -1005,12 +1005,12 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover, isExploring = fa
   }, []);
 
   const handleInteractionEnd = useCallback(() => {
-    scheduleAutoRotateResume(4000);
+    scheduleAutoRotateResume(1000);
   }, [scheduleAutoRotateResume]);
 
   const handleMarkerClick = useCallback((marker: GlobeMarker) => {
     setAutoRotateActive(false);
-    scheduleAutoRotateResume(4000);
+    scheduleAutoRotateResume(1000);
     onMarkerClick?.(marker);
   }, [scheduleAutoRotateResume, onMarkerClick]);
 
@@ -1022,7 +1022,7 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover, isExploring = fa
     canvas.style.touchAction = "none";
 
     const handlePointerUp = () => {
-      scheduleAutoRotateResume(4000);
+      scheduleAutoRotateResume(1000);
     };
     canvas.addEventListener("pointerup", handlePointerUp);
     return () => {

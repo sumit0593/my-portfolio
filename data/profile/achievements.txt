@@ -1,10 +1,77 @@
+LEARNING, COMPETITIVE PROGRAMMING & CERTIFICATIONS
+
+CATEGORIES & PROFILE INFORMATION:
+
+• LeetCode:
+  Profile URL: https://leetcode.com/u/sumitsumitsumit163/
+  Focus: Data Structures & Algorithms, Problem Solving Journey, Interview Preparation, and coding practice.
+
+• DSA (Data Structures & Algorithms) & Competitive Programming:
+  Sumit regularly practices DSA. He has participated in several coding contests.
+  Achievements include:
+  - Newton School DSA Competition Scorecard #1
+  - Newton School DSA Competition Scorecard #2
+  These showcase strong algorithmic thinking and competitive coding proficiency under time constraints.
+
+• Prompt Engineering & RAG Engineering:
+  Sumit has deep expertise in Prompt Engineering and Retrieval-Augmented Generation (RAG) architectures.
+  He holds specialized certificates in both fields.
+  He designed and built HireFlow AI, an advanced RAG resume search platform using Pinecone, Gemini, and LangChain, which demonstrates hands-on RAG implementation.
+
+• Full Stack Development:
+  Certified Full Stack Web Developer from Newton School (May 2022 - Mar 2023).
+  Proficient in Next.js, React, Node.js, Express.js, and MongoDB.
+
+• IIT Mandi Certification:
+  Holds a PG Certification in GenAI & Multi-Agent Systems from IIT Mandi - TIH (Dec 2025 - Present), focusing on LLMs, agentic workflows, LangChain, CrewAI, AutoGen, and advanced NLP.
+
+
+ANSWERS TO COMMON RECRUITER QUESTIONS:
+
+• Do you practice DSA?
+  Yes, Sumit practices Data Structures & Algorithms (DSA) regularly. He is highly active in problem-solving and competitive programming to keep his software engineering skills sharp.
+
+• Do you use LeetCode?
+  Yes, Sumit uses LeetCode. His profile is at https://leetcode.com/u/sumitsumitsumit163/. He uses it to solve algorithmic problems, refine coding efficiency, and prepare for interviews.
+
+• What certifications do you have?
+  Sumit holds the following key certifications:
+  - PG Certification in GenAI & Multi-Agent Systems from IIT Mandi - TIH (Dec 2025 - Present)
+  - Prompt Engineering Certificate
+  - RAG Engineering Certificate
+  - Full Stack Web Development Certificate from Newton School (May 2022 - Mar 2023)
+
+• Do you have Prompt Engineering certification?
+  Yes, Sumit holds a Prompt Engineering Certificate. You can view or download the certificate PDF at: /gallery/certification/certificate_prompt_engineering.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_prompt_engineering.pdf)
+
+• Do you have RAG experience?
+  Yes, Sumit has extensive hands-on experience and holds a RAG Engineering Certificate. You can view or download the certificate PDF at: /gallery/certification/certificate_of_Excellence_RAG_Engg.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf)
+  A prime example of his RAG experience is HireFlow AI, a Generative AI resume search engine he built using Pinecone vector database, Gemini, and LangChain for automated ATS semantic filtering.
+
+• Where can I download your resume?
+  You can download Sumit's resume using these links:
+  - PDF Format: /resume/Sumit_Kumar_GenAI_Full_Stack.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.pdf)
+  - Word DOCX Format: /resume/Sumit_Kumar_GenAI_Full_Stack.docx (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.docx)
+
+• What are your social profile links?
+  Sumit's profiles and contact links:
+  - LinkedIn: https://www.linkedin.com/in/sumit-kumar0509/
+  - LeetCode: https://leetcode.com/u/sumitsumitsumit163/
+  - GitHub: https://github.com/sumit0593
+  - Email: sumitsumitsumit163@gmail.com
+  - Phone: +91 7011676185
+
+• What is your Full Stack Development certification?
+  Sumit is a certified Full Stack Web Developer from Newton School (May 2022 - Mar 2023). You can view the certificate PDF at: /gallery/certification/full_stack_web_certificate.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/full_stack_web_certificate.pdf)
+
+
 KEY ACHIEVEMENTS
 
-•	Delivered automation and AI-driven enhancements across platforms, improving accuracy, reliability, and workflow efficiency. 
-•	Built secure Node.js authentication with role-based login, user management (create/delete), and integrated AWS certificate handling. 
-•	Improved system scalability and uptime through optimized server load handling, high-performance APIs, and refined backend logic. 
-•	Enhanced decision-making by implementing structured analytics dashboards and improving data visibility across departments. 
-•	Strengthened platform architecture with modular codebases, reusable components, and improved cross-service data flow. 
+• Delivered automation and AI-driven enhancements across platforms, improving accuracy, reliability, and workflow efficiency. 
+• Built secure Node.js authentication with role-based login, user management (create/delete), and integrated AWS certificate handling. 
+• Improved system scalability and uptime through optimized server load handling, high-performance APIs, and refined backend logic. 
+• Enhanced decision-making by implementing structured analytics dashboards and improving data visibility across departments. 
+• Strengthened platform architecture with modular codebases, reusable components, and improved cross-service data flow. 
 
 EDUCATION
 

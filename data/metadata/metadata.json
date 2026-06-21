@@ -7,8 +7,11 @@
     "email": "sumitsumitsumit163@gmail.com",
     "contact": {
       "github": "https://github.com/sumit0593",
-      "linkedin": "https://linkedin.com/in/sumit0593",
-      "portfolio": "https://my-portfolio-six-gold-86.vercel.app/"
+      "linkedin": "https://www.linkedin.com/in/sumit-kumar0509/",
+      "leetcode": "https://leetcode.com/u/sumitsumitsumit163/",
+      "portfolio": "https://my-portfolio-six-gold-86.vercel.app/",
+      "resume_pdf": "https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.pdf",
+      "resume_docx": "https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.docx"
     },
     "summary": "Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures. Experienced in remote freelancing on the Handshake platform, utilizing Lotus and Maia II workflows."
   },
@@ -368,7 +371,29 @@
     {
       "title": "PG Certification in Gen AI and Multi-Agent Systems",
       "institution": "IIT Mandi - TIH",
-      "duration": "Dec 2025 — Present"
+      "duration": "Dec 2025 — Present",
+      "pdf_urls": {
+        "Prompt Engineering": "/gallery/certification/certificate_prompt_engineering.pdf",
+        "RAG Engineering": "/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf"
+      }
+    },
+    {
+      "title": "Prompt Engineering Certificate",
+      "institution": "IIT Mandi - TIH",
+      "duration": "2025",
+      "pdf_url": "/gallery/certification/certificate_prompt_engineering.pdf"
+    },
+    {
+      "title": "RAG Engineering Certificate",
+      "institution": "IIT Mandi - TIH",
+      "duration": "2025",
+      "pdf_url": "/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf"
+    },
+    {
+      "title": "Full Stack Web Development Certificate",
+      "institution": "Newton School",
+      "duration": "May 2022 — Mar 2023",
+      "pdf_url": "/gallery/certification/full_stack_web_certificate.pdf"
     }
   ],
   "achievements": [

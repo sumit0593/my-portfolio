@@ -1,4 +1,4 @@
-WEBSITE NAVIGATION, ROUTES, RESUME DOWNLOADS & GITHUB LINKS
+WEBSITE NAVIGATION, ROUTES, RESUME DOWNLOADS, SOCIAL PROFILES & CERTIFICATE LINKS
 
 ROUTES AND NAVIGATION
 •	Main Dashboard Page (/ or /dashboard): This is the main single-page hub of the portfolio. Once logged in (GitHub, Google, or Guest Login), it contains the following sections:
@@ -23,17 +23,18 @@ HOW TO NAVIGATE (HOW TO GO & CHECK)
 •	To view project details, navigate to the Projects section on the Home page or go to /projects.
 •	To access user settings or log out, click the profile avatar dropdown in the upper right corner of the Navbar.
 
-HOW TO DOWNLOAD SUMIT'S RESUME
-•	The Resume Download section is located on the main page (/dashboard) below the Experience Metrics.
-•	To preview the resume on-screen, click the "Preview Resume" button.
-•	To download the resume in PDF format, click the "PDF Version" button or go directly to /resume/Sumit_Kumar_GenAI_Full_Stack.pdf.
-•	To download the resume in Word DOCX format, click the "DOCX Version" button or go directly to /resume/Sumit_Kumar_GenAI_Full_Stack.docx.
+SUMIT'S RESUME DOWNLOAD LINKS
+•	To download/view the Resume in PDF format: /resume/Sumit_Kumar_GenAI_Full_Stack.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.pdf)
+•	To download/view the Resume in Word DOCX format: /resume/Sumit_Kumar_GenAI_Full_Stack.docx (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.docx)
 
-HOW TO CHECK GITHUB URL AND PROJECT CODEBASES
-•	Sumit's general GitHub profile is located at: https://github.com/sumit0593.
-•	Each project card in the Projects Section or on the /projects page has a "GitHub" button that links directly to its source code repository.
-•	Specific project repository URLs are as follows:
-	- AI Loan Advisor Chatbot: https://github.com/sumit0593/AI-Loan-Advisor-Chatbot (Live Demo: https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/)
-	- Scam Guard AI: https://github.com/sumit0593/scam_guard_ai (Live Demo: https://scam-detector-ai.streamlit.app/)
-	- HireFlow AI: https://github.com/sumit0593/HireFlow---AI-Resume-Search (Live Demo: https://hireflow---ai-resume-search-gw6ot8m2ph3huktrjcaz35.streamlit.app/)
-	- Portfolio AI (This website): https://github.com/sumit0593/my-portfolio (Live Demo: https://my-portfolio-six-gold-86.vercel.app/)
+SUMIT'S SOCIAL PROFILE LINKS
+•	LinkedIn Profile URL: https://www.linkedin.com/in/sumit-kumar0509/
+•	LeetCode Profile URL: https://leetcode.com/u/sumitsumitsumit163/
+•	GitHub Profile URL: https://github.com/sumit0593
+
+SUMIT'S CERTIFICATION PREVIEW & PDF LINKS
+•	PG Certification in GenAI & Multi-Agent Systems:
+	- Prompt Engineering Certificate PDF: /gallery/certification/certificate_prompt_engineering.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_prompt_engineering.pdf)
+	- RAG Engineering Certificate PDF: /gallery/certification/certificate_of_Excellence_RAG_Engg.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf)
+•	Full Stack Web Development Certificate:
+	- Full Stack Certificate PDF: /gallery/certification/full_stack_web_certificate.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/full_stack_web_certificate.pdf)

@@ -63,7 +63,7 @@ function applyMetadataBoost(chunk: RetrievedChunk, intent: QueryIntent): number 
 
   // Boost based on priority score
   if (metadata.priority_score) {
-    boost += (metadata.priority_score / 100); 
+    boost += (metadata.priority_score / 100);
   }
 
   // Boost projects if project query
@@ -165,10 +165,10 @@ export async function retrieveHybridContext(query: string, topK = 5): Promise<{ 
   const finalChunks = fusedChunks.slice(0, topK);
 
   const result = { chunks: finalChunks, intent };
-  
+
   // Cache result
   globalCache.retrievalCache.set(cacheKey, result);
-  
+
   return result;
 }
 
@@ -191,7 +191,7 @@ export function buildOrchestratedPrompt(
   const memorySection =
     conversationHistory.length > 0
       ? conversationHistory
-        .slice(-6) 
+        .slice(-6)
         .map((msg) => `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}`)
         .join("\n")
       : "(No previous conversation)";
@@ -232,5 +232,6 @@ STRICT SYSTEM RULES:
 4. Keep responses professional, recruiter-friendly, and concise. 
 5. ${intentInstructions}
 6. Always format responses clearly using markdown when listing items.
+7. If the user asks for Sumit's resume, CV, or how to download/view it, you MUST provide both the PDF and DOCX download links: [Download Resume (PDF)](/resume/Sumit_Kumar_GenAI_Full_Stack.pdf) and [Download Resume (DOCX)](/resume/Sumit_Kumar_GenAI_Full_Stack.docx)
 `;
 }

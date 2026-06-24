@@ -177,7 +177,7 @@ export default function Dashboard() {
     <>
       <Navbar />
       <div className="relative min-h-screen bg-background overflow-x-hidden">
-        {/* Background Decorative Elements â€” clipped to prevent horizontal overflow */}
+        {/* Background Decorative Elements - clipped to prevent horizontal overflow */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
           <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-primary/10 via-background to-background" />
           <div className="absolute top-[20%] right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[120px] translate-x-1/3" />
@@ -408,7 +408,7 @@ export default function Dashboard() {
               <div className="space-y-8">
                 <div className="border-b pb-4 border-border/50">
                   <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Professional Experience</h2>
-                  <p className="text-muted-foreground mt-2">My journey building enterprise scalable systems</p>
+                  <p className="text-muted-foreground mt-2">My journey building enterprise scalable systems (Aug 2023 - Present)</p>
                 </div>
 
                 <motion.div
@@ -429,14 +429,14 @@ export default function Dashboard() {
                             <Briefcase className="w-5 h-5 text-primary shrink-0" />
                             Software Engineer
                           </CardTitle>
-                          <Badge variant="secondary" className="shrink-0">Apr 2024 â€” Present</Badge>
+                          <Badge variant="secondary" className="shrink-0">Apr 2024 - Present</Badge>
                         </div>
                         <p className="text-primary font-medium text-sm mt-1">Kent RO Systems Pvt Ltd</p>
                       </CardHeader>
                       <CardContent className="flex-1">
                         <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-4 marker:text-primary break-words">
-                          <li>Engineered an AI-driven OCR invoice parsing microservice using AWS Textract and Node.js, automating data extraction and reducing manual processing time by 40%.</li>
-                          <li>Architected high-availability server infrastructure using NGINX load balancing, optimizing traffic distribution and maintaining 99.9% uptime.</li>
+                          <li>Engineered an AI-driven OCR invoice parsing microservice using AWS (Textract, Lambda, DynamoDB) and Node.js, automating data extraction and reducing manual processing time.</li>
+                          <li>Engineered serverless APIs using AWS Lambda and DynamoDB to handle high-concurrency workloads.</li>
                           <li>Implemented secure RBAC authentication via JWT and OAuth2, integrating seamlessly with dynamic Zoho Analytics dashboards.</li>
                         </ul>
                       </CardContent>
@@ -454,7 +454,7 @@ export default function Dashboard() {
                             <Briefcase className="w-5 h-5 text-purple-500 shrink-0" />
                             Associate Software Developer
                           </CardTitle>
-                          <Badge variant="outline" className="shrink-0">Aug 2023 â€” Mar 2024</Badge>
+                          <Badge variant="outline" className="shrink-0">Aug 2023 - Mar 2024</Badge>
                         </div>
                         <p className="text-purple-500 font-medium text-sm mt-1">TechnoIdentity</p>
                       </CardHeader>
@@ -518,7 +518,8 @@ export default function Dashboard() {
                           <Badge variant="outline" className="bg-background/50">React</Badge>
                           <Badge variant="outline" className="bg-background/50">Node.js</Badge>
                           <Badge variant="outline" className="bg-background/50">Zoho Analytics</Badge>
-                          <Badge variant="outline" className="bg-background/50">Mistral LLM</Badge>
+                          <Badge variant="outline" className="bg-background/50">AWS Lambda</Badge>
+                          <Badge variant="outline" className="bg-background/50">DynamoDB</Badge>
                         </div>
                       </CardFooter>
                     </Card>

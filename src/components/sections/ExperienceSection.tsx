@@ -10,8 +10,8 @@ const EXPERIENCES = [
     role: "Software Engineer",
     company: "Kent RO Systems Pvt Ltd",
     location: "Noida, India",
-    description: "Engineered an AI-driven OCR invoice parsing microservice using AWS Textract and Node.js, automating data extraction. Architected high-availability server infrastructure using NGINX load balancing. Implemented secure RBAC authentication via JWT/OAuth2 and developed dynamic Zoho Analytics dashboards.",
-    skills: ["Node.js", "React", "AWS Textract", "Mistral LLM", "NGINX"]
+    description: "Engineered an AI-driven OCR invoice parsing microservice using AWS (Textract, Lambda, DynamoDB) and Node.js. Built browser automation using Playwright, a custom HTML scraper, and a text extractor to automate client data. Developed custom tools on MCP servers to automate software engineering tasks. Implemented secure JWT/OAuth2 RBAC and dynamic Zoho Analytics dashboards.",
+    skills: ["Node.js", "React", "AWS", "Playwright", "MCP", "Web Scraping", "JWT", "OAuth2", "Zoho Analytics", "GitHub Actions", "DynamoDB", "Lambda"]
   },
   {
     year: "Aug 2023 - Mar 2024",
@@ -39,25 +39,25 @@ export function ExperienceSection() {
         <div className="text-center mb-20">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-md">
             <span className="text-sm font-medium text-indigo-300 tracking-wide">
-              Career Journey
+              My journey building enterprise scalable systems (Aug 2023 - Present)
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 mb-4">
-            Experience Timeline
+            Professional Experience
           </h2>
         </div>
 
         <div className="relative">
           {/* Central Line */}
           <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-border -translate-x-1/2" />
-          
-          <motion.div 
+
+          <motion.div
             className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 -translate-x-1/2 origin-top"
             style={{ scaleY: lineHeight }}
           />
 
           {EXPERIENCES.map((exp, index) => (
-            <div 
+            <div
               key={index}
               className={`relative flex items-center justify-between mb-16 md:mb-24 ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} flex-col w-full`}
             >
@@ -65,8 +65,8 @@ export function ExperienceSection() {
               <div className="absolute left-8 md:left-1/2 w-6 h-6 rounded-full bg-background border-4 border-indigo-500 -translate-x-1/2 z-10 shadow-[0_0_15px_rgba(79,70,229,0.8)]" />
 
               <div className="hidden md:block md:w-[45%]" />
-              
-              <motion.div 
+
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -79,7 +79,7 @@ export function ExperienceSection() {
                     <span>{exp.year}</span>
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-2 group-hover:text-indigo-400 transition-colors">{exp.role}</h3>
-                  
+
                   <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4 text-muted-foreground font-medium ${index % 2 === 0 ? "md:justify-end" : "md:justify-start"}`}>
                     <div className="flex items-center gap-1.5">
                       <BriefcaseBusiness className="w-4 h-4" />

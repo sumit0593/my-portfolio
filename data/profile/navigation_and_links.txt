@@ -1,40 +1,107 @@
-WEBSITE NAVIGATION, ROUTES, RESUME DOWNLOADS, SOCIAL PROFILES & CERTIFICATE LINKS
+# WEBSITE NAVIGATION, SECTIONS, AND RESOURCE LINKS GUIDE
 
-ROUTES AND NAVIGATION
-•	Main Dashboard Page (/ or /dashboard): This is the main single-page hub of the portfolio. Once logged in (GitHub, Google, or Guest Login), it contains the following sections:
-	- Home/Hero (#home): Introduction, headline, and profile welcome message.
-	- Experience Metric Section: Highlights the years of experience, projects, etc.
-	- Resume Download Section: Options to preview or download Sumit's resume.
-	- Projects Section (#projects): Grid showcasing major featured projects.
-	- Skills Section (#skills): Lists GenAI, Agentic, Full-Stack, Database, and DevOps skills.
-	- AI Tools Section: Showcases custom AI features like the AI Resume Insights.
-	- Experience Section (#experience): Chronological work history.
-	- Contact Section (#contact): Contact details and a form to message Sumit.
-•	Projects Listing Page (/projects): A separate page for filtering projects by tags: All, GenAI, Frontend, Backend, Full Stack, and Enterprise. Features a responsive project carousel and quick links.
-•	AI Tools Marketplace (/tools): Marketplace page listing interactive AI tools.
-	- Resume Analyzer Tool (/tools/resume-analyzer): A page for analyzing resumes against job descriptions.
-	- Stubs for other tools: AI Resume Builder, JD Matcher, LinkedIn Summary Generator, Cover Letter Generator, Skill Gap Analyzer, Interview Prep Q&A, Portfolio Description Optimizer, Cold Email Generator, AI Prompt Generator.
-•	Services Page (/services): Detailed list of Sumit's services, such as AI Chatbot development, RAG platforms, Multi-Agent Systems, and Full-Stack integrations.
+This guide provides details on how to navigate the portfolio site, descriptions of the sections on each page, and a curated list of all relevant project, social, resume, and certification links.
 
-HOW TO NAVIGATE (HOW TO GO & CHECK)
-•	To navigate between sections on the main page, click the links in the top Navbar (Home, About, Skills, Experience, Projects, Gallery, Contact) or add the anchor tag directly to the URL (e.g. /dashboard#skills).
-•	To check the AI Tools Marketplace, click the "AI Tools" link in the Navbar or visit /tools.
-•	To check the Services page, click "Services" in the Navbar or visit /services.
-•	To view project details, navigate to the Projects section on the Home page or go to /projects.
-•	To access user settings or log out, click the profile avatar dropdown in the upper right corner of the Navbar.
+---
 
-SUMIT'S RESUME DOWNLOAD LINKS
-•	To download/view the Resume in PDF format: /resume/Sumit_Kumar_GenAI_Full_Stack.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.pdf)
-•	To download/view the Resume in Word DOCX format: /resume/Sumit_Kumar_GenAI_Full_Stack.docx (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.docx)
+## 1. ROUTES AND NAVIGATION OVERVIEW
+The portfolio is structured across four main page routes:
 
-SUMIT'S SOCIAL PROFILE LINKS
-•	LinkedIn Profile URL: https://www.linkedin.com/in/sumit-kumar0509/
-•	LeetCode Profile URL: https://leetcode.com/u/sumitsumitsumit163/
-•	GitHub Profile URL: https://github.com/sumit0593
+1. **Dashboard Hub (`/` or `/dashboard`)**: The main interactive single-page dashboard containing all primary sections.
+2. **Projects Listing Page (`/projects`)**: A dedicated interface for browsing, filtering, and studying all of Sumit's projects using interactive categories and tags.
+3. **AI Tools Marketplace (`/tools`)**: A hub containing advanced AI utilities, including:
+   - **Resume Analyzer (`/tools/resume-analyzer`)**: Evaluates CVs against JDs using Gemini.
+   - **Stubs for other tools**: Resume Builder, JD Matcher, LinkedIn Summary Generator, Cover Letter Generator, Skill Gap Analyzer, Interview Prep, Description Optimizer, Cold Email Generator, Prompt Generator.
+4. **Services Page (`/services`)**: Showcases professional freelance services (AI Chatbots, RAG Pipelines, Multi-Agent Systems, Full-Stack development).
 
-SUMIT'S CERTIFICATION PREVIEW & PDF LINKS
-•	PG Certification in GenAI & Multi-Agent Systems:
-	- Prompt Engineering Certificate PDF: /gallery/certification/certificate_prompt_engineering.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_prompt_engineering.pdf)
-	- RAG Engineering Certificate PDF: /gallery/certification/certificate_of_Excellence_RAG_Engg.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf)
-•	Full Stack Web Development Certificate:
-	- Full Stack Certificate PDF: /gallery/certification/full_stack_web_certificate.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/full_stack_web_certificate.pdf)
+---
+
+## 2. DASHBOARD PAGE SECTIONS (10 SECTIONS DETAIL)
+The main single-page hub is divided into **10 distinct sections** to provide a rich, modular experience:
+
+*   **SECTION 1: Global Navigation & Header (Top Navbar)**
+    - *Purpose*: Provides navigation shortcuts (Home, About, Skills, Experience, Projects, Gallery, Contact), dark mode controls, and session options (profile avatar and log out).
+    - *How to navigate*: Anchored to the top of the viewport at all times.
+
+*   **SECTION 2: Home / Hero Section (`#home`)**
+    - *Purpose*: A premium, high-impact intro showing Sumit's dynamic role titles, subtitle, and primary call-to-action buttons.
+    - *How to navigate*: Click "Home" in the navbar or go to `/dashboard#home`.
+
+*   **SECTION 3: Experience Metric Section**
+    - *Purpose*: Displays key metrics (e.g., 2+ Years Experience, 10+ Projects, Certifications, DSA Problem Solving counts) in a modern grid.
+    - *How to navigate*: Located directly below the Hero section.
+
+*   **SECTION 4: Resume Download & Preview Section**
+    - *Purpose*: Features an interactive document viewer/preview alongside direct download links.
+    - *How to navigate*: Located in the About/Profile card area.
+
+*   **SECTION 5: Featured Projects Section (`#projects`)**
+    - *Purpose*: Renders a 3D-tilt grid of featured projects (AI Loan Advisor, Scam Guard AI, HireFlow AI, and Portfolio AI) complete with tech badges, metrics, and links.
+    - *How to navigate*: Click "Projects" in the navbar or go to `/dashboard#projects`.
+
+*   **SECTION 6: Skills Scene (`#skills`)**
+    - *Purpose*: Renders an interactive Three.js 3D orbiting sphere scene representing Generative AI, AI Engineering, Databases, Full Stack, and MLOps/DevOps.
+    - *How to navigate*: Click "Skills" in the navbar or go to `/dashboard#skills`.
+
+*   **SECTION 7: AI Tools Marketplace Preview**
+    - *Purpose*: Showcases card pre-views of the AI tools available on `/tools` (e.g., Resume Analyzer).
+    - *How to navigate*: Directly below the Skills orbit section.
+
+*   **SECTION 8: Career Experience Timeline (`#experience`)**
+    - *Purpose*: Renders a chronological journey of professional positions (Kent RO Systems, TechnoIdentity) using icons, calendars, and description lists.
+    - *How to navigate*: Click "Experience" in the navbar or go to `/dashboard#experience`.
+
+*   **SECTION 9: Gallery / Learning Section (`#gallery`)**
+    - *Purpose*: An interactive tabbed interface displaying LeetCode/DSA problem-solving stats and certificates with zoom-able previews.
+    - *How to navigate*: Click "Gallery" in the navbar or go to `/dashboard#gallery`.
+
+*   **SECTION 10: Interactive Contact Section (`#contact`)**
+    - *Purpose*: Renders a custom email form (with validation) and lists direct social/contact profiles.
+    - *How to navigate*: Click "Contact" in the navbar or go to `/dashboard#contact`.
+
+---
+
+## 3. HIGHLIGHTED RESOURCES & LINKS DIRECTORY
+
+### 📄 RESUME DOWNLOAD LINKS
+-   **PDF Format**: `[Download Resume (PDF)](/resume/Sumit_Kumar_GenAI_Full_Stack.pdf)`
+    - *Absolute Link*: `[Download Resume (PDF)](https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.pdf)`
+-   **Word DOCX Format**: `[Download Resume (DOCX)](/resume/Sumit_Kumar_GenAI_Full_Stack.docx)`
+    - *Absolute Link*: `[Download Resume (DOCX)](https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.docx)`
+
+### 🌐 SOCIAL PROFILES
+-   **LinkedIn**: `[Sumit Kumar on LinkedIn](https://www.linkedin.com/in/sumit-kumar0509/)`
+-   **LeetCode**: `[Sumit Kumar on LeetCode](https://leetcode.com/u/sumitsumitsumit163/)`
+-   **GitHub**: `[Sumit Kumar on GitHub](https://github.com/sumit0593)`
+
+### 🚀 FEATURED PROJECT LINKS
+-   **AI Loan Advisor Chatbot**
+    - *Live Link*: `[AI Loan Advisor Chatbot Live](https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/)`
+    - *GitHub Link*: `[AI Loan Advisor Chatbot Source](https://github.com/sumit0593/AI-Loan-Advisor-Chatbot)`
+-   **Scam Guard AI**
+    - *Live Link*: `[Scam Guard AI Live](https://scam-detector-ai.streamlit.app/)`
+    - *GitHub Link*: `[Scam Guard AI Source](https://github.com/sumit0593/scam_guard_ai)`
+-   **HireFlow AI**
+    - *Live Link*: `[HireFlow AI Live](https://hireflow---ai-resume-search-gw6ot8m2ph3huktrjcaz35.streamlit.app/)`
+    - *GitHub Link*: `[HireFlow AI Source](https://github.com/sumit0593/HireFlow---AI-Resume-Search)`
+-   **Portfolio AI**
+    - *Live Link*: `[Portfolio AI Live](https://my-portfolio-six-gold-86.vercel.app/)`
+    - *GitHub Link*: `[Portfolio AI Source](https://github.com/sumit0593/my-portfolio)`
+-   **Cam Attendance**
+    - *Live Link*: `[Cam Attendance Portal](https://www.kentcam.com/camattendance/thank-you)`
+-   **Kent Risengine**
+    - *Live Link*: `[Kent Risengine Portal](https://risengine.com/sign-in)`
+
+### 🎓 CERTIFICATIONS & CREDENTIALS
+-   **IIT Mandi - GenAI & Multi-Agent Systems Certification**
+    -   *Prompt Engineering PDF*: `[Prompt Engineering Certificate](https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_prompt_engineering.pdf)`
+        - *Path*: `/gallery/certification/certificate_prompt_engineering.pdf`
+    -   *RAG Engineering PDF*: `[RAG Engineering Certificate](https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf)`
+        - *Path*: `/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf`
+-   **Newton School - Full Stack Web Development Certification**
+    -   *Full Stack PDF*: `[Full Stack Certificate](https://my-portfolio-six-gold-86.vercel.app/gallery/certification/full_stack_web_certificate.pdf)`
+        - *Path*: `/gallery/certification/full_stack_web_certificate.pdf`
+    -   *Scorecard 1*: `[Newton School Scorecard 1](https://my-portfolio-six-gold-86.vercel.app/gallery/scorecard/scorecard_newton_1.jpg)`
+        - *Path*: `/gallery/scorecard/scorecard_newton_1.jpg`
+    -   *Scorecard 2*: `[Newton School Scorecard 2](https://my-portfolio-six-gold-86.vercel.app/gallery/scorecard/scorecard_newton_2.jpg)`
+        - *Path*: `/gallery/scorecard/scorecard_newton_2.jpg`

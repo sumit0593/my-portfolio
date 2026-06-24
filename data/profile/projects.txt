@@ -9,6 +9,9 @@ Cam Attendance, Internal/Client
 •	Maintained and enhanced a full-stack attendance platform used by thousands of employees and clients. 
 •	Managed backend services and REST APIs (Spring Boot) along with frontend modules (Angular) for real-time HR data tracking. 
 •	Integrated automated data pipelines to sync and validate check-ins, leave logs, and key HR metrics. 
+•	Built browser automation scripts using Playwright, a custom HTML scraper, and a text extractor to automate client data.
+•	Created tools to automate software engineering workflows.
+
 
 TIOS Revamp, Internal 	 
 •	Migrated a legacy HRMS to a modern modular architecture using Next.js. 

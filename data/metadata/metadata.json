@@ -16,52 +16,59 @@
     "summary": "Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures. Experienced in remote freelancing on the Handshake platform, utilizing Lotus and Maia II workflows."
   },
   "skills": {
-    "gen_ai_and_llms": [
+    "generative_ai_and_llms": [
       "RAG Pipelines",
-      "Prompt Engineering",
-      "Zero-shot",
-      "Few-shot",
-      "Chain-of-Thought",
+      "Prompt Engineering (Zero-shot, Few-shot, CoT)",
       "LLM Fine-Tuning",
-      "Transformers"
+      "Transformers",
+      "Embeddings",
+      "Vector Search"
+    ],
+    "ai_platforms_and_models": [
+      "Google Gemini",
+      "OpenAI GPT",
+      "Anthropic Claude",
+      "Hugging Face",
+      "Ollama",
+      "Llama 3",
+      "DeepSeek"
     ],
     "agentic_frameworks": [
-      "Multi-Agent Systems",
       "LangChain",
-      "LlamaIndex",
       "LangGraph",
+      "LlamaIndex",
       "CrewAI",
       "AutoGen",
-      "ReAct Agents"
+      "ReAct Agents",
+      "Multi-Agent Systems (MAS)"
     ],
-    "ai_development": [
-      "Gemini",
-      "OpenAI",
-      "Claude",
-      "Hugging Face",
+    "ai_engineering": [
       "FastAPI",
-      "RESTful APIs",
-      "JWT Authentication"
+      "REST APIs",
+      "JWT Authentication",
+      "Function Calling",
+      "Tool Calling",
+      "MCP (Model Context Protocol)"
     ],
-    "databases_and_storage": [
+    "database_and_storage": [
       "Pinecone",
       "ChromaDB",
       "FAISS",
-      "MySQL",
       "PostgreSQL",
+      "MySQL",
       "MongoDB"
     ],
-    "full_stack_core": [
+    "full_stack_development": [
       "React.js",
       "Next.js",
+      "Angular",
+      "Node.js",
+      "Express.js",
       "Python",
       "TypeScript",
       "JavaScript",
-      "Node.js",
-      "Express.js",
       "Tailwind CSS",
-      "MUI",
-      "Angular"
+      "MUI"
     ],
     "deployment_and_mlops": [
       "Docker",
@@ -70,10 +77,10 @@
       "CI/CD",
       "LangSmith",
       "LangFuse",
-      "NGINX",
-      "Vercel"
+      "Vercel",
+      "GCP"
     ],
-    "tools_and_utilities": [
+    "tools": [
       "Git",
       "GitHub",
       "GitLab",
@@ -81,6 +88,7 @@
       "VS Code",
       "Cursor AI",
       "Jupyter",
+      "Playwright",
       "Anaconda"
     ]
   },
@@ -91,19 +99,24 @@
       "duration": "Apr 2024 - Present",
       "location": "Noida, India",
       "highlights": [
-        "Integrated OCR-based invoice parsing to automate data extraction and validation, reducing manual effort and improving accuracy.",
-        "Implemented server load balancing using NGINX, ensuring high availability, optimized traffic distribution, and improved system stability.",
-        "Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters."
+        "Integrated OCR-based invoice parsing using AWS (Textract, Lambda, DynamoDB) to automate data extraction and validation, reducing manual effort and improving accuracy.",
+        "Engineered serverless backend APIs using AWS Lambda and DynamoDB to handle high-concurrency workloads.",
+        "Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters.",
+        "Developed robust end-to-end task automation tools using Playwright.",
+        "Created custom tools to automate software engineering workflows.",
+        "Built browser automation scripts using Playwright, an HTML scraper, and a text extractor to automate client data."
       ],
       "tags": [
         "React",
         "Node.js",
         "AWS Textract",
-        "Mistral LLM",
+        "Lambda",
+        "DynamoDB",
         "Zoho Analytics",
-        "NGINX",
         "JWT",
-        "OAuth2"
+        "OAuth2",
+        "Playwright",
+        "Web Scraping"
       ]
     },
     {
@@ -354,6 +367,49 @@
       "ai_capabilities": [
         "Streaming Chatbot",
         "RAG"
+      ]
+    },
+    {
+      "title": "Cam Attendance",
+      "category": "Enterprise",
+      "project_type": "Enterprise / Client",
+      "domain": "HR Tech / Attendance",
+      "description": "Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Built browser automation using Playwright, an HTML scraper, and a text extractor to automate client data. Designed Spring Boot microservices, Angular frontend modules, and robust REST APIs.",
+      "tech_stack": [
+        "Spring Boot",
+        "Angular",
+        "REST APIs",
+        "SQL",
+        "Microservices",
+        "Playwright",
+        "HTML Scraper",
+        "Text Extractor"
+      ],
+      "live_url": "https://www.kentcam.com/camattendance/thank-you",
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Automated client data syncing and attendance logging",
+      "priority_score": 7,
+      "architecture_tags": [
+        "Spring Boot Microservices",
+        "Automated Data Pipelines",
+        "High-Concurrency APIs"
+      ],
+      "semantic_tags": [
+        "Enterprise AI",
+        "Face Recognition AI",
+        "Playwright Automation",
+        "Web Scraping"
+      ],
+      "recruiter_keywords": [
+        "Spring Boot",
+        "Angular",
+        "Playwright",
+        "Web Scraping"
+      ],
+      "ai_capabilities": [
+        "Face Recognition AI",
+        "Computer Vision Integration"
       ]
     }
   ],

@@ -604,23 +604,12 @@ export function ProjectsSection() {
         <p className="text-muted-foreground max-w-lg mx-auto text-lg font-light mb-6">
           Click on a project to explore details and tech stack.
         </p>
-
-        {/* Top View All Projects Icon Link */}
-        <div className="pointer-events-auto flex justify-center">
-          <Link
-            href="/projects?from=home"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group cursor-pointer"
-          >
-            <span>View All Projects</span>
-            <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
       </div>
 
-      {/* Project Cards Grid (Previews 1, 2, and 3) */}
+      {/* Project Cards Grid (Previews 1, 2, 3, and 4) */}
       <div className="relative z-10 w-full max-w-6xl px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.slice(0, 3).map((project) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {PROJECTS.slice(0, 4).map((project) => (
             <ProjectCard
               key={project.id}
               project={project}

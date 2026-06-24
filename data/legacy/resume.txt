@@ -20,7 +20,7 @@ PROFESSIONAL EXPERIENCE
 
 Software Engineer, Kent RO Systems Pvt Ltd 	 Apr 2024 — Present
 •	Integrated OCR-based invoice parsing to automate data extraction and validation, reducing manual effort and improving accuracy. 
-•	Implemented server load balancing using NGINX, ensuring high availability, optimized traffic distribution, and improved system stability. 
+•	Engineered serverless backend APIs using AWS Lambda and DynamoDB to handle high-concurrency workloads.
 •	Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters, enhancing decision-making and data accessibility across departments. 
 •	Developed secure authentication and role-based access control using JWT and OAuth2 for internal and external stakeholders. 
 •	Improved API performance, optimized backend logic, and strengthened system scalability across the Kent RiseEngine platform. 

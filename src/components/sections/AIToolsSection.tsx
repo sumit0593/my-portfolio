@@ -25,7 +25,7 @@ const ECOSYSTEM = [
   {
     category: "Cloud & DevOps",
     icon: Server,
-    tools: ["AWS", "Docker", "Jenkins", "CI/CD", "NGINX", "Vercel"],
+    tools: ["AWS", "Docker", "Jenkins", "CI/CD", "Vercel"],
     color: "from-orange-500 to-amber-500",
   },
   {

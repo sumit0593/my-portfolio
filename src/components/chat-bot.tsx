@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { X, Loader2, AlertCircle } from "lucide-react";
+import { X, Loader2, AlertCircle, Sparkles, Maximize2, Minimize2, Info } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -10,18 +10,134 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 
-const SUGGESTIONS = [
-    "Explain Scam Guard AI",
-    "Show enterprise experience",
-    "Tell me about Kent projects",
-    "Explain RAG architecture",
-    "What are Sumit's skills?"
+type Category = {
+    id: string;
+    label: string;
+    icon: string;
+    title: string;
+    description: string;
+    questions: string[];
+};
+
+const CATEGORIES: Category[] = [
+    {
+        id: "education",
+        label: "🎓 Education",
+        icon: "🎓",
+        title: "🎓 Education & Academic History",
+        description: "Explore Sumit's university degrees and educational qualifications.",
+        questions: [
+            "Where did Sumit study?",
+            "Tell me about his MTech in Computer Science.",
+            "What did he study at Monad University?",
+            "Where did he study Mechanical Engineering?",
+        ]
+    },
+    {
+        id: "experience",
+        label: "💼 Experience",
+        icon: "💼",
+        title: "💼 Experience & Timeline",
+        description: "Review Sumit's roles, company timelines, and professional journey.",
+        questions: [
+            "What was his role at Kent RO Systems?",
+            "What projects did he do at TechnoIdentity?",
+            "Tell me about his work at Kent RO.",
+            "Show me his professional timeline.",
+        ]
+    },
+    {
+        id: "projects",
+        label: "🚀 Projects",
+        icon: "🚀",
+        title: "🚀 Explore Projects & Architecture",
+        description: "Discover AI systems, full-stack applications, enterprise solutions, and workflows built by Sumit.",
+        questions: [
+            "Tell me about HireFlow AI.",
+            "Explain the architecture of Scam Detection AI.",
+            "Which project demonstrates LangGraph?",
+            "What RAG systems has he built?",
+            "Show me his enterprise projects.",
+            "What is his most challenging project?",
+            "Which projects use multi-agent systems?",
+        ]
+    },
+    {
+        id: "skills",
+        label: "🛠 Skills",
+        icon: "🛠",
+        title: "🛠 Technical Skills & Tools",
+        description: "Explore the technologies, languages, and tools Sumit is skilled in.",
+        questions: [
+            "What are his full-stack core skills?",
+            "Does he know Next.js and React?",
+            "What vector databases does he use?",
+            "Show me his Deployment & MLOps tools.",
+        ]
+    },
+    {
+        id: "genai",
+        label: "🤖 GenAI Expertise",
+        icon: "🤖",
+        title: "🤖 GenAI & LLM Expertise",
+        description: "Learn about Sumit's deep experience with LLMs, RAG, and AI agent frameworks.",
+        questions: [
+            "What is his experience with LLMs?",
+            "Explain his RAG architecture expertise.",
+            "Which LLM models has he worked with?",
+            "What agentic frameworks does he know?",
+            "Has he built Multi-Agent Systems?",
+        ]
+    },
+    {
+        id: "certifications",
+        label: "📜 Certifications",
+        icon: "📜",
+        title: "📜 Academic & Pro Certifications",
+        description: "View credentials earned by Sumit from institutions like IIT Mandi and Newton School.",
+        questions: [
+            "Tell me about his IIT Mandi certification.",
+            "Do you have a Prompt Engineering certificate?",
+            "Tell me about his Newton School certificate.",
+            "Show me his RAG Engineering certification.",
+        ]
+    },
+    {
+        id: "achievements",
+        label: "🏆 Achievements",
+        icon: "🏆",
+        title: "🏆 Milestones & Achievements",
+        description: "Check key career milestones, automation deliverables, and performance metrics.",
+        questions: [
+            "What are his key achievements?",
+            "Show me his software automation achievements.",
+            "What security achievements does he have?",
+        ]
+    },
+    {
+        id: "contact",
+        label: "📞 Contact",
+        icon: "📞",
+        title: "📞 Get In Touch",
+        description: "Find contact links, email, phone numbers, and messaging avenues.",
+        questions: [
+            "How can I contact Sumit?",
+            "Can you share Sumit's LinkedIn or GitHub?",
+            "What is Sumit's phone number or email?",
+            "Send a message to Sumit.",
+            "Get Sumit's Resume",
+            "Connect with Sumit (Get link & send message)",
+        ]
+    }
 ];
 
 export function ChatBot() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isEnlarged, setIsEnlarged] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     const [input, setInput] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
     const { messages, status, error, sendMessage, setMessages } = useChat();
 
@@ -36,7 +152,7 @@ export function ChatBot() {
         if (!input.trim() || isLoading) return;
 
         const text = input.trim().toLowerCase();
-        if (text === "quit" || text === "exit()") {
+        if (text === "quit" || text === "exit") {
             setMessages([
                 {
                     id: "init-msg",
@@ -46,6 +162,7 @@ export function ChatBot() {
                     ],
                 },
             ]);
+            setSelectedCategory(null);
             setInput("");
             try {
                 await fetch("/api/chat/clear", { method: "POST" });
@@ -79,6 +196,15 @@ export function ChatBot() {
         ]);
     }, [setMessages]);
 
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                inputRef.current?.focus();
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen]);
+
     // Helper to extract text content from a message's parts
     const getMessageText = (m: (typeof messages)[number]) => {
         if (m.parts && m.parts.length > 0) {
@@ -91,9 +217,9 @@ export function ChatBot() {
     };
 
     return (
-        <div className={`fixed z-50 ${isOpen ? "inset-0 md:top-auto md:left-auto md:bottom-6 md:right-6" : "bottom-6 right-6"}`}>
+        <div className={`fixed z-50 ${isOpen ? (isEnlarged ? "inset-0 md:inset-6" : "inset-0 md:top-auto md:left-auto md:bottom-6 md:right-6") : "bottom-6 right-6"}`}>
             {isOpen ? (
-                <Card className="w-full h-full md:w-96 md:h-[500px] shadow-2xl flex flex-col border-0 md:border border-border bg-card/95 backdrop-blur-xl animate-in slide-in-from-bottom-5 fade-in-50 duration-300 overflow-hidden md:rounded-3xl rounded-none" style={{ opacity: 1 }}>
+                <Card className={`w-full h-full shadow-2xl flex flex-col border-0 md:border border-border bg-card/95 backdrop-blur-xl animate-in slide-in-from-bottom-5 fade-in-50 duration-300 overflow-hidden rounded-none md:rounded-3xl ${isEnlarged ? "md:w-full md:h-full" : "md:w-96 md:h-[500px]"}`} style={{ opacity: 1 }}>
                     <CardHeader className="p-3 border-b border-border bg-muted/80 flex flex-row items-center justify-between pb-3">
                         <CardTitle className="text-sm font-bold flex items-center gap-2">
                             <div className="p-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 overflow-hidden h-7 w-7 flex items-center justify-center shrink-0">
@@ -101,14 +227,33 @@ export function ChatBot() {
                             </div>
                             Nova AI
                         </CardTitle>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7 rounded-full text-muted-foreground hover:bg-black/10 hover:text-foreground transition-colors cursor-pointer"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            <X className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 rounded-full text-indigo-500 dark:text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-300 transition-all cursor-pointer hidden md:flex items-center justify-center border border-indigo-500/20 bg-indigo-500/5 hover:border-indigo-500/40"
+                                onClick={() => setIsEnlarged(!isEnlarged)}
+                            >
+                                {isEnlarged ? (
+                                    <Minimize2 className="h-4 w-4" />
+                                ) : (
+                                    <Maximize2 className="h-4 w-4" />
+                                )}
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 rounded-full text-red-500 dark:text-red-400 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-300 transition-all cursor-pointer flex items-center justify-center border border-red-500/20 bg-red-500/5 hover:border-red-500/40"
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    setIsEnlarged(false);
+                                }}
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        </div>
                     </CardHeader>
                     <CardContent className="flex-1 p-0 flex flex-col bg-background/50 overflow-hidden">
                         <div className="flex-1 overflow-y-auto w-full p-4 space-y-4 custom-scrollbar">
@@ -124,7 +269,127 @@ export function ChatBot() {
                                             }`}
                                     >
                                         <div className="prose prose-sm dark:prose-invert max-w-none break-words">
-                                            <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                                            <Markdown
+                                                remarkPlugins={[remarkGfm, remarkBreaks]}
+                                                components={{
+                                                    a: ({ href, children, ...props }) => {
+                                                        if (!href) {
+                                                            return <a {...props}>{children}</a>;
+                                                        }
+                                                        const isResume = href.toLowerCase().includes("resume") && (
+                                                            href.toLowerCase().endsWith(".pdf") ||
+                                                            href.toLowerCase().endsWith(".docx") ||
+                                                            href.toLowerCase().includes("pdf") ||
+                                                            href.toLowerCase().includes("docx")
+                                                        );
+                                                        if (isResume) {
+                                                            const isPdf = href?.toLowerCase().includes("pdf");
+                                                            const isDocx = href?.toLowerCase().includes("docx") || href?.toLowerCase().includes("doc");
+                                                            const label = isPdf ? "Download Resume (PDF)" : isDocx ? "Download Resume (DOCX)" : "Download Resume";
+                                                            return (
+                                                                <a
+                                                                    href={href}
+                                                                    download
+                                                                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                                                                    {...props}
+                                                                >
+                                                                    <span>📥 {label}</span>
+                                                                </a>
+                                                            );
+                                                        }
+
+                                                        const isLinkedIn = href?.toLowerCase().includes("linkedin.com");
+                                                        if (isLinkedIn) {
+                                                            return (
+                                                                <a
+                                                                    href={href}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-[#0077b5] hover:bg-[#0077b5]/90 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                                                                    {...props}
+                                                                >
+                                                                    <span>🔗 LinkedIn Profile</span>
+                                                                </a>
+                                                            );
+                                                        }
+
+                                                        const isGitHub = href?.toLowerCase().includes("github.com");
+                                                        if (isGitHub) {
+                                                            const isProfile = href.toLowerCase().endsWith("sumit0593") || href.toLowerCase().endsWith("sumit0593/");
+                                                            const label = isProfile ? "GitHub Profile" : "GitHub Repository";
+                                                            return (
+                                                                <a
+                                                                    href={href}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-[#24292e] dark:bg-[#404448] hover:bg-[#24292e]/90 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                                                                    {...props}
+                                                                >
+                                                                    <span>💻 {label}</span>
+                                                                </a>
+                                                            );
+                                                        }
+
+                                                        const isLeetCode = href?.toLowerCase().includes("leetcode.com");
+                                                        if (isLeetCode) {
+                                                            return (
+                                                                <a
+                                                                    href={href}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                                                                    {...props}
+                                                                >
+                                                                    <span>💡 LeetCode Profile</span>
+                                                                </a>
+                                                            );
+                                                        }
+
+                                                        const isNewtonSchool = href?.toLowerCase().includes("newton") || href?.toLowerCase().includes("full_stack_web_certificate");
+                                                        if (isNewtonSchool) {
+                                                            let label = "Newton School Certificate";
+                                                            if (href.toLowerCase().includes("scorecard_newton_1")) label = "Newton School Scorecard 1";
+                                                            else if (href.toLowerCase().includes("scorecard_newton_2")) label = "Newton School Scorecard 2";
+                                                            else if (href.toLowerCase().includes("full_stack_web_certificate")) label = "Newton School Certificate (PDF)";
+                                                            return (
+                                                                <a
+                                                                    href={href}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                                                                    {...props}
+                                                                >
+                                                                    <span>📜 {label}</span>
+                                                                </a>
+                                                            );
+                                                        }
+
+                                                        const isIITMandi = href?.toLowerCase().includes("prompt_engineering") || href?.toLowerCase().includes("excellence_rag");
+                                                        if (isIITMandi) {
+                                                            let label = "IIT Mandi Certificate";
+                                                            if (href.toLowerCase().includes("prompt_engineering")) label = "IIT Mandi Prompt Engineering (PDF)";
+                                                            else if (href.toLowerCase().includes("excellence_rag")) label = "IIT Mandi RAG Engineering (PDF)";
+                                                            return (
+                                                                <a
+                                                                    href={href}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                                                                    {...props}
+                                                                >
+                                                                    <span>🎓 {label}</span>
+                                                                </a>
+                                                            );
+                                                        }
+
+                                                        return (
+                                                            <a href={href} className="text-indigo-400 hover:underline" {...props}>
+                                                                {children}
+                                                            </a>
+                                                        );
+                                                    }
+                                                }}
+                                            >
                                                 {getMessageText(m)}
                                             </Markdown>
                                         </div>
@@ -133,18 +398,95 @@ export function ChatBot() {
                             ))}
 
                             {messages.length === 1 && !isLoading && (
-                                <div className="flex flex-col gap-2 mt-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
-                                    <p className="text-xs text-muted-foreground font-medium px-1">Suggested questions:</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {SUGGESTIONS.map((s, i) => (
-                                            <button
-                                                key={i}
-                                                onClick={() => handleSuggestionClick(s)}
-                                                className="text-left text-xs px-3 py-2 rounded-xl bg-muted/50 border border-border/50 text-foreground/80 hover:bg-indigo-500/10 hover:text-indigo-500 hover:border-indigo-500/30 transition-all cursor-pointer shadow-sm"
-                                            >
-                                                {s}
-                                            </button>
-                                        ))}
+                                <div className="space-y-4 mt-2 border-t border-border/40 pt-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                                    {selectedCategory === null ? (
+                                        <div className="space-y-4">
+                                            <div className="text-center md:text-left">
+                                                <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+                                                    Choose a category below to explore Sumit&apos;s background, projects, experience, and expertise.
+                                                </p>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {CATEGORIES.map((cat) => (
+                                                    <button
+                                                        key={cat.id}
+                                                        onClick={() => setSelectedCategory(cat.id)}
+                                                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-card border border-border/50 text-left text-xs font-semibold text-foreground/85 hover:bg-indigo-500/10 hover:text-indigo-500 hover:border-indigo-500/30 transition-all cursor-pointer shadow-sm select-none"
+                                                    >
+                                                        <span>{cat.label}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+
+                                            <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-border/20">
+                                                <p className="text-[10px] text-muted-foreground font-semibold px-1">Quick Suggestions:</p>
+                                                <div className="flex flex-col gap-1.5">
+                                                    <button
+                                                        onClick={() => handleSuggestionClick("Get Sumit's Resume")}
+                                                        className="text-left text-xs px-3.5 py-2.5 rounded-xl bg-indigo-500/5 hover:bg-indigo-500/10 border border-indigo-500/20 hover:border-indigo-500/40 text-indigo-600 dark:text-indigo-400 font-semibold transition-all cursor-pointer shadow-sm flex items-center gap-2"
+                                                    >
+                                                        <span>📄</span>
+                                                        <span>Get Sumit&apos;s Resume</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleSuggestionClick("Connect with Sumit (Get link & send message)")}
+                                                        className="text-left text-xs px-3.5 py-2.5 rounded-xl bg-indigo-500/5 hover:bg-indigo-500/10 border border-indigo-500/20 hover:border-indigo-500/40 text-indigo-600 dark:text-indigo-400 font-semibold transition-all cursor-pointer shadow-sm flex items-center gap-2"
+                                                    >
+                                                        <span>✉️</span>
+                                                        <span>Connect with Sumit (Get link & send message)</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {(() => {
+                                                const cat = CATEGORIES.find(c => c.id === selectedCategory);
+                                                if (!cat) return null;
+                                                return (
+                                                    <div className="space-y-3 bg-muted/20 p-3 rounded-2xl border border-border/30">
+                                                        <div className="flex items-center justify-between gap-2 border-b border-border/30 pb-2">
+                                                            <h4 className="text-xs font-bold text-foreground leading-none flex items-center gap-1">
+                                                                {cat.title}
+                                                            </h4>
+                                                            <button
+                                                                onClick={() => setSelectedCategory(null)}
+                                                                className="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer select-none"
+                                                            >
+                                                                ← Back
+                                                            </button>
+                                                        </div>
+                                                        <p className="text-[10px] text-muted-foreground leading-normal">
+                                                            {cat.description}
+                                                        </p>
+                                                        <div className="flex flex-col gap-1.5 mt-2">
+                                                            {cat.questions.map((q, idx) => (
+                                                                <button
+                                                                    key={idx}
+                                                                    onClick={() => handleSuggestionClick(q)}
+                                                                    className="text-left text-[11px] px-3 py-2 rounded-xl bg-card border border-border/50 text-foreground/80 hover:bg-indigo-500/10 hover:text-indigo-500 hover:border-indigo-500/30 transition-all cursor-pointer shadow-sm select-none"
+                                                                >
+                                                                    • {q}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })()}
+                                        </div>
+                                    )}
+
+                                    <div className="border-t border-border/30 pt-3 space-y-2.5">
+                                        <div className="text-center md:text-left">
+                                            <h4 className="text-[11px] font-bold text-foreground/90">
+                                                Didn&apos;t find what you&apos;re looking for?
+                                            </h4>
+                                            <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold bg-indigo-500/10 dark:bg-indigo-500/20 px-2 py-1 rounded-lg inline-flex items-center gap-1.5 mt-1 border border-indigo-500/20 shadow-sm animate-pulse">
+                                                <Info className="w-3.5 h-3.5 text-indigo-500" />
+                                                <span>💬 Type your own question below</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -171,17 +513,24 @@ export function ChatBot() {
                         <div className="p-3 bg-muted/30 border-t border-border">
                             <form onSubmit={handleSubmit} className="flex gap-2">
                                 <input
+                                    ref={inputRef}
                                     type="text"
                                     value={input}
                                     onChange={handleInputChange}
-                                    placeholder="Ask anything... (type 'quit' to clear memory)"
+                                    placeholder="Ask anything about Sumit...or Enter quit and exit to reset chat"
                                     disabled={isLoading}
-                                    className="flex-1 text-sm rounded-xl border border-input bg-card text-foreground px-4 py-2.5 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 disabled:opacity-50 placeholder:text-muted-foreground"
+                                    className="flex-1 text-sm rounded-xl border border-indigo-500/35 hover:border-indigo-500/60 bg-card text-foreground px-4 py-2.5 shadow-[0_0_10px_rgba(99,102,241,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 disabled:opacity-50 placeholder:text-[11px] placeholder:text-muted-foreground/50 transition-all duration-200"
                                 />
                                 <Button type="submit" disabled={isLoading} size="icon" className="h-auto w-10 shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-500 cursor-pointer shadow-sm overflow-hidden p-2.5">
                                     <img src="/assets/nova.png" alt="Send" className="h-full w-full object-contain rounded-full" />
                                 </Button>
                             </form>
+                             <div className="text-[9.5px] text-indigo-600 dark:text-indigo-400 text-center mt-2.5 leading-relaxed select-none bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/20 rounded-xl p-2 font-medium flex items-center gap-1.5 justify-center shadow-sm">
+                                 <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                                 <span>
+                                     The Nova AI assistant will search across Sumit&apos;s portfolio and provide an accurate response.
+                                 </span>
+                             </div>
                         </div>
                     </CardContent>
                 </Card>

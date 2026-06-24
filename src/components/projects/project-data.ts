@@ -61,19 +61,19 @@ export const PROJECTS_DATA: Project[] = [
     title: "Kent Risengine",
     category: "Enterprise",
     categories: ["Enterprise"],
-    description: "Built an AI-based invoice parser to automate data extraction. Created React/Node.js validation layers, NGINX load balancing, and dynamic Zoho Analytics dashboards with JWT/OAuth2 role-based access.",
-    techStack: ["React", "Node.js", "Zoho Analytics", "Mistral LLM", "AWS Textract", "NGINX"],
+    description: "Built an AI-based invoice parser to automate data extraction. Created React/Node.js validation layers, serverless functions using AWS Lambda and DynamoDB, and dynamic Zoho Analytics dashboards with JWT/OAuth2 role-based access.",
+    techStack: ["React", "Node.js", "Zoho Analytics", "AWS Textract", "Lambda", "DynamoDB"],
     liveUrl: "https://risengine.com/sign-in",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
     featured: true,
-    architecture: ["High-availability NGINX", "JWT/OAuth2 RBAC", "Enterprise Data Pipelines"],
-    aiFeatures: ["OCR Data Extraction", "Mistral LLM Integration"]
+    architecture: ["JWT/OAuth2 RBAC", "Enterprise Data Pipelines"],
+    aiFeatures: ["OCR Data Extraction", "Document Parsing AI", "Mistral LLM Integration", "AWS AI Services"]
   },
   {
     id: "portfolio-ai",
     title: "Portfolio AI",
     category: "Frontend",
-    categories: ["Frontend", "Full Stack"],
+    categories: ["Frontend", "Full Stack", "GenAI"],
     description: "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone. Includes premium Framer Motion animations, ultra-responsive design, and a sleek 3D-infused tech stack orbit.",
     techStack: ["Next.js", "Tailwind CSS", "Three.js", "Framer Motion", "Gemini", "Pinecone"],
     liveUrl: "https://my-portfolio-six-gold-86.vercel.app/",
@@ -88,12 +88,12 @@ export const PROJECTS_DATA: Project[] = [
     title: "Cam Attendance",
     category: "Enterprise",
     categories: ["Enterprise"],
-    description: "Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Designed Spring Boot microservices, Angular frontend modules, and robust REST APIs.",
-    techStack: ["Spring Boot", "Angular", "REST APIs", "SQL", "Microservices"],
+    description: "Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Built browser automation using Playwright, an HTML scraper, and a text extractor to automate client data. Designed Spring Boot microservices, Angular frontend modules, and robust REST APIs.",
+    techStack: ["Spring Boot", "Angular", "REST APIs", "SQL", "Microservices", "Playwright", "HTML Scraper", "Text Extractor"],
     liveUrl: "https://www.kentcam.com/camattendance/thank-you",
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
     featured: false,
-    architecture: ["Spring Boot Microservices", "Automated Data Pipelines", "High-Concurrency APIs"],
-    aiFeatures: ["Face Recognition AI", "Computer Vision Integration"]
+    architecture: ["Spring Boot", "Automated Data Pipelines", "High-Concurrency APIs", "Playwright Automation"],
+    aiFeatures: ["Face Recognition AI", "Computer Vision Integration", "HTML Web Scraping", "Text Extraction"]
   }
 ];

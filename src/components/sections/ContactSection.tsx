@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Terminal, Send, CheckCircle2, Loader2, AlertCircle, Mail, Phone, Linkedin, Github } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -10,6 +10,16 @@ export function ContactSection() {
   const [sent, setSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [host, setHost] = useState("sumit-portfolio");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hostname = window.location.hostname;
+      if (hostname && hostname !== "localhost" && hostname !== "127.0.0.1") {
+        setHost(hostname);
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,14 +130,14 @@ export function ContactSection() {
           </div>
           <div className="flex-1 text-center flex items-center justify-center gap-2 text-slate-400 text-xs font-mono">
             <Terminal className="w-3 h-3" />
-            <span>guest@portfolio:~</span>
+            <span>visitor@{host}:~</span>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 pt-2 font-mono flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-emerald-400 text-sm flex gap-2">
-              <span className="text-purple-400">root@portfolio</span>:<span className="text-blue-400">~</span>$ prompt email
+              <span className="text-purple-400">visitor@{host}</span>:<span className="text-blue-400">~</span>$ prompt email
             </label>
             <input
               type="email"
@@ -141,7 +151,7 @@ export function ContactSection() {
 
           <div className="flex flex-col gap-2">
             <label className="text-emerald-400 text-sm flex gap-2">
-              <span className="text-purple-400">root@portfolio</span>:<span className="text-blue-400">~</span>$ prompt message
+              <span className="text-purple-400">visitor@{host}</span>:<span className="text-blue-400">~</span>$ prompt message
             </label>
             <textarea
               required

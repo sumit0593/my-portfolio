@@ -1,11 +1,9 @@
 # Sumit Kumar - Premium AI & Full Stack Portfolio
 
-![Portfolio Preview](public/preview.png) *(Add a screenshot here if desired)*
-
 Welcome to the open-source repository of my personal portfolio! This is a production-grade, highly interactive **Generative AI & Full Stack Architecture** showcase built with cutting-edge web technologies and a fully functional AI RAG (Retrieval-Augmented Generation) Chatbot.
 
 ## 🚀 Live Demo
-**[Click Here to View Live Portfolio](https://my-portfolio-six-gold-86.vercel.app/)** *(Replace with actual Vercel domain)*
+**[Click Here to View Live Portfolio](https://my-portfolio-six-gold-86.vercel.app/)**
 
 ---
 
@@ -22,7 +20,8 @@ This application is built with a modern, scalable, and responsive stack focusing
 * **Premium UI**: [Aceternity UI](https://ui.aceternity.com/) (3D Cards, Focus Cards, Images Badge, etc.)
 
 ### Backend & AI Pipeline (RAG Architecture)
-* **LLM Engine**: Google Gemini API (`gemini-1.5-flash` / `gemini-embedding-001`)
+* **LLM Engine**: Google Gemini API (`gemini-3.5-flash` / `gemini-embedding-001`) Fallback Modal added gemini-3.1-flash-light 
+  
 * **Vector Database**: Pinecone
 * **Authentication**: NextAuth.js (GitHub, Google, Credentials)
 * **API Layer**: Next.js Serverless Route Handlers

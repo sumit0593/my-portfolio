@@ -20,7 +20,7 @@ This application is built with a modern, scalable, and responsive stack focusing
 * **Premium UI**: [Aceternity UI](https://ui.aceternity.com/) (3D Cards, Focus Cards, Images Badge, etc.)
 
 ### Backend & AI Pipeline (RAG Architecture)
-* **LLM Engine**: Google Gemini API (`gemini-3.5-flash` / `gemini-embedding-001`) Fallback Modal added gemini-3.1-flash-light 
+* **LLM Engine**: Google Gemini API (`gemini-3.5-flash` / `gemini-embedding-001`) Fallback Modal added gemini-3.1-flash-lite 
   
 * **Vector Database**: Pinecone
 * **Authentication**: NextAuth.js (GitHub, Google, Credentials)

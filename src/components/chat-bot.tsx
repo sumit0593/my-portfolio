@@ -5,6 +5,7 @@ import { X, Loader2, AlertCircle, Sparkles, Maximize2, Minimize2, Info } from "l
 import { useChat } from "@ai-sdk/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useSession, signIn } from "next-auth/react";
 
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -142,7 +143,12 @@ export function ChatBot() {
 
     const { messages, status, error, sendMessage, setMessages } = useChat();
 
+    const { data: session } = useSession();
+    const isAuthenticated = !!session?.user;
+
     const isLoading = status === "submitted" || status === "streaming";
+    const userMessageCount = messages.filter((m) => m.role === "user").length;
+    const isLimitReached = !isAuthenticated && userMessageCount >= 4 && !isLoading;
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
@@ -150,10 +156,13 @@ export function ChatBot() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!input.trim() || isLoading) return;
+        if (!input.trim() || isLoading || isLimitReached) return;
 
         const text = input.trim().toLowerCase();
         if (text === "quit" || text === "exit") {
+            if (typeof window !== "undefined") {
+                localStorage.removeItem("nova_chat_messages");
+            }
             setMessages([
                 {
                     id: "init-msg",
@@ -178,6 +187,7 @@ export function ChatBot() {
     };
 
     const handleSuggestionClick = (suggestion: string) => {
+        if (isLimitReached) return;
         sendMessage({ text: suggestion });
     };
 
@@ -185,7 +195,29 @@ export function ChatBot() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    // Save messages to localStorage
     useEffect(() => {
+        if (typeof window !== "undefined" && messages.length > 0) {
+            localStorage.setItem("nova_chat_messages", JSON.stringify(messages));
+        }
+    }, [messages]);
+
+    // Load messages from localStorage on mount
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("nova_chat_messages");
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        setMessages(parsed);
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Failed to parse saved chat messages:", e);
+                }
+            }
+        }
         setMessages([
             {
                 id: "init-msg",
@@ -513,26 +545,66 @@ export function ChatBot() {
                             <div ref={messagesEndRef} />
                         </div>
                         <div className="p-3 bg-muted/30 border-t border-border">
+                            {isLimitReached && (
+                                <div className="mb-3 p-3 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-background backdrop-blur-md shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                    <div className="flex flex-col gap-2.5">
+                                        <div className="flex items-start gap-2">
+                                            <AlertCircle className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                                            <div className="space-y-0.5">
+                                                <p className="text-xs font-bold text-foreground">
+                                                    You have reached the free limit of 4 messages.
+                                                </p>
+                                                <p className="text-[10px] text-muted-foreground leading-normal">
+                                                    For more features & unlimited chatting, Please Sign In or Login as guest.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <Button
+                                                type="button"
+                                                onClick={() => {
+                                                    window.location.href = "/login";
+                                                }}
+                                                className="flex-1 text-xs py-2 h-9 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all shadow-sm cursor-pointer"
+                                            >
+                                                Sign In
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                onClick={() => {
+                                                    signIn("credentials", { callbackUrl: "/dashboard" });
+                                                }}
+                                                className="flex-1 text-xs py-2 h-9 rounded-xl border border-indigo-500/30 hover:bg-indigo-500/10 hover:text-indigo-600 text-foreground font-semibold transition-all cursor-pointer"
+                                            >
+                                                Login as Guest
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             <form onSubmit={handleSubmit} className="flex gap-2">
                                 <input
                                     ref={inputRef}
                                     type="text"
                                     value={input}
                                     onChange={handleInputChange}
-                                    placeholder="Ask anything about Sumit...or Enter quit and exit to reset chat"
-                                    disabled={isLoading}
+                                    placeholder={isLimitReached ? "Limit reached. Please sign in or continue as guest." : "Ask anything about Sumit...or Enter quit and exit to reset chat"}
+                                    disabled={isLoading || isLimitReached}
                                     className="flex-1 text-sm rounded-xl border border-indigo-500/35 hover:border-indigo-500/60 bg-card text-foreground px-4 py-2.5 shadow-[0_0_10px_rgba(99,102,241,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 disabled:opacity-50 placeholder:text-[11px] placeholder:text-muted-foreground/50 transition-all duration-200"
                                 />
-                                <Button type="submit" disabled={isLoading} size="icon" className="h-auto w-10 shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-500 cursor-pointer shadow-sm overflow-hidden p-2.5">
+                                <Button type="submit" disabled={isLoading || isLimitReached} size="icon" className="h-auto w-10 shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-500 cursor-pointer shadow-sm overflow-hidden p-2.5">
                                     <img src="/assets/nova.png" alt="Send" className="h-full w-full object-contain rounded-full" />
                                 </Button>
                             </form>
-                             <div className="text-[9.5px] text-indigo-600 dark:text-indigo-400 text-center mt-2.5 leading-relaxed select-none bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/20 rounded-xl p-2 font-medium flex items-center gap-1.5 justify-center shadow-sm">
-                                 <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                                 <span>
-                                     The Nova AI assistant will search across Sumit&apos;s portfolio and provide an accurate response.
-                                 </span>
-                             </div>
+                            {!isLimitReached && (
+                                <div className="text-[9.5px] text-indigo-600 dark:text-indigo-400 text-center mt-2.5 leading-relaxed select-none bg-indigo-500/10 dark:bg-indigo-500/20 border border-indigo-500/20 rounded-xl p-2 font-medium flex items-center gap-1.5 justify-center shadow-sm">
+                                    <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                                    <span>
+                                        The Nova AI assistant will search across Sumit&apos;s portfolio and provide an accurate response.
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </CardContent>
                 </Card>

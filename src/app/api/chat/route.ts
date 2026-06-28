@@ -1,11 +1,13 @@
 import { ai, CHAT_MODEL } from "@/lib/gemini";
 import { retrieveHybridContext, buildOrchestratedPrompt, conversationMemory } from "@/lib/orchestrator";
 import { requireAuth } from "@/lib/api-auth";
-import { chatLimiter, getRateLimitToken } from "@/lib/rate-limit";
+import { chatLimiter, getRateLimitToken, guestChatCache } from "@/lib/rate-limit";
 import { chatRequestSchema } from "@/lib/validations";
 import { escapeHtml, sanitizePromptInput, sanitizeAIOutput } from "@/lib/security";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { auth } from "@/auth";
+import { cookies } from "next/headers";
 
 export const maxDuration = 60;
 
@@ -69,8 +71,8 @@ const CHAT_TOOLS = [
 export async function POST(req: Request) {
   try {
     // Authentication check
-    const { error: authError } = await requireAuth();
-    if (authError) return authError;
+    const session = await auth();
+    const isAuthenticated = !!session?.user;
 
     // Rate limiting
     const token = getRateLimitToken(req);
@@ -94,6 +96,39 @@ export async function POST(req: Request) {
 
     const { messages } = parseResult.data;
 
+    let guestSessionId = "";
+    if (!isAuthenticated) {
+      // Retrieve or set guest session ID cookie
+      const cookieStore = await cookies();
+      let cookieId = cookieStore.get("guest-chat-session-id")?.value;
+      if (!cookieId) {
+        cookieId = crypto.randomUUID();
+        cookieStore.set("guest-chat-session-id", cookieId, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24 * 30, // 30 days
+          path: "/",
+        });
+      }
+      guestSessionId = cookieId;
+
+      // 1. Verify the client-submitted messages count
+      const clientUserMsgCount = messages.filter((m) => m.role === "user").length;
+      
+      // 2. Verify server-side cache message count
+      const currentCount = guestChatCache.get(guestSessionId) || 0;
+      if (currentCount >= 4 || clientUserMsgCount > 4) {
+        return NextResponse.json(
+          { error: "You have reached the free limit of 4 messages." },
+          { status: 403 }
+        );
+      }
+
+      // Increment count on server
+      guestChatCache.set(guestSessionId, currentCount + 1);
+    }
+
     const lastUserMessage = messages.filter((m) => m.role === "user").pop();
     let userQuery = "";
     if (lastUserMessage) {
@@ -108,7 +143,9 @@ export async function POST(req: Request) {
     // Sanitize user input to mitigate prompt injection
     const sanitizedQuery = sanitizePromptInput(userQuery);
 
-    const sessionId = req.headers.get("x-session-id") || "default-session";
+    const sessionId = isAuthenticated 
+      ? (req.headers.get("x-session-id") || "default-session")
+      : guestSessionId;
 
     // Retrieve via Orchestrator (Pinecone + MiniSearch)
     const { chunks: retrievedChunks, intent } = await retrieveHybridContext(sanitizedQuery, 5);

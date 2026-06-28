@@ -98,3 +98,20 @@ export function getRateLimitToken(req: Request): string {
   }
   return "anonymous";
 }
+
+// Global-safe guest message limit cache (survives HMR in Next.js development)
+const globalForGuestChat = globalThis as unknown as {
+  guestChatCache?: LRUCache<string, number>;
+};
+
+export const guestChatCache =
+  globalForGuestChat.guestChatCache ||
+  new LRUCache<string, number>({
+    max: 10000,
+    ttl: 1000 * 60 * 60 * 24 * 30, // Keep count for 30 days
+  });
+
+if (process.env.NODE_ENV !== "production") {
+  globalForGuestChat.guestChatCache = guestChatCache;
+}
+

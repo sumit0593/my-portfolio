@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /tools/
+Disallow: /login
+
+Sitemap: https://my-portfolio-six-gold-86.vercel.app/sitemap.xml

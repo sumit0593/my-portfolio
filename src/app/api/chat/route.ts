@@ -1,5 +1,10 @@
 import { ai, CHAT_MODEL } from "@/lib/gemini";
 import { retrieveHybridContext, buildOrchestratedPrompt, conversationMemory } from "@/lib/orchestrator";
+import { requireAuth } from "@/lib/api-auth";
+import { chatLimiter, getRateLimitToken } from "@/lib/rate-limit";
+import { chatRequestSchema } from "@/lib/validations";
+import { escapeHtml, sanitizePromptInput, sanitizeAIOutput } from "@/lib/security";
+import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export const maxDuration = 60;
@@ -13,18 +18,22 @@ async function sendEmailViaNodemailer(email: string, message: string) {
     },
   });
 
+  // Escape user input to prevent HTML injection in emails
+  const safeEmail = escapeHtml(email);
+  const safeMessage = escapeHtml(message);
+
   await transporter.sendMail({
     from: `"Portfolio Contact" <${process.env.SMTP_EMAIL}>`,
     to: process.env.CONTACT_EMAIL || process.env.SMTP_EMAIL,
     replyTo: email,
-    subject: `Portfolio Contact from ${email} (via AI Assistant)`,
+    subject: `Portfolio Contact from ${safeEmail} (via AI Assistant)`,
     text: `From: ${email}\n\n${message}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #6366f1;">New Portfolio Contact (via AI Assistant)</h2>
-        <p><strong>From:</strong> ${email}</p>
+        <p><strong>From:</strong> ${safeEmail}</p>
         <hr style="border: 1px solid #e2e8f0;" />
-        <p style="white-space: pre-wrap; color: #334155;">${message}</p>
+        <p style="white-space: pre-wrap; color: #334155;">${safeMessage}</p>
         <hr style="border: 1px solid #e2e8f0;" />
         <p style="color: #94a3b8; font-size: 12px;">Sent from your portfolio AI assistant chatbot</p>
       </div>
@@ -59,28 +68,55 @@ const CHAT_TOOLS = [
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
+    // Authentication check
+    const { error: authError } = await requireAuth();
+    if (authError) return authError;
 
-    const lastUserMessage = messages.filter((m: any) => m.role === "user").pop();
+    // Rate limiting
+    const token = getRateLimitToken(req);
+    const { success: withinLimit } = chatLimiter.check(15, token); // 15 req/min
+    if (!withinLimit) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Please try again later." },
+        { status: 429 }
+      );
+    }
+
+    // Validate request body
+    const body = await req.json();
+    const parseResult = chatRequestSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: "Invalid request format.", details: parseResult.error.flatten() },
+        { status: 400 }
+      );
+    }
+
+    const { messages } = parseResult.data;
+
+    const lastUserMessage = messages.filter((m) => m.role === "user").pop();
     let userQuery = "";
     if (lastUserMessage) {
       userQuery = lastUserMessage.content ||
-        (Array.isArray(lastUserMessage.parts) ? lastUserMessage.parts.map((p: any) => p.text).join(" ") : "");
+        (Array.isArray(lastUserMessage.parts) ? lastUserMessage.parts.map((p) => p.text || "").join(" ") : "");
     }
 
     if (!userQuery.trim()) {
       return new Response(JSON.stringify({ error: "Empty query received." }), { status: 400 });
     }
 
+    // Sanitize user input to mitigate prompt injection
+    const sanitizedQuery = sanitizePromptInput(userQuery);
+
     const sessionId = req.headers.get("x-session-id") || "default-session";
 
     // Retrieve via Orchestrator (Pinecone + MiniSearch)
-    const { chunks: retrievedChunks, intent } = await retrieveHybridContext(userQuery, 5);
+    const { chunks: retrievedChunks, intent } = await retrieveHybridContext(sanitizedQuery, 5);
     const conversationHistory = conversationMemory.getHistory(sessionId);
 
-    const systemPrompt = buildOrchestratedPrompt(retrievedChunks, conversationHistory, userQuery, intent);
+    const systemPrompt = buildOrchestratedPrompt(retrievedChunks, conversationHistory, sanitizedQuery, intent);
 
-    conversationMemory.addMessage(sessionId, { role: "user", content: userQuery });
+    conversationMemory.addMessage(sessionId, { role: "user", content: sanitizedQuery });
 
     // AbortController handling for stream cancellation
     const abortController = new AbortController();
@@ -90,7 +126,7 @@ export async function POST(req: Request) {
 
     const stream = await ai.models.generateContentStream({
       model: CHAT_MODEL,
-      contents: userQuery,
+      contents: sanitizedQuery,
       config: {
         systemInstruction: systemPrompt + "\nIf the user wants to leave a message, send a message, or contact Sumit, you can initiate the message send by calling the `send_message_by_guest` tool. You must ask the user for their email and message if they haven't provided them. Make sure to call this tool to send the message.",
         temperature: 0.15,
@@ -128,7 +164,7 @@ export async function POST(req: Request) {
                       send({ type: "text-delta", id: textId, delta: "\n\n*System: Message sent successfully to Sumit on your behalf!* 🚀" });
                       fullResponse += "\n\n*System: Message sent successfully to Sumit on your behalf!* 🚀";
                     } catch (mailErr: any) {
-                      console.error("Failed to send email inside tool:", mailErr);
+                      console.error("Failed to send email inside tool:", mailErr?.message);
                       send({ type: "text-delta", id: textId, delta: "\n\n*System: Failed to send your message. Please try again.*" });
                     }
                   }
@@ -138,8 +174,10 @@ export async function POST(req: Request) {
 
             const text = chunk.text ?? "";
             if (text) {
-              fullResponse += text;
-              send({ type: "text-delta", id: textId, delta: text });
+              // Sanitize AI output before sending to client
+              const safeText = sanitizeAIOutput(text);
+              fullResponse += safeText;
+              send({ type: "text-delta", id: textId, delta: safeText });
             }
           }
         } catch {
@@ -171,6 +209,10 @@ export async function POST(req: Request) {
       },
     });
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || "Failed to process chat request." }), { status: 500 });
+    console.error("Chat API Error:", err?.message);
+    return new Response(
+      JSON.stringify({ error: "Failed to process chat request." }),
+      { status: 500 }
+    );
   }
 }

@@ -1,12 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ai, CHAT_MODEL } from '@/lib/gemini'
+import { requireAuth } from '@/lib/api-auth'
+import { analyzeLimiter, getRateLimitToken } from '@/lib/rate-limit'
+import { analyzeSchema } from '@/lib/validations'
 import fs from 'fs/promises'
 import path from 'path'
 
 export async function POST(req: NextRequest) {
   try {
+    // Authentication check
+    const { error: authError } = await requireAuth();
+    if (authError) return authError;
+
+    // Rate limiting — max 10 requests per minute
+    const token = getRateLimitToken(req);
+    const { success: withinLimit } = analyzeLimiter.check(10, token);
+    if (!withinLimit) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
+    // Validate input
     const body = await req.json()
-    const { jd = '', tool = 'resume-analyzer' } = body
+    const parseResult = analyzeSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: 'Invalid input.', details: parseResult.error.flatten() },
+        { status: 400 }
+      );
+    }
+
+    const { jd, tool } = parseResult.data;
 
     // Load the user's resume
     const resumePath = path.join(process.cwd(), 'resume.txt')
@@ -116,9 +142,9 @@ export async function POST(req: NextRequest) {
           }
           controller.close();
         } catch (err: any) {
-          console.error("Stream error:", err);
+          console.error("Stream error:", err?.message);
           
-          // Try to handle quota errors nicely during stream
+          // Handle quota errors nicely during stream
           if (err.message?.includes("429") || err.message?.includes("quota")) {
              controller.enqueue(new TextEncoder().encode("\n\n*Error: Gemini API rate limit exceeded. Please try again later.*"));
           } else {
@@ -136,12 +162,18 @@ export async function POST(req: NextRequest) {
       }
     })
   } catch (err: any) {
-    console.error("API Error:", err);
+    console.error("Analyze API Error:", err?.message);
     
     if (err.message?.includes("429") || err.message?.includes("quota")) {
-       return NextResponse.json({ result: "Gemini API rate limit exceeded. Please try again later." }, { status: 429 })
+       return NextResponse.json(
+         { result: "Gemini API rate limit exceeded. Please try again later." },
+         { status: 429 }
+       );
     }
     
-    return NextResponse.json({ result: "We are currently down due to traffic. Please wait some time." }, { status: 500 })
+    return NextResponse.json(
+      { result: "We are currently experiencing high traffic. Please try again later." },
+      { status: 500 }
+    );
   }
 }

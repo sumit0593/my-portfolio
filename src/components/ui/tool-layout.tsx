@@ -5,6 +5,7 @@ import { Loader2, ArrowLeft, CheckCircle2, Lock, LucideIcon } from "lucide-react
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import rehypeSanitize from "rehype-sanitize";
 import Link from "next/link";
 import Navbar from "@/app/components/navbar";
 import { Container } from "@/components/ui/container";
@@ -157,7 +158,7 @@ export default function ToolLayout({
               {/* Response bubble styled like chatbot */}
               <div className="bg-card border border-border rounded-2xl rounded-tl-sm p-6 md:p-8 shadow-lg">
                 <div className="prose prose-slate dark:prose-invert max-w-none text-sm md:text-base prose-headings:font-bold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal break-words">
-                  <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                  <Markdown remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeSanitize]}>
                     {response}
                   </Markdown>
                 </div>

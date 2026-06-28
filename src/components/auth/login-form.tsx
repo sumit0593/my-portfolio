@@ -7,8 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
@@ -76,44 +74,8 @@ export function LoginForm({
                   Login with Google
                 </Button>
               </div>
-              <div className="relative flex items-center">
-                <div className="flex-grow border-t border-border"></div>
-                <span className="mx-4 bg-card px-2 text-sm text-muted-foreground">
-                  Or continue with
-                </span>
-                <div className="flex-grow border-t border-border"></div>
-              </div>
-              <div className="grid gap-6">
-                <div className="grid gap-3">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    required
-                  />
-                </div>
-                <div className="grid gap-3">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <a
-                      href="#"
-                      className="ml-auto text-sm underline-offset-4 hover:underline"
-                    >
-                      Forgot your password?
-                    </a>
-                  </div>
-                  <Input id="password" type="password" required />
-                </div>
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
-              </div>
-              <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
-                  Sign up
-                </a>
+              <div className="text-center text-xs text-muted-foreground mt-2">
+                <p>Sign in using one of the options above to access the dashboard and AI tools.</p>
               </div>
             </div>
           </form>

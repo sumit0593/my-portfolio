@@ -5,6 +5,7 @@ import { Loader2, ArrowLeft, FileSearch, CheckCircle2, Lock } from "lucide-react
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import rehypeSanitize from "rehype-sanitize";
 import Link from "next/link";
 import Navbar from "@/app/components/navbar";
 import { Container } from "@/components/ui/container";
@@ -129,7 +130,7 @@ export default function ResumeAnalyzer() {
                 Analysis Results
               </h3>
               <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal">
-                <Markdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                <Markdown remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeSanitize]}>
                   {response}
                 </Markdown>
               </div>

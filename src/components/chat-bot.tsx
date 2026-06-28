@@ -9,6 +9,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import rehypeSanitize from "rehype-sanitize";
 
 type Category = {
     id: string;
@@ -271,6 +272,7 @@ export function ChatBot() {
                                         <div className="prose prose-sm dark:prose-invert max-w-none break-words">
                                             <Markdown
                                                 remarkPlugins={[remarkGfm, remarkBreaks]}
+                                                rehypePlugins={[rehypeSanitize]}
                                                 components={{
                                                     a: ({ href, children, ...props }) => {
                                                         if (!href) {

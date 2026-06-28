@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { globalCache } from "@/lib/cache";
 import { ai, CHAT_MODEL } from "@/lib/gemini";
+import { requireAuth } from "@/lib/api-auth";
+import { analyzeLimiter, getRateLimitToken } from "@/lib/rate-limit";
+import { recruiterSummarySchema } from "@/lib/validations";
 import fs from "fs";
 import path from "path";
-
-
 
 async function getBaseContext() {
   const metaPath = path.join(process.cwd(), "data", "metadata", "metadata.json");
@@ -16,7 +17,31 @@ async function getBaseContext() {
 
 export async function POST(req: Request) {
   try {
-    const { role, customJD } = await req.json();
+    // Authentication check
+    const { error: authError } = await requireAuth();
+    if (authError) return authError;
+
+    // Rate limiting — max 10 requests per minute
+    const token = getRateLimitToken(req);
+    const { success: withinLimit } = analyzeLimiter.check(10, token);
+    if (!withinLimit) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Please try again later." },
+        { status: 429 }
+      );
+    }
+
+    // Validate input
+    const body = await req.json();
+    const parseResult = recruiterSummarySchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: "Invalid input.", details: parseResult.error.flatten() },
+        { status: 400 }
+      );
+    }
+
+    const { role, customJD } = parseResult.data;
 
     const roleKey = role?.toLowerCase() || "general";
     const cacheKey = `summary-${roleKey}-${customJD ? "custom" : "standard"}`;
@@ -51,6 +76,10 @@ Keep it to 3-4 short paragraphs. Highlight specific impact metrics and top match
 
     return NextResponse.json({ success: true, summary, cached: false });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || "Failed to generate summary." }, { status: 500 });
+    console.error("Recruiter Summary API Error:", error?.message);
+    return NextResponse.json(
+      { error: "Failed to generate summary." },
+      { status: 500 }
+    );
   }
 }

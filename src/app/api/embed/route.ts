@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ensureIndex, getPortfolioIndex, PORTFOLIO_NAMESPACE, PineconeMetadata } from "@/lib/pinecone";
 import { generateEmbeddings, chunkText } from "@/lib/embeddings";
 import { minisearchManager, SearchDocument } from "@/lib/search/minisearch";
+import { embedLimiter, getRateLimitToken } from "@/lib/rate-limit";
 import fs from "fs";
 import path from "path";
 
@@ -65,13 +66,27 @@ function processMetadata(): SearchDocument[] {
     });
   }
 
-  // Add more structured chunking for metadata here if needed (e.g. skills, services)
-
   return docs;
 }
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
+    // H-05: Protect with admin API key — this is a destructive admin-only operation
+    const adminKey = req.headers.get("x-admin-key");
+    if (!process.env.ADMIN_EMBED_KEY || adminKey !== process.env.ADMIN_EMBED_KEY) {
+      return NextResponse.json({ error: "Forbidden. Admin API key required." }, { status: 403 });
+    }
+
+    // Rate limiting — max 2 per hour
+    const token = getRateLimitToken(req);
+    const { success: withinLimit } = embedLimiter.check(2, token);
+    if (!withinLimit) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. This endpoint is limited to 2 calls per hour." },
+        { status: 429 }
+      );
+    }
+
     const docs = [...processProfileDir(), ...processMetadata()];
 
     if (docs.length === 0) {
@@ -133,9 +148,9 @@ export async function POST() {
     });
 
   } catch (error: any) {
-    console.error("Embedding Error:", error);
+    console.error("Embedding Error:", error?.message);
     return NextResponse.json(
-      { error: error.message || "Unknown error during embedding pipeline." },
+      { error: "Unknown error during embedding pipeline." },
       { status: 500 }
     );
   }

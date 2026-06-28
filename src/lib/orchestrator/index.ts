@@ -3,6 +3,7 @@ import { generateEmbeddings } from "../embeddings";
 import { minisearchManager } from "../search/minisearch";
 import { classifyQuery, QueryIntent } from "../router/queryClassifier";
 import { globalCache } from "../cache";
+import { LRUCache } from "lru-cache";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -12,7 +13,11 @@ export interface ChatMessage {
 const MAX_MEMORY_MESSAGES = 20;
 
 class ConversationMemoryStore {
-  private store: Map<string, ChatMessage[]> = new Map();
+  // M-04: Bounded LRU store to prevent memory exhaustion from unbounded sessions
+  private store = new LRUCache<string, ChatMessage[]>({
+    max: 1000,                   // Max 1000 concurrent sessions
+    ttl: 1000 * 60 * 60,        // 1 hour TTL per session
+  });
 
   getHistory(sessionId: string): ChatMessage[] {
     return this.store.get(sessionId) || [];
@@ -204,7 +209,7 @@ export function buildOrchestratedPrompt(
   } else if (intent === "project_query") {
     intentInstructions = "Highlight the technical architecture, business impact, and AI capabilities of the projects mentioned.";
   } else if (intent === "contact_query") {
-    intentInstructions = "Provide his email (sumitsumitsumit163@gmail.com), phone (7011676185), and LinkedIn/GitHub links.";
+    intentInstructions = "Provide contact information ONLY from the retrieved context above. Include LinkedIn and GitHub links if available in the data.";
   }
 
   return `You are "Nova" — a Recruiter-Grade AI Assistant embedded in Sumit Kumar's portfolio.

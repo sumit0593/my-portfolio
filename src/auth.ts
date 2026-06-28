@@ -2,7 +2,6 @@ import NextAuth from "next-auth"
 import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   providers: [
@@ -18,9 +17,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       name: "Guest",
       credentials: {},
       async authorize() {
-        return { id: "guest", name: "Guest User", email: "guest@example.com", image: "" }
+        // Generate unique guest ID per session to prevent session sharing
+        return {
+          id: `guest-${globalThis.crypto.randomUUID()}`,
+          name: "Guest User",
+          email: null,
+          image: "",
+          role: "guest",
+        }
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      // Persist role from user object into the JWT token
+      if (user) {
+        token.role = (user as any).role || "user";
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Expose role on the session object for client & server access
+      if (session.user) {
+        (session.user as any).role = token.role || "user";
+      }
+      return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Prevent open redirect attacks — only allow relative URLs or same-origin
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
+  },
 })

@@ -401,6 +401,13 @@ export function ChatBot() {
         };
     }, [refreshSession]);
 
+    // Refresh session on stream errors (e.g., rate limits or lockouts) to sync client LOCKED state
+    useEffect(() => {
+        if (error) {
+            refreshSession();
+        }
+    }, [error, refreshSession]);
+
     const { data: session } = useSession();
     const isAuthenticated = !!session?.user;
 

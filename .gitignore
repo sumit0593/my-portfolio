@@ -46,5 +46,6 @@ dev-output.log
 
 # Generated Data & Indices
 data/processed/minisearch-index.json
+data/db/
 error.json
 models.json

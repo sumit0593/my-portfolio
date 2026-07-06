@@ -22,7 +22,7 @@ const INTENT_PATTERNS: Record<QueryIntent, RegExp[]> = {
   architecture_query: [/architecture/i, /system design/i, /scalability/i, /microservices/i, /scale/i],
   hiring_query: [/hire/i, /available/i, /freelance/i, /contract/i, /full-time/i, /job/i],
   service_query: [/services?/i, /offer/i, /consulting/i, /can you build/i, /help me/i],
-  contact_query: [/contact/i, /email/i, /phone/i, /reach/i, /linkedin/i, /github/i],
+  contact_query: [/contact/i, /email/i, /phone/i, /reach/i, /linkedin/i, /github/i, /number/i, /mobile/i, /call/i, /whatsapp/i, /telegram/i, /\+91/],
   ai_query: [/ai/i, /llm/i, /rag/i, /agent/i, /prompt/i, /gemini/i, /pinecone/i, /vector/i],
   general: []
 };

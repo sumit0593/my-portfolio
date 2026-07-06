@@ -18,7 +18,7 @@ TECHNICAL SKILLS
 
 PROFESSIONAL EXPERIENCE
 
-Software Engineer, Kent RO Systems Pvt Ltd 	 Apr 2024 — Present
+Software Engineer, Kent RO Systems Ltd. (KentCamEye Division) 	 Apr 2024 — Present
 •	Integrated OCR-based invoice parsing to automate data extraction and validation, reducing manual effort and improving accuracy. 
 •	Engineered serverless backend APIs using AWS Lambda and DynamoDB to handle high-concurrency workloads.
 •	Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters, enhancing decision-making and data accessibility across departments. 

@@ -41,6 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Expose role on the session object for client & server access
       if (session.user) {
         (session.user as any).role = token.role || "user";
+        (session.user as any).id = token.sub;
       }
       return session;
     },

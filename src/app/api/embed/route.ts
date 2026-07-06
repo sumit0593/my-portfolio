@@ -66,6 +66,90 @@ function processMetadata(): SearchDocument[] {
     });
   }
 
+  // Certifications
+  if (meta.certifications) {
+    meta.certifications.forEach((cert: any, i: number) => {
+      let pdfUrlText = "";
+      if (cert.pdf_url) pdfUrlText = `Link: ${cert.pdf_url}`;
+      if (cert.pdf_urls) {
+        pdfUrlText = `Full Certificate: ${cert.pdf_urls["Full Certificate"] || ""} | Prompt Certificate: ${cert.pdf_urls["Prompt Engineering"]} | RAG Certificate: ${cert.pdf_urls["RAG Engineering"]}`;
+      }
+      docs.push({
+        id: `meta-cert-${i}`,
+        text: `Certification: ${cert.title}. Institution: ${cert.institution}. Duration: ${cert.duration}. ${pdfUrlText}`,
+        title: cert.title,
+        source: "metadata.json",
+        type: "certification",
+        section: "certifications",
+        recruiter_keywords: [cert.title, cert.institution, "certificate", "certification", "credential"],
+        semantic_tags: ["certification", "certificates", "credentials"],
+        _raw: cert
+      } as any);
+    });
+  }
+
+  // Contact details
+  if (meta.personal_info && meta.personal_info.contact) {
+    const contact = meta.personal_info.contact;
+    const phoneNum = meta.personal_info.phone || "";
+    const emailAddr = meta.personal_info.email || "";
+    docs.push({
+      id: `meta-contact-0`,
+      text: `Contact Information for Sumit Kumar:
+- Phone / Mobile Number: ${phoneNum} (reachable via WhatsApp, call, or messaging)
+- Email Address: ${emailAddr} (primary email)
+- GitHub Profile: ${contact.github}
+- LinkedIn Profile: ${contact.linkedin}
+- LeetCode Profile: ${contact.leetcode || ""}
+- Portfolio Website: ${contact.portfolio}
+- Resume PDF Download: ${contact.resume_pdf || ""}
+- Resume DOCX Download: ${contact.resume_docx || ""}`,
+      title: "Contact Info & Links",
+      source: "metadata.json",
+      type: "contact",
+      section: "personal_info",
+      recruiter_keywords: ["contact", "phone", "mobile", "number", "email", "mail", "gmail", "github", "linkedin", "leetcode", "resume", "connect", "reach"],
+      semantic_tags: ["contact", "personal_info", "socials", "links"],
+      _raw: meta.personal_info
+    } as any);
+  }
+
+  // Experience
+  if (meta.experience) {
+    meta.experience.forEach((exp: any, i: number) => {
+      docs.push({
+        id: `meta-experience-${i}`,
+        text: `Experience: ${exp.role} at ${exp.company} (Duration: ${exp.duration}, Location: ${exp.location}).
+Highlights:
+${exp.highlights.map((h: string) => `- ${h}`).join("\n")}
+Tech Stack: ${exp.tags ? exp.tags.join(", ") : ""}`,
+        title: `${exp.role} at ${exp.company}`,
+        source: "metadata.json",
+        type: "experience",
+        section: "experience",
+        recruiter_keywords: [exp.company, exp.role, "work", "job", "career", "employment", ...(exp.tags || [])],
+        semantic_tags: ["experience", "employment", "career", "jobs"],
+        _raw: exp
+      } as any);
+    });
+  }
+
+  // Skills
+  if (meta.skills) {
+    docs.push({
+      id: "meta-skills-0",
+      text: `Technical Skills and Tech Stack of Sumit Kumar:
+${Object.entries(meta.skills).map(([category, list]: [string, any]) => `- ${category.replace(/_/g, ' ')}: ${list.join(", ")}`).join("\n")}`,
+      title: "Technical Skills & Competencies",
+      source: "metadata.json",
+      type: "skills",
+      section: "skills",
+      recruiter_keywords: ["skills", "technologies", "languages", "frameworks", "databases", "libraries", "tools", ...Object.values(meta.skills).flat() as string[]],
+      semantic_tags: ["skills", "technologies", "expertise"],
+      _raw: meta.skills
+    } as any);
+  }
+
   return docs;
 }
 

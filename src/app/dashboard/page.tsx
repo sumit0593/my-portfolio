@@ -431,7 +431,7 @@ export default function Dashboard() {
                           </CardTitle>
                           <Badge variant="secondary" className="shrink-0">Apr 2024 - Present</Badge>
                         </div>
-                        <p className="text-primary font-medium text-sm mt-1">Kent RO Systems Pvt Ltd</p>
+                        <p className="text-primary font-medium text-sm mt-1">Kent RO Systems Ltd. (KentCamEye Division)</p>
                       </CardHeader>
                       <CardContent className="flex-1">
                         <ul className="text-sm text-muted-foreground space-y-2 list-disc pl-4 marker:text-primary break-words">
@@ -709,7 +709,7 @@ export default function Dashboard() {
                         <Badge className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-semibold text-xs py-0.5 px-2.5 backdrop-blur-md">IIT Mandi - TIH</Badge>
                       </div>
                       <div className="relative aspect-[1.41] w-full bg-muted/10 border-b border-border/40 flex items-center justify-center overflow-hidden min-h-[220px]">
-                        <PDFPreview url="/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf" className="absolute inset-0 w-full h-full" onZoom={setSelectedImage} />
+                        <PDFPreview url="/gallery/certification/certificate_GenAI_Multi-Agent_Systems.pdf" className="absolute inset-0 w-full h-full" onZoom={setSelectedImage} />
                       </div>
                       <div className="p-5 sm:p-6 flex flex-col flex-1 relative z-20">
                         <div className="flex-1 space-y-3">
@@ -732,18 +732,26 @@ export default function Dashboard() {
                             ))}
                           </div>
                         </div>
-                        <div className="mt-5 pt-4 border-t border-border/30 flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-row gap-3 justify-between items-stretch">
-                          <div className="flex items-center gap-2 bg-muted/20 hover:bg-muted/40 p-2 rounded-lg border border-border/30 flex-1 transition-all group/row">
+                        <div className="mt-5 pt-4 border-t border-border/30 flex flex-col gap-3 justify-between items-stretch">
+                          <div className="flex items-center gap-2 bg-indigo-500/5 hover:bg-indigo-500/10 p-2 rounded-lg border border-indigo-500/20 transition-all group/row flex-1">
                             <Award className="w-5 h-5 text-indigo-500 shrink-0 ml-2" />
                             <Button asChild variant="ghost" className="text-primary hover:text-primary-foreground hover:bg-primary gap-1.5 h-8 text-[11px] font-semibold flex-1 justify-center px-2">
-                              <a href="/gallery/certification/certificate_prompt_engineering.pdf" target="_blank" rel="noopener noreferrer">Prompt Cert <ExternalLink className="w-3 h-3" /></a>
+                              <a href="/gallery/certification/certificate_GenAI_Multi-Agent_Systems.pdf" target="_blank" rel="noopener noreferrer">Full PG Cert <ExternalLink className="w-3 h-3" /></a>
                             </Button>
                           </div>
-                          <div className="flex items-center gap-2 bg-muted/20 hover:bg-muted/40 p-2 rounded-lg border border-border/30 flex-1 transition-all group/row">
-                            <Award className="w-5 h-5 text-purple-500 shrink-0 ml-2" />
-                            <Button asChild variant="ghost" className="text-primary hover:text-primary-foreground hover:bg-primary gap-1.5 h-8 text-[11px] font-semibold flex-1 justify-center px-2">
-                              <a href="/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf" target="_blank" rel="noopener noreferrer">RAG Cert <ExternalLink className="w-3 h-3" /></a>
-                            </Button>
+                          <div className="grid grid-cols-2 gap-3 flex-1">
+                            <div className="flex items-center gap-2 bg-muted/20 hover:bg-muted/40 p-2 rounded-lg border border-border/30 transition-all group/row">
+                              <Award className="w-4 h-4 text-zinc-500 shrink-0 ml-1" />
+                              <Button asChild variant="ghost" className="text-primary hover:text-primary-foreground hover:bg-primary gap-1.5 h-7 text-[10px] font-semibold flex-1 justify-center px-1">
+                                <a href="/gallery/certification/certificate_prompt_engineering.pdf" target="_blank" rel="noopener noreferrer">Prompt Cert <ExternalLink className="w-3 h-3" /></a>
+                              </Button>
+                            </div>
+                            <div className="flex items-center gap-2 bg-muted/20 hover:bg-muted/40 p-2 rounded-lg border border-border/30 transition-all group/row">
+                              <Award className="w-4 h-4 text-purple-500 shrink-0 ml-1" />
+                              <Button asChild variant="ghost" className="text-primary hover:text-primary-foreground hover:bg-primary gap-1.5 h-7 text-[10px] font-semibold flex-1 justify-center px-1">
+                                <a href="/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf" target="_blank" rel="noopener noreferrer">RAG Cert <ExternalLink className="w-3 h-3" /></a>
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>

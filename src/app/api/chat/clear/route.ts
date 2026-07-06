@@ -1,23 +1,13 @@
 import { NextResponse } from "next/server";
 import { conversationMemory } from "@/lib/orchestrator";
-import { auth } from "@/auth";
-import { cookies } from "next/headers";
+import { getOrCreateSession } from "@/lib/session";
+import { db } from "@/lib/db";
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    const session = await auth();
-    const isAuthenticated = !!session?.user;
-
-    let sessionId = req.headers.get("x-session-id") || "default-session";
-    if (!isAuthenticated) {
-      const cookieStore = await cookies();
-      const cookieId = cookieStore.get("guest-chat-session-id")?.value;
-      if (cookieId) {
-        sessionId = cookieId;
-      }
-    }
-
-    conversationMemory.clearSession(sessionId);
+    const { dbSession } = await getOrCreateSession();
+    db.clearSessionMessages(dbSession.id);
+    conversationMemory.clearSession(dbSession.sessionToken);
 
     return NextResponse.json({ success: true, message: "Session memory cleared." });
   } catch (error: any) {

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +10,16 @@ import {
 } from "@/components/ui/card";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { AlertCircle } from "lucide-react";
+
+// Helper to read cookie on client side
+const getCookie = (name: string) => {
+  if (typeof document === "undefined") return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
+  return null;
+};
 
 export function LoginForm({
   className,
@@ -16,6 +27,43 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const guestLimitReached = searchParams.get("guestLimitReached") === "true";
+  const expiresIn = searchParams.get("expiresIn") || "";
+
+  const [isLockedOut, setIsLockedOut] = useState(false);
+  const [lockoutTimeLeft, setLockoutTimeLeft] = useState("");
+
+  useEffect(() => {
+    const checkLockout = () => {
+      const lockoutUntilStr = getCookie("guest-chat-lockout-until");
+      if (lockoutUntilStr) {
+        const lockoutTime = new Date(lockoutUntilStr).getTime();
+        const diff = lockoutTime - Date.now();
+        if (diff > 0) {
+          setIsLockedOut(true);
+          const minutes = Math.floor(diff / 60000);
+          const seconds = Math.floor((diff % 60000) / 1000);
+          setLockoutTimeLeft(`${minutes}m ${seconds}s`);
+          return true;
+        }
+      }
+      setIsLockedOut(false);
+      return false;
+    };
+
+    // Run immediately on mount
+    checkLockout();
+
+    const interval = setInterval(() => {
+      if (!checkLockout()) {
+        clearInterval(interval);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isGuestDisabled = guestLimitReached || isLockedOut;
+  const displayExpiresIn = expiresIn || lockoutTimeLeft;
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -29,21 +77,32 @@ export function LoginForm({
         <CardContent>
           <form>
             <div className="grid gap-6">
+              {isGuestDisabled && (
+                <div className="flex items-start gap-2.5 p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400">
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-xs font-bold">Guest limit reached (8 messages)</p>
+                    <p className="text-[11px] opacity-80">Sign in with GitHub or Google to continue chatting without limits{displayExpiresIn ? `, or wait for the session to expire (${displayExpiresIn}).` : '.'}</p>
+                  </div>
+                </div>
+              )}
               <div className="flex flex-col gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => signIn("credentials", { callbackUrl })}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                      d="M12 14c3.866 0 7 1.343 7 3v2H5v-2c0-1.657 3.134-3 7-3zm0-4a3 3 0 110-6 3 3 0 010 6z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Login as Guest
-                </Button>
+                {!isGuestDisabled && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => signIn("credentials", { callbackUrl })}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path
+                        d="M12 14c3.866 0 7 1.343 7 3v2H5v-2c0-1.657 3.134-3 7-3zm0-4a3 3 0 110-6 3 3 0 010 6z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Login as Guest
+                  </Button>
+                )}
                 <Button
                   type="button"
                   variant="outline"

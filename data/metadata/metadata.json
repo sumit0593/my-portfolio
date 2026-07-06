@@ -55,6 +55,9 @@
       "ChromaDB",
       "FAISS",
       "PostgreSQL",
+      "PostGIS",
+      "SQLite",
+      "Prisma",
       "MySQL",
       "MongoDB"
     ],
@@ -78,7 +81,10 @@
       "LangSmith",
       "LangFuse",
       "Vercel",
-      "GCP"
+      "GCP",
+      "GCP Cloud Run",
+      "GCP Secret Manager",
+      "Railway"
     ],
     "tools": [
       "Git",
@@ -95,7 +101,7 @@
   "experience": [
     {
       "role": "Software Engineer",
-      "company": "Kent RO Systems Pvt Ltd",
+      "company": "Kent RO Systems Ltd. (KentCamEye Division)",
       "duration": "Apr 2024 - Present",
       "location": "Noida, India",
       "highlights": [
@@ -145,6 +151,8 @@
       "domain": "Fintech / Lending",
       "description": "A full-stack intelligent lending evaluation application using a multi-agent orchestration graph (LangGraph & Gemini API) to assess borrower profiles, determine loan product eligibility, perform simulations, and verify lending compliance.",
       "tech_stack": [
+        "Python",
+        "JavaScript",
         "React 19",
         "Vite 8",
         "LangGraph",
@@ -207,9 +215,12 @@
       "domain": "Cybersecurity",
       "description": "A cutting-edge AI security platform designed to detect and prevent digital scams in real-time.",
       "tech_stack": [
+        "Python",
+        "Prompt Engineering",
+        "NLP Pipelines",
+        "LLM Orchestration",
         "Streamlit",
         "Gemini",
-        "Python",
         "Transformers"
       ],
       "deployment_platforms": [
@@ -249,11 +260,16 @@
       "domain": "HR Tech",
       "description": "An intelligent AI Resume Search platform using RAG architecture.",
       "tech_stack": [
-        "Streamlit",
+        "Python",
+        "FastAPI",
+        "BM25",
+        "RAGAS",
+        "HuggingFace",
+        "RRF",
         "Pinecone",
         "Gemini",
         "LangChain",
-        "Python"
+        "Streamlit"
       ],
       "deployment_platforms": [
         "Streamlit Cloud"
@@ -292,10 +308,14 @@
       "domain": "Enterprise Tech",
       "description": "An enterprise-grade AI invoice parser built with React and Node.js.",
       "tech_stack": [
+        "JavaScript",
+        "TypeScript",
         "React",
         "Node.js",
         "Zoho Analytics",
-        "OCR",
+        "AWS Textract",
+        "Lambda",
+        "DynamoDB",
         "JWT",
         "OAuth2"
       ],
@@ -332,6 +352,7 @@
       "domain": "Personal Branding",
       "description": "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone.",
       "tech_stack": [
+        "TypeScript",
         "Next.js",
         "Gemini",
         "Pinecone",
@@ -376,14 +397,14 @@
       "domain": "HR Tech / Attendance",
       "description": "Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Built browser automation using Playwright, an HTML scraper, and a text extractor to automate client data. Designed Spring Boot microservices, Angular frontend modules, and robust REST APIs.",
       "tech_stack": [
+        "Java",
+        "TypeScript",
+        "JavaScript",
         "Spring Boot",
         "Angular",
         "REST APIs",
-        "SQL",
         "Microservices",
-        "Playwright",
-        "HTML Scraper",
-        "Text Extractor"
+        "SQL"
       ],
       "live_url": "https://www.kentcam.com/camattendance/thank-you",
       "complexity_level": "High",
@@ -411,6 +432,53 @@
         "Face Recognition AI",
         "Computer Vision Integration"
       ]
+    },
+    {
+      "title": "Community Hero",
+      "category": "GenAI / GIS Platform",
+      "project_type": "Open Source / Hackathon Project",
+      "domain": "Civic Tech / GIS",
+      "description": "An AI-powered community issue reporting platform that enables citizens to report hyperlocal municipal issues with coordinates and images, auto-classify tickets with Google Gemini, view issues on a dark GIS map, and verify reports to initiate city dispatches.",
+      "tech_stack": [
+        "TypeScript",
+        "Next.js",
+        "Prisma",
+        "PostgreSQL",
+        "PostGIS",
+        "Gemini API",
+        "GCP Cloud Run",
+        "Docker",
+        "Secret Manager",
+        "Cloud Storage"
+      ],
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Automated community ticket classification & hyperlocal mapping",
+      "priority_score": 10,
+      "github": "https://github.com/sumit0593/Community-Hero---Hyperlocal-Problem-Solver",
+      "live_url": "https://community-hero-wlanslf4ba-uc.a.run.app/",
+      "architecture_tags": [
+        "PostGIS GIS Database",
+        "GCP Cloud Run Serverless",
+        "Prisma ORM"
+      ],
+      "semantic_tags": [
+        "GenAI",
+        "GIS Map",
+        "Civic Tech",
+        "Next.js",
+        "Hackathon"
+      ],
+      "recruiter_keywords": [
+        "Next.js",
+        "PostGIS",
+        "Gemini API",
+        "GCP"
+      ],
+      "ai_capabilities": [
+        "Google Gemini Ticket Auto-Classification",
+        "Image Metadata Extraction"
+      ]
     }
   ],
   "services": [
@@ -429,6 +497,7 @@
       "institution": "IIT Mandi - TIH",
       "duration": "Dec 2025 — Present",
       "pdf_urls": {
+        "Full Certificate": "/gallery/certification/certificate_GenAI_Multi-Agent_Systems.pdf",
         "Prompt Engineering": "/gallery/certification/certificate_prompt_engineering.pdf",
         "RAG Engineering": "/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf"
       }
@@ -547,7 +616,8 @@
     "HireFlow AI": 10,
     "Scam Guard AI": 9,
     "Kent RiseEngine": 8,
-    "Portfolio AI": 8
+    "Portfolio AI": 8,
+    "Community Hero": 10
   },
   "index_version": "v3",
   "embedding_model": "models/embedding-001",

@@ -87,6 +87,9 @@ The main single-page hub is divided into **10 distinct sections** to provide a r
 -   **Portfolio AI**
     - *Live Link*: `[Portfolio AI Live](https://my-portfolio-six-gold-86.vercel.app/)`
     - *GitHub Link*: `[Portfolio AI Source](https://github.com/sumit0593/my-portfolio)`
+-   **Community Hero**
+    -   *Live Link*: `[Community Hero Live](https://community-hero-wlanslf4ba-uc.a.run.app/)`
+    -   *GitHub Link*: `[Community Hero Source](https://github.com/sumit0593/Community-Hero---Hyperlocal-Problem-Solver)`
 -   **Cam Attendance**
     - *Live Link*: `[Cam Attendance Portal](https://www.kentcam.com/camattendance/thank-you)`
 -   **Kent Risengine**

@@ -4,6 +4,7 @@ Kent Risengine, Internal
 •	Built an AI-based invoice parser in RiseEngine to automate data extraction and improve processing accuracy. 
 •	Created validation schemas, components and UI using React and Node.js to ensure clean, consistent and reliable data. 
 •	Integrated Zoho Analytics dashboards with role-based and criteria-based views for real-time insights. 
+•	Tech Stack: JavaScript, TypeScript, React, Node.js, Express.js, REST APIs, SQL, Microservices, Zoho Analytics, AWS Textract, Lambda, DynamoDB, JWT, OAuth2
 
 Cam Attendance, Internal/Client 	 
 •	Maintained and enhanced a full-stack attendance platform used by thousands of employees and clients. 
@@ -11,27 +12,41 @@ Cam Attendance, Internal/Client
 •	Integrated automated data pipelines to sync and validate check-ins, leave logs, and key HR metrics. 
 •	Built browser automation scripts using Playwright, a custom HTML scraper, and a text extractor to automate client data.
 •	Created tools to automate software engineering workflows.
+•	Tech Stack: Java, JavaScript, TypeScript, Spring Boot, Angular, REST APIs, SQL, Microservices, Playwright, HTML Scraper, Text Extractor
 
 
 TIOS Revamp, Internal 	 
 •	Migrated a legacy HRMS to a modern modular architecture using Next.js. 
 •	Improved performance, maintainability, and scalability by redesigning the UI/UX and restructuring the entire codebase. 
+•	Tech Stack: TypeScript, JavaScript, Next.js, React
 
 AI Loan Advisor Chatbot (Open Source/Personal)
 •	A full-stack intelligent lending evaluation application using a multi-agent orchestration graph (built with LangGraph and the Gemini API) to assess borrower profiles, determine loan product eligibility, perform EMI/tenure repayment simulations, and verify lending compliance.
 •	Built a robust FastAPI backend microservice storing users, sessions, audits, and prompts in SQLite. Features interactive tenure amortization & repayment simulations via Recharts 3.
+•	Tech Stack: Python, JavaScript, React 19, Vite 8, LangGraph, Gemini API, FastAPI, SQLite, SQLAlchemy, Tailwind CSS 4, Recharts 3
 
 Project Lotus (Handshake Platform - Freelance Remote)
 •	Freelance remote software engineering engagement to analyze and refine complex enterprise software codebases.
 •	Leveraged AI-assisted development tools including Maia II for codebase analysis, refactoring legacy components, and developer workflow acceleration.
+•	Tech Stack: React, TypeScript, Node.js, Maia II
 
 Scam Guard AI (Open Source/Personal)
 •	A modular, real-time AI security platform designed to detect and prevent digital scams. Built with Gemini and advanced NLP Transformers utilizing a configurable prompt engineering architecture and LLM orchestration pipeline.
 •	Features a Streamlit dashboard, a robust experimentation workflow, and an extensible Python-based decision engine for analyzing texts, emails, and URLs.
+•	Tech Stack: Python, Prompt Engineering, NLP Pipelines, LLM Orchestration, Streamlit, Gemini
 
 HireFlow AI (Open Source/Personal)
 •	A production-grade AI Resume Search platform utilizing Hybrid Search (BM25 + Pinecone Vector Search) and Reciprocal Rank Fusion (RRF) for semantic ATS candidate matching.
 •	Architected with a scalable Python FastAPI backend microservice, LangChain orchestration, and a Streamlit frontend UI. Incorporates Gemini LLMs for AI-powered evaluation, multi-query expansion, and RAGAS metrics for retrieval assessment.
+•	Tech Stack: Python, FastAPI, BM25, RAGAS, HuggingFace, RRF, Pinecone, Gemini, LangChain, Streamlit
 
 Portfolio AI (Open Source/Personal)
 •	A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone. Includes an AI resume insights generator, dark mode, 3D visuals, and premium Framer Motion animations.
+•	Tech Stack: TypeScript, Next.js, Tailwind CSS, Three.js, Framer Motion, Gemini, Pinecone
+
+Community Hero (Open Source/Personal/Hackathon Project)
+•	An AI-powered community issue reporting platform that enables citizens to report hyperlocal municipal issues (potholes, water leaks, trash, etc.) with coordinates and images.
+•	Auto-classifies tickets using Google Gemini, displays issues on a dark GIS map, and verifies reports to initiate city dispatches.
+•	Built with Next.js, Prisma, PostgreSQL + PostGIS, and deployed to GCP Cloud Run using Secret Manager and Cloud Storage.
+•	Tech Stack: TypeScript, JavaScript, Next.js, Prisma, PostgreSQL, PostGIS, Gemini API, GCP Cloud Run, Docker, Secret Manager, Cloud Storage
+

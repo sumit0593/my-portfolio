@@ -8,7 +8,7 @@ const EXPERIENCES = [
   {
     year: "Apr 2024 - Present",
     role: "Software Engineer",
-    company: "Kent RO Systems Pvt Ltd",
+    company: "Kent RO Systems Ltd. (KentCamEye Division)",
     location: "Noida, India",
     description: "Engineered an AI-driven OCR invoice parsing microservice using AWS (Textract, Lambda, DynamoDB) and Node.js. Built browser automation using Playwright, a custom HTML scraper, and a text extractor to automate client data. Developed custom tools on MCP servers to automate software engineering tasks. Implemented secure JWT/OAuth2 RBAC and dynamic Zoho Analytics dashboards.",
     skills: ["Node.js", "React", "AWS", "Playwright", "MCP", "Web Scraping", "JWT", "OAuth2", "Zoho Analytics", "GitHub Actions", "DynamoDB", "Lambda"]

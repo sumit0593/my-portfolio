@@ -51,7 +51,7 @@ This portfolio implements enterprise-grade DevSecOps security mitigations coveri
 *   **HTML & Markdown Sanitization:**
     *   AI-generated output is sanitized using `rehype-sanitize` before rendering to block markdown-based XSS.
     *   User-supplied emails and messages are HTML-escaped before interpolation into transporter email bodies.
-*   **Security Headers:** Configured strict HTTP headers including Content-Security-Policy (CSP), Strict-Transport-Security (HSTS), X-Frame-Options (DENY), and X-Content-Type-Options (nosniff) in `next.config.ts`.
+*   **Security Headers:** Configured strict HTTP headers including Content-Security-Policy (CSP), Strict-Transport-Security (HSTS), X-Frame-Options (SAMEORIGIN), and X-Content-Type-Options (nosniff) in `next.config.ts` to allow local iframe resume preview while preventing clickjacking.
 *   **Prompt Injection Protection:** Cleans user queries to filter out instruction overrides and jailbreak phrases before sending payloads to Gemini.
 
 ---
@@ -104,12 +104,20 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. The application supports hot-reloading.
 
-### 6. Initialize Vector Database (Data Ingestion)
-To populate Pinecone and the local MiniSearch index with your resume and project data, run the following command in a **PowerShell** window while the development server is running, passing the `x-admin-key` header:
+### 6. Initialize Vector Database & Search Index (Data Ingestion)
+
+#### Option A: Offline Local Search Index (MiniSearch Only)
+If you just want to populate the local offline search index for local development without connecting to Pinecone:
+```bash
+node data/reindex-minisearch.js
+```
+
+#### Option B: Live Server Indexing (Pinecone + MiniSearch)
+To populate Pinecone and the local MiniSearch index, run the following command in a **PowerShell** window while the Next.js development server is running, passing the `x-admin-key` header:
 ```powershell
 Invoke-RestMethod -Uri "http://localhost:3000/api/embed" -Method POST -Headers @{ "x-admin-key" = "your_secure_admin_key_for_api_ingestion" }
 ```
-This will securely chunk the text files in `data/profile/`, generate Gemini embeddings, and push them to Pinecone!
+This will securely chunk the profile/metadata text files, generate Gemini embeddings, and push them to Pinecone!
 
 ---
 

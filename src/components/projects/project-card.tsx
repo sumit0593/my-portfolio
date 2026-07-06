@@ -49,14 +49,11 @@ export function ProjectCard({ project }: { project: Project }) {
 
         <CardItem translateZ="40" className="w-full mb-5">
           <div className="flex flex-wrap gap-2">
-            {project.techStack.slice(0, 4).map((tech) => (
+            {project.techStack.map((tech) => (
               <Badge key={tech} variant="secondary" className="bg-muted text-xs text-foreground/80 font-medium border border-border/40">
                 {tech}
               </Badge>
             ))}
-            {project.techStack.length > 4 && (
-              <Badge variant="outline" className="text-xs bg-background/50">+{project.techStack.length - 4}</Badge>
-            )}
           </div>
         </CardItem>
 

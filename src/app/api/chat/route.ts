@@ -1,13 +1,15 @@
 import { ai, CHAT_MODEL } from "@/lib/gemini";
 import { retrieveHybridContext, buildOrchestratedPrompt, conversationMemory } from "@/lib/orchestrator";
-import { requireAuth } from "@/lib/api-auth";
-import { chatLimiter, getRateLimitToken, guestChatCache } from "@/lib/rate-limit";
+import { chatLimiter, getRateLimitToken } from "@/lib/rate-limit";
 import { chatRequestSchema } from "@/lib/validations";
 import { escapeHtml, sanitizePromptInput, sanitizeAIOutput } from "@/lib/security";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { auth } from "@/auth";
+import { db } from "@/lib/db";
+import { getOrCreateSession } from "@/lib/session";
+import { buildSessionState } from "@/lib/sessionMapper";
 import { cookies } from "next/headers";
+import crypto from "crypto";
 
 export const maxDuration = 60;
 
@@ -20,7 +22,6 @@ async function sendEmailViaNodemailer(email: string, message: string) {
     },
   });
 
-  // Escape user input to prevent HTML injection in emails
   const safeEmail = escapeHtml(email);
   const safeMessage = escapeHtml(message);
 
@@ -69,17 +70,20 @@ const CHAT_TOOLS = [
 ];
 
 export async function POST(req: Request) {
+  const requestId = crypto.randomUUID();
   try {
-    // Authentication check
-    const session = await auth();
-    const isAuthenticated = !!session?.user;
-
-    // Rate limiting
+    // Hidden IP-Based Rate Limiting
     const token = getRateLimitToken(req);
-    const { success: withinLimit } = chatLimiter.check(15, token); // 15 req/min
+    const { success: withinLimit } = chatLimiter.check(30, token); // 30 req/min/IP
     if (!withinLimit) {
       return NextResponse.json(
-        { error: "Rate limit exceeded. Please try again later." },
+        {
+          success: false,
+          requestId,
+          code: "RATE_LIMITED",
+          message: "Rate limit exceeded. Please try again later.",
+          sessionState: null,
+        },
         { status: 429 }
       );
     }
@@ -89,44 +93,106 @@ export async function POST(req: Request) {
     const parseResult = chatRequestSchema.safeParse(body);
     if (!parseResult.success) {
       return NextResponse.json(
-        { error: "Invalid request format.", details: parseResult.error.flatten() },
+        {
+          success: false,
+          requestId,
+          code: "INVALID_TOKEN",
+          message: "Invalid request format.",
+          sessionState: null,
+        },
         { status: 400 }
       );
     }
 
-    const { messages } = parseResult.data;
+    const { messages, clientMessageId } = parseResult.data;
 
-    let guestSessionId = "";
-    if (!isAuthenticated) {
-      // Retrieve or set guest session ID cookie
-      const cookieStore = await cookies();
-      let cookieId = cookieStore.get("guest-chat-session-id")?.value;
-      if (!cookieId) {
-        cookieId = crypto.randomUUID();
-        cookieStore.set("guest-chat-session-id", cookieId, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
-          maxAge: 60 * 60 * 24 * 30, // 30 days
-          path: "/",
-        });
+    const cookieStore = await cookies();
+    const lockoutUntilStr = cookieStore.get("guest-chat-lockout-until")?.value || null;
+
+    // Load active session from database (or create if missing/expired)
+    const { dbSession } = await getOrCreateSession();
+    const sessionState = await buildSessionState(dbSession, lockoutUntilStr);
+
+    // Validate using the server-side sessionState
+    if (!sessionState.canChat) {
+      return NextResponse.json(
+        {
+          success: false,
+          requestId,
+          code: "SESSION_LOCKED",
+          message: "Session limit reached. Please sign in to continue.",
+          sessionState,
+        },
+        { status: 429 }
+      );
+    }
+
+    // Check Idempotency
+    if (clientMessageId) {
+      const dbMessages = db.getMessagesBySessionId(dbSession.id);
+      const existingUserMsg = dbMessages.find((m) => m.metadata?.clientMessageId === clientMessageId);
+      if (existingUserMsg) {
+        const userMsgIndex = dbMessages.indexOf(existingUserMsg);
+        const assistantMsg = dbMessages.slice(userMsgIndex + 1).find((m) => m.role === "assistant");
+        if (assistantMsg) {
+          const sseStream = new ReadableStream({
+            async start(controller) {
+              const encoder = new TextEncoder();
+              const send = (data: object) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+              send({ type: "start" });
+              send({ type: "start-step" });
+              send({ type: "text-start", id: "0" });
+              send({ type: "text-delta", id: "0", delta: assistantMsg.content });
+              send({ type: "text-end", id: "0" });
+              send({ type: "finish-step" });
+              send({ type: "finish", finishReason: "stop" });
+              
+              const state = await buildSessionState(dbSession, lockoutUntilStr);
+              // SDK requires 'data-*' prefix for custom data chunks (strict schema)
+              send({ type: "data-session-state", data: state });
+              controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+              controller.close();
+            }
+          });
+          return new Response(sseStream, {
+            headers: {
+              "Content-Type": "text/event-stream",
+              "Cache-Control": "no-cache",
+              "Connection": "keep-alive",
+              "X-Vercel-AI-UI-Message-Stream": "v1",
+            },
+          });
+        }
       }
-      guestSessionId = cookieId;
+    }
 
-      // 1. Verify the client-submitted messages count
-      const clientUserMsgCount = messages.filter((m) => m.role === "user").length;
-      
-      // 2. Verify server-side cache message count
-      const currentCount = guestChatCache.get(guestSessionId) || 0;
-      if (currentCount >= 4 || clientUserMsgCount > 4) {
-        return NextResponse.json(
-          { error: "You have reached the free limit of 4 messages." },
-          { status: 403 }
-        );
-      }
+    // Acquire Concurrency Lock
+    const locked = db.tryAcquireProcessingLock(dbSession.id);
+    if (!locked) {
+      return NextResponse.json(
+        {
+          success: false,
+          requestId,
+          code: "PROCESSING_LOCK",
+          message: "Another prompt is currently processing.",
+          sessionState,
+        },
+        { status: 409 }
+      );
+    }
 
-      // Increment count on server
-      guestChatCache.set(guestSessionId, currentCount + 1);
+    // Save lockout cookie ONLY for guest users hitting their 8-message limit.
+    // Anonymous users hitting 4 messages should NOT get this cookie —
+    // they need to see "Continue as Guest", not get COOLDOWN.
+    const userMsgCount = sessionState.messageCount;
+    const limit = sessionState.maxMessages;
+    if (sessionState.authenticationState === "guest" && limit && userMsgCount + 1 >= limit) {
+      cookieStore.set("guest-chat-lockout-until", dbSession.expiresAt.toISOString(), {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60,
+        path: "/",
+      });
     }
 
     const lastUserMessage = messages.filter((m) => m.role === "user").pop();
@@ -137,25 +203,31 @@ export async function POST(req: Request) {
     }
 
     if (!userQuery.trim()) {
+      db.releaseProcessingLock(dbSession.id);
       return new Response(JSON.stringify({ error: "Empty query received." }), { status: 400 });
     }
 
-    // Sanitize user input to mitigate prompt injection
     const sanitizedQuery = sanitizePromptInput(userQuery);
 
-    const sessionId = isAuthenticated 
-      ? (req.headers.get("x-session-id") || "default-session")
-      : guestSessionId;
-
-    // Retrieve via Orchestrator (Pinecone + MiniSearch)
+    // Retrieve contextual chunks
     const { chunks: retrievedChunks, intent } = await retrieveHybridContext(sanitizedQuery, 5);
-    const conversationHistory = conversationMemory.getHistory(sessionId);
+
+    // Build history
+    const dbMessages = db.getMessagesBySessionId(dbSession.id);
+    const activeDbMessages = dbMessages.filter((m) => !m.metadata?.cleared);
+    const conversationHistory = activeDbMessages.map((m) => ({
+      role: m.role === "user" ? "user" as const : "assistant" as const,
+      content: m.content,
+    }));
 
     const systemPrompt = buildOrchestratedPrompt(retrievedChunks, conversationHistory, sanitizedQuery, intent);
 
-    conversationMemory.addMessage(sessionId, { role: "user", content: sanitizedQuery });
+    // Save User Message
+    db.addMessage(dbSession.id, "user", sanitizedQuery, { clientMessageId });
+    db.updateSessionActivity(dbSession.id);
+    conversationMemory.addMessage(dbSession.sessionToken, { role: "user", content: sanitizedQuery });
 
-    // AbortController handling for stream cancellation
+    // AbortController handling
     const abortController = new AbortController();
     req.signal.addEventListener("abort", () => {
       abortController.abort();
@@ -175,6 +247,7 @@ export async function POST(req: Request) {
 
     const textId = "0";
     let fullResponse = "";
+    let isFinished = false;
 
     const sseStream = new ReadableStream({
       async start(controller) {
@@ -211,29 +284,48 @@ export async function POST(req: Request) {
 
             const text = chunk.text ?? "";
             if (text) {
-              // Sanitize AI output before sending to client
               const safeText = sanitizeAIOutput(text);
               fullResponse += safeText;
               send({ type: "text-delta", id: textId, delta: safeText });
             }
           }
-        } catch {
-          if (!abortController.signal.aborted) {
-            send({ type: "text-delta", id: textId, delta: "I'm having trouble connecting right now. Please try again." });
-          }
-        }
 
-        if (!abortController.signal.aborted) {
+          if (!abortController.signal.aborted) {
+            isFinished = true;
+          }
+        } catch (streamErr: any) {
+          console.error("Error generating stream chunk:", streamErr?.message);
+          if (!abortController.signal.aborted) {
+            send({ type: "text-delta", id: textId, delta: "\n\n*(Error connecting to AI brain. Please try again later.)*" });
+          }
+        } finally {
+          // Release Lock
+          db.releaseProcessingLock(dbSession.id);
+
+          // Save assistant message to DB (partial if interrupted)
+          if (fullResponse) {
+            const metadata = isFinished ? null : { interrupted: true };
+            db.addMessage(dbSession.id, "assistant", fullResponse, metadata);
+            db.updateSessionActivity(dbSession.id);
+            conversationMemory.addMessage(dbSession.sessionToken, { role: "assistant", content: fullResponse });
+          }
+
+          // Build final sessionState for the client
+          const finalLockoutStr = isFinished && sessionState.authenticationState !== "user" && limit && (userMsgCount + 1 >= limit)
+            ? dbSession.expiresAt.toISOString()
+            : lockoutUntilStr;
+          
+          const updatedSession = await buildSessionState(dbSession, finalLockoutStr);
+
           send({ type: "text-end", id: textId });
           send({ type: "finish-step" });
           send({ type: "finish", finishReason: "stop" });
-          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+          // SDK requires 'data-*' prefix for custom data chunks (strict schema)
+          send({ type: "data-session-state", data: updatedSession });
 
-          if (fullResponse) {
-            conversationMemory.addMessage(sessionId, { role: "assistant", content: fullResponse });
-          }
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+          controller.close();
         }
-        controller.close();
       },
     });
 
@@ -246,7 +338,7 @@ export async function POST(req: Request) {
       },
     });
   } catch (err: any) {
-    console.error("Chat API Error:", err?.message);
+    console.error("Chat API Error:", err?.stack || err?.message || err);
     return new Response(
       JSON.stringify({ error: "Failed to process chat request." }),
       { status: 500 }

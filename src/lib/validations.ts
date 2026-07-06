@@ -30,6 +30,7 @@ export const chatRequestSchema = z.object({
     .array(chatMessageSchema)
     .min(1, "At least one message is required")
     .max(50, "Too many messages"),
+  clientMessageId: z.string().uuid().optional(),
 });
 
 // ── Analyze / AI Tools ──

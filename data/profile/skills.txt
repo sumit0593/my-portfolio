@@ -18,7 +18,8 @@ TECHNICAL SKILLS
 
 • Database & Storage:
   Pinecone, ChromaDB, FAISS,
-  PostgreSQL, MySQL, MongoDB.
+  PostgreSQL, PostGIS, SQLite, Prisma,
+  MySQL, MongoDB.
 
 • Full Stack Development:
   React.js, Next.js, Node.js, Express.js,
@@ -27,7 +28,8 @@ TECHNICAL SKILLS
 
 • Deployment & MLOps:
   Docker, AWS, Jenkins, CI/CD,
-  LangSmith, LangFuse, Vercel, GCP.
+  LangSmith, LangFuse, Vercel, GCP,
+  GCP Cloud Run, GCP Secret Manager, Railway.
 
 • Tools:
   Git, GitHub, GitLab, Postman,

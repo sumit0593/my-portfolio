@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: [
-          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "X-DNS-Prefetch-Control", value: "on" },
@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https://*.pinecone.io https://generativelanguage.googleapis.com https://va.vercel-scripts.com",
               "worker-src 'self' blob: https://cdnjs.cloudflare.com",
-              "frame-ancestors 'none'",
+              "frame-ancestors 'self'",
             ].join("; "),
           },
         ],

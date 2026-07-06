@@ -255,8 +255,11 @@ export function ChatBot() {
 
     const updateSessionState = useCallback((state: SessionState) => {
         setSessionState((prev) => {
-            // Version check: prevent out-of-order race conditions
-            if (state.sessionVersion < prev.sessionVersion) {
+            // Force update if the status is LOCKED/EXPIRED, or if the session token changed
+            const isStatusLockedOrExpired = state.status === "LOCKED" || state.status === "EXPIRED";
+            const hasSessionChanged = state.sessionToken !== prev.sessionToken;
+
+            if (!isStatusLockedOrExpired && !hasSessionChanged && state.sessionVersion < prev.sessionVersion) {
                 return prev;
             }
             lastStateReceivedAtRef.current = Date.now();

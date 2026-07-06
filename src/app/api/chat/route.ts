@@ -227,6 +227,17 @@ export async function POST(req: Request) {
     db.updateSessionActivity(dbSession.id);
     conversationMemory.addMessage(dbSession.sessionToken, { role: "user", content: sanitizedQuery });
 
+    // Update guest-chat-message-count cookie for robust serverless tracking
+    if (sessionState.authenticationState !== "user") {
+      const currentCount = parseInt(cookieStore.get("guest-chat-message-count")?.value || "0", 10);
+      cookieStore.set("guest-chat-message-count", String(currentCount + 1), {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: "/",
+      });
+    }
+
     // AbortController handling
     const abortController = new AbortController();
     req.signal.addEventListener("abort", () => {

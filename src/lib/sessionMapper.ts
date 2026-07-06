@@ -1,5 +1,6 @@
 import { db, ChatSession } from "./db";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 
 export interface SessionState {
   sessionToken: string;
@@ -49,7 +50,13 @@ export async function buildSessionState(
   lockoutUntilStr?: string | null
 ): Promise<SessionState> {
   const messages = db.getMessagesBySessionId(dbSession.id);
-  const messageCount = messages.filter((m) => m.role === "user").length;
+  const dbCount = messages.filter((m) => m.role === "user").length;
+
+  const cookieStore = await cookies();
+  const cookieCountStr = cookieStore.get("guest-chat-message-count")?.value || null;
+  const cookieCount = cookieCountStr ? parseInt(cookieCountStr, 10) : 0;
+
+  const messageCount = Math.max(dbCount, cookieCount);
 
   const session = await auth();
   const rawIsGuestSession = session?.user && (session.user as any).role === "guest";

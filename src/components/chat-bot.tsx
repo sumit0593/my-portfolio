@@ -404,13 +404,6 @@ export function ChatBot() {
         };
     }, [refreshSession]);
 
-    // Refresh session on stream errors (e.g., rate limits or lockouts) to sync client LOCKED state
-    useEffect(() => {
-        if (error) {
-            refreshSession();
-        }
-    }, [error, refreshSession]);
-
     const { data: session } = useSession();
     const isAuthenticated = !!session?.user;
 
@@ -920,7 +913,7 @@ export function ChatBot() {
                                     <div className="bg-destructive/10 text-destructive flex gap-2 items-center p-3 rounded-2xl rounded-bl-sm text-sm inline-block max-w-[85%] shadow-sm">
                                         <AlertCircle className="h-4 w-4 shrink-0" />
                                         <span>
-                                            {"I'm having trouble connecting to my brain. Please try again later."}
+                                            {error instanceof Error ? error.message : String(error || "I'm having trouble connecting to my brain. Please try again later.")}
                                         </span>
                                     </div>
                                 </div>

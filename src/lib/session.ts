@@ -103,6 +103,7 @@ export async function getOrCreateSession(): Promise<{
         db.deleteSession(activeSession.id);
         isExpired = true;
         cookieStore.delete("guest-chat-lockout-until");
+        cookieStore.delete("guest-chat-message-count");
         dbSession = db.createSession(cookieToken);
         isNew = true;
 
@@ -164,6 +165,7 @@ export async function resetSession(): Promise<ChatSession> {
       path: "/",
     });
     cookieStore.delete("guest-chat-lockout-until");
+    cookieStore.delete("guest-chat-message-count");
     return dbSession;
   }
 }

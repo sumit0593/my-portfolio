@@ -190,7 +190,7 @@ export async function POST(req: Request) {
       cookieStore.set("guest-chat-lockout-until", dbSession.expiresAt.toISOString(), {
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 60 * 60,
+        maxAge: 60 * 60 * 24 * 30, // 30 days
         path: "/",
       });
     }

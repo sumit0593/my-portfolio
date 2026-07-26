@@ -134,7 +134,7 @@ class LocalFileDB {
     return undefined;
   }
 
-  public createSession(token: string, expiryMs = 60 * 60 * 1000): ChatSession { // Default to 1 hour
+  public createSession(token: string, expiryMs = 30 * 24 * 60 * 60 * 1000): ChatSession { // Default to 30 days
     const now = new Date();
     const expiresAt = new Date(Date.now() + expiryMs);
 
@@ -258,7 +258,7 @@ class LocalFileDB {
     }
   }
 
-  public updateSessionActivity(sessionId: string, expiryMs = 60 * 60 * 1000) { // Default to 1 hour
+  public updateSessionActivity(sessionId: string, expiryMs = 30 * 24 * 60 * 60 * 1000) { // Default to 30 days
     const session = this.data.sessions.find((s) => s.id === sessionId);
     if (session) {
       const now = new Date();
@@ -281,7 +281,7 @@ class LocalFileDB {
     }
   }
 
-  public enableGuestMode(sessionId: string, expiryMs = 60 * 60 * 1000) {
+  public enableGuestMode(sessionId: string, expiryMs = 30 * 24 * 60 * 60 * 1000) {
     const session = this.data.sessions.find((s) => s.id === sessionId);
     if (session) {
       const now = new Date();

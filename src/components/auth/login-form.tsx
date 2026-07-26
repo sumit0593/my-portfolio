@@ -41,9 +41,17 @@ export function LoginForm({
         const diff = lockoutTime - Date.now();
         if (diff > 0) {
           setIsLockedOut(true);
-          const minutes = Math.floor(diff / 60000);
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / 60000);
           const seconds = Math.floor((diff % 60000) / 1000);
-          setLockoutTimeLeft(`${minutes}m ${seconds}s`);
+          if (days > 0) {
+            setLockoutTimeLeft(`${days}d ${hours}h`);
+          } else if (hours > 0) {
+            setLockoutTimeLeft(`${hours}h ${minutes}m`);
+          } else {
+            setLockoutTimeLeft(`${minutes}m ${seconds}s`);
+          }
           return true;
         }
       }

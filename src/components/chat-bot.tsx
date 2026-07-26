@@ -209,7 +209,7 @@ export function ChatBot() {
         guestMode: false,
         sessionVersion: 0,
         allowedActions: [],
-        expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         serverNow: new Date().toISOString(),
         remainingCooldownSeconds: 0,
         features: {
@@ -354,9 +354,17 @@ export function ChatBot() {
                     refreshSession();
                 }
             } else {
-                const minutes = Math.floor(remainingSec / 60);
+                const days = Math.floor(remainingSec / 86400);
+                const hours = Math.floor((remainingSec % 86400) / 3600);
+                const minutes = Math.floor((remainingSec % 3600) / 60);
                 const seconds = remainingSec % 60;
-                setTimeLeft(`${minutes}m ${seconds}s`);
+                if (days > 0) {
+                    setTimeLeft(`${days}d ${hours}h`);
+                } else if (hours > 0) {
+                    setTimeLeft(`${hours}h ${minutes}m`);
+                } else {
+                    setTimeLeft(`${minutes}m ${seconds}s`);
+                }
             }
         };
 

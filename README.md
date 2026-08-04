@@ -160,7 +160,7 @@ If you find this repository helpful for building your own AI portfolio, feel fre
 
 ## Copyright & Usage
 
-© 2026 Sumit Kumar. All Rights Reserved.
+© 2025 Sumit Kumar. All Rights Reserved.
 
 This repository is published for portfolio and evaluation purposes only.
 

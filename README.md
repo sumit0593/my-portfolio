@@ -157,3 +157,11 @@ Vercel will automatically handle CI/CD pipelines. Every time you push to the `ma
 * **GitHub**: [sumit0593](https://github.com/sumit0593)
 
 If you find this repository helpful for building your own AI portfolio, feel free to give it a ⭐!
+
+## Copyright & Usage
+
+© 2026 Sumit Kumar. All Rights Reserved.
+
+This repository is published for portfolio and evaluation purposes only.
+
+You may view the source code, but you may not copy, modify, redistribute, or use this code in personal, commercial, or academic projects without prior written permission from the author.

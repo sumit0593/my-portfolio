@@ -158,10 +158,14 @@ Vercel will automatically handle CI/CD pipelines. Every time you push to the `ma
 
 If you find this repository helpful for building your own AI portfolio, feel free to give it a ⭐!
 
-## Copyright & Usage
+## 📄 License
 
-© 2025 Sumit Kumar. All Rights Reserved.
+**Copyright © 2025–2026 Sumit Kumar. All Rights Reserved.**
 
-This repository is published for portfolio and evaluation purposes only.
+This repository is published for **portfolio, educational, and evaluation purposes only**.
 
-You may view the source code, but you may not copy, modify, redistribute, or use this code in personal, commercial, or academic projects without prior written permission from the author.
+The source code, AI workflows, prompts, RAG implementation, system architecture, documentation, and related assets may **not** be copied, modified, redistributed, commercialized, or used to create derivative works without prior written permission from the author.
+
+If you would like to use any part of this project, please contact:
+
+**Email:** sumitsumitsumit163@gmail.com

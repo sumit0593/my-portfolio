@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sendWhatsAppMessage } from "@/lib/agents/whatsappService";
 import { detectLanguage, buildLanguageInstruction } from "@/lib/agents/languageDetector";
 import { classifyAgentRole } from "@/lib/agents/agentDispatcher";
-import { extractLeadQualification } from "@/lib/agents/leadQualifier";
+import { extractLeadQualification, buildLeadQualificationDirective } from "@/lib/agents/leadQualifier";
 import { retrieveHybridContext, buildOrchestratedPrompt } from "@/lib/orchestrator";
 import { ai, CHAT_MODEL } from "@/lib/gemini";
 import { sanitizePromptInput, sanitizeAIOutput } from "@/lib/security";
@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
 
         // 4. Lead Qualification Check
         const leadResult = extractLeadQualification([{ role: "user", content: sanitizedText }]);
+        const leadDirective = buildLeadQualificationDirective(leadResult);
 
         // 5. Build System Prompt
         const basePrompt = buildOrchestratedPrompt(chunks, [], sanitizedText, intent);
@@ -86,6 +87,8 @@ ${basePrompt}
 
 ACTIVE WHATSAPP AI AGENT: ${activeAgent.title} (${activeAgent.role} Agent)
 ${activeAgent.systemDirective}
+
+${leadDirective}
 
 ${langInstruction}
 

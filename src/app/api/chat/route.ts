@@ -10,8 +10,29 @@ import { getOrCreateSession } from "@/lib/session";
 import { buildSessionState } from "@/lib/sessionMapper";
 import { cookies } from "next/headers";
 import crypto from "crypto";
+import { detectLanguage, buildLanguageInstruction } from "@/lib/agents/languageDetector";
+import { classifyAgentRole } from "@/lib/agents/agentDispatcher";
+import { extractLeadQualification, buildLeadQualificationDirective } from "@/lib/agents/leadQualifier";
 
 export const maxDuration = 60;
+
+function extractTextFromMessage(msg: any): string {
+  if (!msg) return "";
+  if (typeof msg.content === "string" && msg.content.trim()) {
+    return msg.content.trim();
+  }
+  if (Array.isArray(msg.parts)) {
+    return msg.parts
+      .map((p: any) => {
+        if (typeof p === "string") return p;
+        if (p && typeof p.text === "string") return p.text;
+        return "";
+      })
+      .join("")
+      .trim();
+  }
+  return "";
+}
 
 async function sendEmailViaNodemailer(email: string, message: string) {
   const transporter = nodemailer.createTransport({
@@ -196,11 +217,7 @@ export async function POST(req: Request) {
     }
 
     const lastUserMessage = messages.filter((m) => m.role === "user").pop();
-    let userQuery = "";
-    if (lastUserMessage) {
-      userQuery = lastUserMessage.content ||
-        (Array.isArray(lastUserMessage.parts) ? lastUserMessage.parts.map((p) => p.text || "").join(" ") : "");
-    }
+    let userQuery = extractTextFromMessage(lastUserMessage);
 
     if (!userQuery.trim()) {
       db.releaseProcessingLock(dbSession.id);
@@ -209,10 +226,17 @@ export async function POST(req: Request) {
 
     const sanitizedQuery = sanitizePromptInput(userQuery);
 
-    // Retrieve contextual chunks
+    // 1. Language Detection Engine
+    const detectedLang = detectLanguage(sanitizedQuery);
+    const langInstruction = buildLanguageInstruction(detectedLang);
+
+    // 2. Retrieve contextual chunks
     const { chunks: retrievedChunks, intent } = await retrieveHybridContext(sanitizedQuery, 5);
 
-    // Build history
+    // 3. Multi-Agent Persona Dispatcher
+    const activeAgent = classifyAgentRole(sanitizedQuery, intent);
+
+    // 4. Build history & Lead Qualification Extraction
     const dbMessages = db.getMessagesBySessionId(dbSession.id);
     const activeDbMessages = dbMessages.filter((m) => !m.metadata?.cleared);
     const conversationHistory = activeDbMessages.map((m) => ({
@@ -220,7 +244,32 @@ export async function POST(req: Request) {
       content: m.content,
     }));
 
-    const systemPrompt = buildOrchestratedPrompt(retrievedChunks, conversationHistory, sanitizedQuery, intent);
+    const allMessagesForLeadEval = [...conversationHistory, { role: "user", content: sanitizedQuery }];
+    const leadResult = extractLeadQualification(allMessagesForLeadEval);
+    const leadDirective = buildLeadQualificationDirective(leadResult);
+
+    // 5. Persist lead intelligence & active agent role to database session
+    db.updateLeadQualification(
+      dbSession.id,
+      leadResult.leadScore,
+      leadResult,
+      activeAgent.role,
+      detectedLang.language
+    );
+
+    const basePrompt = buildOrchestratedPrompt(retrievedChunks, conversationHistory, sanitizedQuery, intent);
+    const multiAgentPrompt = `
+${basePrompt}
+
+═══════════════════════════════════════════
+ACTIVE AI AGENT PERSONA: ${activeAgent.title} (${activeAgent.role} Agent)
+═══════════════════════════════════════════
+${activeAgent.systemDirective}
+
+${leadDirective}
+
+${langInstruction}
+`;
 
     // Save User Message
     db.addMessage(dbSession.id, "user", sanitizedQuery, { clientMessageId });
@@ -248,7 +297,7 @@ export async function POST(req: Request) {
       model: CHAT_MODEL,
       contents: sanitizedQuery,
       config: {
-        systemInstruction: systemPrompt + "\nIf the user wants to leave a message, send a message, or contact Sumit, you can initiate the message send by calling the `send_message_by_guest` tool. You must ask the user for their email and message if they haven't provided them. Make sure to call this tool to send the message.",
+        systemInstruction: multiAgentPrompt + "\nIf the user wants to leave a message, send a message, or contact Sumit, you can initiate the message send by calling the `send_message_by_guest` tool. You must ask the user for their email and message if they haven't provided them. Make sure to call this tool to send the message.",
         temperature: 0.15,
         topP: 0.8,
         maxOutputTokens: 512,

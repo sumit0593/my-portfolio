@@ -1,13 +1,12 @@
 "use client";
 
-import { LayoutDashboard, Settings, LogOut } from "lucide-react";
-
+import { LayoutDashboard, LogOut, Sparkles, User, Code, Bot, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/toggle";
 import { Container } from "@/components/ui/container";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,37 +19,41 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { SignOutModal } from "@/components/auth/sign-out-modal";
+import { motion } from "framer-motion";
 
-const sections = [
+const PUBLIC_SECTIONS = [
   { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
-  { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
-  { id: "gallery", label: "Gallery" },
+  { id: "skills", label: "3D Skills" },
+  { id: "showcase", label: "Showcase" },
+  { id: "experience", label: "Experience" },
   { id: "contact", label: "Contact" },
+];
+
+const DASHBOARD_NAV = [
+  { id: "home", label: "Overview", icon: LayoutDashboard },
+  { id: "tools", label: "AI Tools", icon: Bot },
+  { id: "services", label: "Services", icon: Briefcase },
+  { id: "consultation-section", label: "Book Consultation", icon: Sparkles },
 ];
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
   const [active, setActive] = useState("home");
   const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push(`/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`);
-    }
-  }, [status, router]);
+  const isDashboard = pathname.startsWith("/dashboard");
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       let current = "home";
 
-      sections.forEach(({ id }) => {
+      const navItems = isDashboard ? DASHBOARD_NAV : PUBLIC_SECTIONS;
+      navItems.forEach(({ id }) => {
         const section = document.getElementById(id);
-        if (section && scrollY >= section.offsetTop - 80) {
+        if (section && scrollY >= section.offsetTop - 100) {
           current = id;
         }
       });
@@ -61,7 +64,7 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isDashboard]);
 
   const firstName = useMemo(
     () => session?.user?.name?.split(" ")?.[0] || "User",
@@ -70,137 +73,158 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-md border-b border-border shadow-sm">
-        <Container className="flex justify-between items-center py-3">
-          {/* Left Logo */}
-          <Link
-            href="/dashboard"
-            className="text-2xl font-bold cursor-pointer transition-colors hover:text-primary"
-            onClick={(e) => {
-              if (window.location.pathname === "/dashboard") {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-                setActive("home");
-              }
-            }}
-          >
-            NovaSphere AI
-          </Link>
+      <header className="fixed top-3 left-0 right-0 z-50 px-4 md:px-8 max-w-7xl mx-auto pointer-events-none">
+        <div className="w-full stitch-glass border border-white/10 dark:border-white/10 rounded-2xl md:rounded-full shadow-2xl backdrop-blur-xl pointer-events-auto px-4 py-2.5 transition-all duration-300">
+          <div className="flex justify-between items-center">
+            
+            {/* Brand Logo */}
+            <Link
+              href="/"
+              className="text-lg sm:text-xl font-extrabold tracking-tight flex items-center gap-2 cursor-pointer group"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-sky-400 flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <span className="text-foreground font-bold">
+                Nova<span className="text-gradient">Sphere AI</span>
+              </span>
+            </Link>
 
-          {/* Center Navigation */}
-          <div className="hidden md:flex gap-1 items-center">
-            {sections.map(({ id, label }) => (
-              <Button
-                key={id}
-                variant={active === id ? "default" : "ghost"}
-                className={cn(
-                  "relative transition-colors px-4 py-2 rounded-lg text-sm font-medium",
-                  "hover:bg-primary/10 hover:text-primary"
-                )}
-                onClick={() => {
-                  if (window.location.pathname !== "/dashboard") {
-                    router.push(`/dashboard#${id}`);
-                  } else {
-                    document
-                      .getElementById(id)
-                      ?.scrollIntoView({ behavior: "smooth" });
-                    setActive(id);
-                  }
-                }}
-              >
-                {label}
-                {active === id && (
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-primary" />
-                )}
-              </Button>
-            ))}
-            <div className="h-4 w-px bg-border mx-2" />
-            <Button variant="ghost" asChild className="hover:text-primary hover:bg-primary/10">
-              <Link href="/tools">AI Tools</Link>
-            </Button>
-            <Button variant="ghost" asChild className="hover:text-primary hover:bg-primary/10">
-              <Link href="/services">Services</Link>
-            </Button>
-          </div>
+            {/* Nav Links */}
+            <nav className="hidden lg:flex items-center gap-1 bg-muted/30 p-1 rounded-full border border-border/40">
+              {!isDashboard ? (
+                PUBLIC_SECTIONS.map(({ id, label }) => (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      if (pathname !== "/") {
+                        router.push(`/#${id}`);
+                      } else {
+                        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+                        setActive(id);
+                      }
+                    }}
+                    className={cn(
+                      "relative px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 select-none",
+                      active === id
+                        ? "text-primary font-bold"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {active === id && (
+                      <motion.div
+                        layoutId="activeNavPill"
+                        className="absolute inset-0 bg-background rounded-full border border-primary/20 shadow-sm -z-10"
+                        transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                      />
+                    )}
+                    {label}
+                  </button>
+                ))
+              ) : (
+                DASHBOARD_NAV.map(({ id, label, icon: Icon }) => (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+                      setActive(id);
+                    }}
+                    className={cn(
+                      "relative px-4 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 select-none",
+                      active === id
+                        ? "text-primary font-bold"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {active === id && (
+                      <motion.div
+                        layoutId="activeNavPill"
+                        className="absolute inset-0 bg-background rounded-full border border-primary/20 shadow-sm -z-10"
+                        transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                      />
+                    )}
+                    <Icon className="w-3.5 h-3.5" />
+                    {label}
+                  </button>
+                ))
+              )}
+            </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-3">
-            <ThemeToggle /> {/* ✅ Theme toggle button here */}
+            {/* Right Actions */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <ThemeToggle />
 
-            {status === "loading" ? (
-              <div className="h-9 w-9 rounded-full border-2 border-primary/50 border-t-primary animate-spin shadow-sm" />
-            ) : session ? (
-              <>
-                <span className="hidden sm:block text-sm font-medium">
-                  Welcome, {firstName} 🎉
-                </span>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                      <Avatar className="h-9 w-9 border shadow-sm transition-transform hover:scale-105">
-                        <AvatarImage src={session.user?.image || ""} alt="profile" />
-                        <AvatarFallback>
-                          {firstName?.[0]?.toUpperCase() || "U"}
-                        </AvatarFallback>
-                      </Avatar>
+              {status === "loading" ? (
+                <div className="h-8 w-8 rounded-full border-2 border-primary/50 border-t-primary animate-spin shadow-sm" />
+              ) : session ? (
+                <div className="flex items-center gap-2">
+                  {!isDashboard && (
+                    <Button size="sm" variant="default" asChild className="hidden sm:flex rounded-full text-xs font-semibold gap-1.5">
+                      <Link href="/dashboard">
+                        <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
+                      </Link>
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-64 p-2 rounded-2xl shadow-xl border-border/50 bg-card/95 backdrop-blur-md" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal px-2 py-1.5">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-semibold leading-none">{session.user?.name || "Guest"}</p>
-                        <p className="text-xs leading-none text-muted-foreground mt-1">
-                          {session.user?.email || "guest@example.com"}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="my-2 bg-border/50" />
-                    <DropdownMenuItem
-                      className="flex items-center gap-2 cursor-pointer rounded-xl px-2 py-2 hover:bg-muted focus:bg-muted transition-colors"
-                      onClick={() => router.push("/dashboard")}
-                    >
-                      <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
-                        <LayoutDashboard className="w-4 h-4" />
-                      </div>
-                      <span className="font-medium text-sm">Dashboard</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="flex items-center gap-2 cursor-pointer rounded-xl px-2 py-2 hover:bg-muted focus:bg-muted transition-colors mt-1"
-                      onClick={() => router.push("/settings")}
-                    >
-                      <div className="p-1.5 rounded-lg bg-muted text-muted-foreground">
-                        <Settings className="w-4 h-4" />
-                      </div>
-                      <span className="font-medium text-sm">Settings</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator className="my-2 bg-border/50" />
-                    <DropdownMenuItem
-                      className="flex items-center gap-2 text-red-600 focus:text-red-500 cursor-pointer rounded-xl px-2 py-2 hover:bg-red-50 focus:bg-red-50 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 transition-colors"
-                      onClick={() => {
-                        setIsSignOutModalOpen(true);
-                      }}
-                    >
-                      <div className="p-1.5 rounded-lg bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-500">
+                  )}
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="relative h-9 w-9 rounded-full p-0">
+                        <Avatar className="h-9 w-9 border border-primary/30 shadow-sm hover:scale-105 transition-transform">
+                          <AvatarImage src={session.user?.image || ""} alt="profile" />
+                          <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                            {firstName?.[0]?.toUpperCase() || "U"}
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-60 p-2 rounded-2xl shadow-2xl border-border/50 bg-card/95 backdrop-blur-xl" align="end">
+                      <DropdownMenuLabel className="font-normal px-2 py-1.5">
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-bold text-foreground leading-none">{session.user?.name || "Client"}</p>
+                          <p className="text-xs text-muted-foreground truncate mt-0.5">{session.user?.email || "guest@example.com"}</p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator className="my-1 bg-border/50" />
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 cursor-pointer rounded-xl px-2.5 py-2 hover:bg-muted font-medium text-xs"
+                        onClick={() => router.push("/dashboard")}
+                      >
+                        <LayoutDashboard className="w-4 h-4 text-primary" />
+                        <span>Client Dashboard</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 cursor-pointer rounded-xl px-2.5 py-2 hover:bg-muted font-medium text-xs"
+                        onClick={() => router.push("/")}
+                      >
+                        <Code className="w-4 h-4 text-indigo-500" />
+                        <span>Public Portfolio</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator className="my-1 bg-border/50" />
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-red-500 cursor-pointer rounded-xl px-2.5 py-2 hover:bg-red-500/10 font-medium text-xs"
+                        onClick={() => setIsSignOutModalOpen(true)}
+                      >
                         <LogOut className="w-4 h-4" />
-                      </div>
-                      <span className="font-medium text-sm">Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : (
-              <Button
-                size="sm"
-                onClick={() => signIn(undefined, { callbackUrl: "/dashboard" })}
-                className="hover:bg-green-100 hover:text-green-600"
-              >
-                Sign In
-              </Button>
-            )}
+                        <span>Sign Out</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="default"
+                  onClick={() => router.push("/login?callbackUrl=/dashboard")}
+                  className="rounded-full text-xs font-semibold px-4 py-2 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white shadow-md hover:shadow-lg transition-all"
+                >
+                  <User className="w-3.5 h-3.5 mr-1" /> Sign In
+                </Button>
+              )}
+            </div>
+
           </div>
-        </Container>
-      </nav>
+        </div>
+      </header>
 
       <SignOutModal
         isOpen={isSignOutModalOpen}

@@ -79,17 +79,36 @@ export function SkillsSection() {
     }
   }, [activeCategory]);
 
-  // Handle click from the 3D scene — used for mobile tap-to-lock
+  const [zoomEnabled, setZoomEnabled] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  // Handle click from the 3D scene — Nova star toggles 3D Zoom Mode
   const handleSkillClick = useCallback((skill: string | null, category: string | null, color: string | null) => {
-    if (!isTouchDevice) return;
-    if (tappedSkill === skill) {
-      setTappedSkill(null);
-      setTappedCategory(null);
-      setTappedColor(null);
-    } else {
-      setTappedSkill(skill);
-      setTappedCategory(category);
-      setTappedColor(color);
+    if (skill === "Nova" || category === "Central Star") {
+      setZoomEnabled((prev) => {
+        const nextState = !prev;
+        setToastMessage(
+          nextState
+            ? "🔍 3D Space Zoom Enabled! Scroll/pinch to zoom into the Solar System. Click Nova again to lock page scroll."
+            : "🔒 3D Space Zoom Locked! Normal page scroll restored."
+        );
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 4000);
+        return nextState;
+      });
+    }
+
+    if (isTouchDevice) {
+      if (tappedSkill === skill) {
+        setTappedSkill(null);
+        setTappedCategory(null);
+        setTappedColor(null);
+      } else {
+        setTappedSkill(skill);
+        setTappedCategory(category);
+        setTappedColor(color);
+      }
     }
   }, [isTouchDevice, tappedSkill]);
 
@@ -99,8 +118,6 @@ export function SkillsSection() {
     setTappedColor(null);
   }, []);
 
-  // Desktop positioning is handled directly via ref in mousemove event listener
-
   // Shared card content
   const renderCardContent = () => (
     <div className="space-y-4">
@@ -109,8 +126,8 @@ export function SkillsSection() {
           style={{ backgroundColor: activeColor || "var(--primary)" }}
           className="w-2.5 h-2.5 rounded-full animate-pulse"
         />
-        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-          {activeCategory}
+        <span className="text-[10px] font-mono tracking-widest text-muted-foreground uppercase">
+          {activeCategory || "Skill Detail"}
         </span>
         {isTouchDevice && tappedSkill && (
           <button
@@ -132,13 +149,25 @@ export function SkillsSection() {
 
       <div className="pt-3 border-t border-border/50">
         <h4 className="text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-2">
-          {activeSkill === "Tech Core" ? "Description" : "Category Stack"}
+          Category Stack
         </h4>
 
-        {activeSkill === "Tech Core" ? (
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            This central core represents the foundational logic, architectural principles, and AI engineering framework driving my professional workspace.
-          </p>
+        {activeSkill === "Nova" || activeSkill === "Tech Core" ? (
+          <div className="flex flex-wrap gap-1.5">
+            {SKILL_GROUPS.map((g) => (
+              <span
+                key={g.category}
+                style={{
+                  borderColor: `${g.color}60`,
+                  backgroundColor: `${g.color}15`,
+                  color: g.color,
+                }}
+                className="text-[9px] px-2 py-0.5 rounded-md border font-semibold tracking-wide uppercase shadow-xs"
+              >
+                {g.category}
+              </span>
+            ))}
+          </div>
         ) : (
           <div className="flex flex-wrap gap-1.5">
             {hoveredSkillsList.map((s) => (
@@ -167,22 +196,29 @@ export function SkillsSection() {
 
   return (
     <section
+      id="skills"
       ref={sectionRef}
       className="relative w-full h-screen bg-background py-10 flex flex-col justify-between items-center overflow-hidden border-t border-border select-none"
     >
+      {/* Toast Notification Banner */}
+      {showToast && (
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-black/90 backdrop-blur-xl border border-amber-500/50 text-amber-300 text-xs font-bold shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-300 flex items-center gap-2 max-w-md text-center">
+          {toastMessage}
+        </div>
+      )}
+
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Top Scroll Area */}
       <div className="z-10 text-center relative w-full pt-6 pointer-events-auto">
-         <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 mb-2">
-           Tech Orbit
+         <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-emerald-400 to-cyan-500 mb-2">
+           Solar Tech Universe
          </h2>
          <p className="text-muted-foreground max-w-md mx-auto font-light text-sm px-4">
            {isTouchDevice
-             ? "Tap a node to see details. Drag to rotate."
-             : "Drag to rotate the universe. Hover nodes to see details."}
-           <br/> Color Rings scale from Core Stack to deployment &amp; tools.
+             ? "Tap celestial planets to inspect stack details. Click central Nova star to toggle 3D Zoom Mode."
+             : "Drag to rotate solar system. Hover planets to inspect stack. Click central Nova star to toggle 3D Zoom Mode."}
          </p>
          
          {/* Mobile swipe zone indicator */}
@@ -225,7 +261,10 @@ export function SkillsSection() {
             <pointLight position={[0, -20, 0]} intensity={0.4} color="#f43f5e" />
             <Suspense fallback={null}>
                <OrbitControls 
-                 enableZoom={false} 
+                 enableZoom={zoomEnabled} 
+                 zoomSpeed={0.8}
+                 minDistance={10}
+                 maxDistance={35}
                  enablePan={false} 
                  autoRotate 
                  autoRotateSpeed={0.5} 
@@ -233,6 +272,7 @@ export function SkillsSection() {
                  minPolarAngle={Math.PI / 4}
                />
                <SkillsScene 
+                 zoomEnabled={zoomEnabled}
                  onHoverSkill={setHoveredSkill}
                  onHoverCategory={setHoveredCategory}
                  onHoverColor={setHoveredColor}

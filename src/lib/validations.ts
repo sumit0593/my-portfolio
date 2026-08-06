@@ -14,15 +14,17 @@ export const contactSchema = z.object({
 });
 
 // ── Chat Messages ──
-const chatPartSchema = z.object({
-  type: z.string(),
-  text: z.string().max(4000).optional(),
-});
+const chatPartSchema = z
+  .object({
+    type: z.string().optional(),
+    text: z.string().max(4000).optional(),
+  })
+  .passthrough();
 
 const chatMessageSchema = z.object({
   role: z.enum(["user", "assistant", "system"]),
   content: z.string().max(4000).optional(),
-  parts: z.array(chatPartSchema).optional(),
+  parts: z.array(z.any()).optional(),
 });
 
 export const chatRequestSchema = z.object({

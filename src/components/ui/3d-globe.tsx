@@ -483,11 +483,15 @@ function RotatingGlobe({
     onMarkerClick?.(marker);
   }, [camera, onMarkerClick]);
 
-  useFrame(() => {
-    if (targetQuaternion.current && groupRef.current) {
-      groupRef.current.quaternion.slerp(targetQuaternion.current, 0.08);
-      if (groupRef.current.quaternion.angleTo(targetQuaternion.current) < 0.01) {
-        targetQuaternion.current = null;
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      if (targetQuaternion.current) {
+        groupRef.current.quaternion.slerp(targetQuaternion.current, 0.08);
+        if (groupRef.current.quaternion.angleTo(targetQuaternion.current) < 0.01) {
+          targetQuaternion.current = null;
+        }
+      } else {
+        groupRef.current.rotation.y += delta * 0.15;
       }
     }
   });
@@ -539,6 +543,9 @@ function RotatingGlobe({
           active={config.autoRotateSpeed > 0}
         />
       ))}
+
+      {/* Orbiting skill satellites - attached to rotating globe */}
+      <OrbitingSatellites globeRadius={config.radius} />
     </group>
   );
 }
@@ -560,12 +567,12 @@ interface SatelliteData {
 }
 
 const SKILL_SATELLITES: SatelliteData[] = [
-  { label: "LLMs & GenAI", orbitRadius: 3.0, speed: 0.35, tiltX: 0.3, tiltZ: 0.1, phase: 0, color: "#6D5DFD" },
-  { label: "Frameworks & Agents", orbitRadius: 3.2, speed: 0.28, tiltX: -0.5, tiltZ: 0.4, phase: Math.PI / 3, color: "#00D4FF" },
-  { label: "Vector & Databases", orbitRadius: 3.4, speed: 0.32, tiltX: 0.6, tiltZ: -0.3, phase: Math.PI * 2 / 3, color: "#8B5CF6" },
-  { label: "Cloud & DevOps", orbitRadius: 3.1, speed: 0.25, tiltX: -0.2, tiltZ: -0.5, phase: Math.PI, color: "#10B981" },
-  { label: "Backend & APIs", orbitRadius: 3.3, speed: 0.30, tiltX: 0.4, tiltZ: 0.6, phase: Math.PI * 4 / 3, color: "#F59E0B" },
-  { label: "Frontend & UI", orbitRadius: 3.5, speed: 0.22, tiltX: -0.4, tiltZ: 0.2, phase: Math.PI * 5 / 3, color: "#EF4444" },
+  { label: "LLMs & GenAI", orbitRadius: 3.2, speed: 0.35, tiltX: 0.35, tiltZ: 0.15, phase: 0, color: "#6D5DFD" },
+  { label: "Frameworks & Agents", orbitRadius: 3.8, speed: 0.28, tiltX: -0.45, tiltZ: 0.35, phase: Math.PI / 3, color: "#00D4FF" },
+  { label: "Vector & Databases", orbitRadius: 4.4, speed: 0.32, tiltX: 0.55, tiltZ: -0.25, phase: Math.PI * 2 / 3, color: "#8B5CF6" },
+  { label: "Cloud & DevOps", orbitRadius: 3.5, speed: 0.25, tiltX: -0.25, tiltZ: -0.45, phase: Math.PI, color: "#10B981" },
+  { label: "Backend & APIs", orbitRadius: 4.1, speed: 0.30, tiltX: 0.35, tiltZ: 0.45, phase: Math.PI * 4 / 3, color: "#F59E0B" },
+  { label: "Frontend & UI", orbitRadius: 4.8, speed: 0.22, tiltX: -0.35, tiltZ: 0.25, phase: Math.PI * 5 / 3, color: "#EF4444" },
 ];
 
 interface OrbitingSatelliteProps {
@@ -937,6 +944,57 @@ function Atmosphere({ radius, color, intensity, blur }: AtmosphereProps) {
   );
 }
 
+
+
+// Enhanced Deep-Space Cosmic Background matching Solar System & Globe aesthetic
+function GlobeSpaceBackground() {
+  const starsRef = useRef<THREE.Points>(null);
+
+  useFrame((state, delta) => {
+    if (starsRef.current) {
+      starsRef.current.rotation.y += delta * 0.015;
+      starsRef.current.rotation.x += delta * 0.005;
+    }
+  });
+
+  const starPositions = useMemo(() => {
+    const count = 500;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 85;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 85;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 85;
+    }
+    return positions;
+  }, []);
+
+  return (
+    <group>
+      {/* 3D Cosmic Starfield */}
+      <points ref={starsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[starPositions, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.15}
+          color="#a5f3fc"
+          transparent
+          opacity={0.85}
+          sizeAttenuation
+        />
+      </points>
+
+      {/* Deep Space Background Ambient Glow Lights */}
+      <pointLight position={[-25, 15, -15]} color="#6366f1" intensity={3} distance={60} />
+      <pointLight position={[25, -15, -15]} color="#ec4899" intensity={2.5} distance={60} />
+      <pointLight position={[0, 0, -20]} color="#06b6d4" intensity={2.5} distance={55} />
+    </group>
+  );
+}
+
 // ============================================================================
 // Scene Component
 // ============================================================================
@@ -956,6 +1014,25 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover, isExploring = fa
 
   const [autoRotateActive, setAutoRotateActive] = useState(config.autoRotateSpeed > 0);
   const autoRotateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [globeOffset, setGlobeOffset] = useState<[number, number, number]>([2.4, 0, 0]);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== "undefined") {
+        if (window.innerWidth < 768) {
+          setGlobeOffset([0, -0.8, 0]);
+        } else if (window.innerWidth < 1024) {
+          setGlobeOffset([1.6, 0, 0]);
+        } else {
+          setGlobeOffset([2.4, 0, 0]);
+        }
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Track whether we're animating the camera for the explore transition
   const isAnimatingRef = useRef(false);
@@ -1030,16 +1107,11 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover, isExploring = fa
     };
   }, [gl.domElement, scheduleAutoRotateResume]);
 
-  React.useEffect(() => {
-    return () => {
-      if (autoRotateTimeoutRef.current) {
-        clearTimeout(autoRotateTimeoutRef.current);
-      }
-    };
-  }, []);
-
   return (
     <>
+      {/* 3D Cosmic Space Background */}
+      <GlobeSpaceBackground />
+
       {/* Lighting */}
       <ambientLight intensity={isLight ? 1.0 : config.ambientIntensity} />
       <directionalLight
@@ -1053,26 +1125,25 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover, isExploring = fa
         color="#88ccff"
       />
 
-      {/* Rotating Globe with Markers */}
-      <RotatingGlobe
-        config={config}
-        markers={markers}
-        onMarkerClick={handleMarkerClick}
-        onMarkerHover={onMarkerHover}
-      />
-
-      {/* Atmosphere (static) */}
-      {config.showAtmosphere && (
-        <Atmosphere
-          radius={config.radius}
-          color={isLight ? "#b9dbff" : config.atmosphereColor}
-          intensity={isLight ? 0.6 : config.atmosphereIntensity}
-          blur={config.atmosphereBlur}
+      {/* Rotating Globe & Satellites positioned on right side */}
+      <group position={globeOffset}>
+        <RotatingGlobe
+          config={config}
+          markers={markers}
+          onMarkerClick={handleMarkerClick}
+          onMarkerHover={onMarkerHover}
         />
-      )}
 
-      {/* Orbiting skill satellites */}
-      <OrbitingSatellites globeRadius={config.radius} />
+        {/* Atmosphere (static) */}
+        {config.showAtmosphere && (
+          <Atmosphere
+            radius={config.radius}
+            color={isLight ? "#b9dbff" : config.atmosphereColor}
+            intensity={isLight ? 0.6 : config.atmosphereIntensity}
+            blur={config.atmosphereBlur}
+          />
+        )}
+      </group>
 
       {/* Controls — full 360° rotation enabled */}
       <OrbitControls

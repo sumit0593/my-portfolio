@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Terminal, Send, CheckCircle2, Loader2, AlertCircle, Mail, Phone, Linkedin, Github } from "lucide-react";
+import { Terminal, Send, CheckCircle2, Loader2, AlertCircle, Mail, Phone, Linkedin, Github, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function ContactSection() {
@@ -55,7 +55,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact-section" className="relative w-full bg-background py-32 px-4 flex flex-col items-center border-t border-border">
+    <section id="contact" className="relative w-full bg-background py-32 px-4 flex flex-col items-center border-t border-border">
       <div className="z-10 text-center mb-16 relative pointer-events-none">
         <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 mb-4">
           Initiate Contact
@@ -71,46 +71,56 @@ export function ContactSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-2xl mb-12 px-2"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 w-full max-w-3xl mb-12 px-2"
       >
+        <a
+          href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "15556735747"}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20an%20AI%20project.`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2.5 bg-emerald-500/10 backdrop-blur-md hover:bg-emerald-500/20 p-3.5 rounded-xl border border-emerald-500/30 transition-all hover:-translate-y-1 hover:shadow-md group"
+        >
+          <MessageSquare className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-xs font-semibold text-emerald-400">WhatsApp AI</span>
+        </a>
+
         <a
           href="mailto:sumitsumitsumit163@gmail.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+          className="flex items-center justify-center gap-2.5 bg-card/40 backdrop-blur-md hover:bg-muted p-3.5 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
         >
-          <Mail className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform shrink-0" />
-          <span className="text-sm font-semibold text-foreground/90">Email</span>
+          <Mail className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-xs font-semibold text-foreground/90">Email</span>
         </a>
 
         <a
           href="tel:7011676185"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+          className="flex items-center justify-center gap-2.5 bg-card/40 backdrop-blur-md hover:bg-muted p-3.5 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
         >
-          <Phone className="w-5 h-5 text-green-500 group-hover:scale-110 transition-transform shrink-0" />
-          <span className="text-sm font-semibold text-foreground/90">Call</span>
+          <Phone className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-xs font-semibold text-foreground/90">Call</span>
         </a>
 
         <a
           href="https://www.linkedin.com/in/sumit-kumar0509/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+          className="flex items-center justify-center gap-2.5 bg-card/40 backdrop-blur-md hover:bg-muted p-3.5 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
         >
-          <Linkedin className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
-          <span className="text-sm font-semibold text-foreground/90">LinkedIn</span>
+          <Linkedin className="w-4 h-4 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-xs font-semibold text-foreground/90">LinkedIn</span>
         </a>
 
         <a
           href="https://github.com/sumit0593"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 bg-card/40 backdrop-blur-md hover:bg-muted p-4 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
+          className="flex items-center justify-center gap-2.5 bg-card/40 backdrop-blur-md hover:bg-muted p-3.5 rounded-xl border border-border/50 transition-all hover:-translate-y-1 hover:shadow-md group"
         >
-          <Github className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform shrink-0" />
-          <span className="text-sm font-semibold text-foreground/90">GitHub</span>
+          <Github className="w-4 h-4 text-foreground group-hover:scale-110 transition-transform shrink-0" />
+          <span className="text-xs font-semibold text-foreground/90">GitHub</span>
         </a>
       </motion.div>
 

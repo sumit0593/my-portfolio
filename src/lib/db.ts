@@ -20,6 +20,12 @@ export interface ChatSession {
   // Concurrency Lock
   isProcessing: boolean;
   processingStartedAt?: Date;
+
+  // Lead Intelligence & Agent State
+  leadScore?: "High" | "Medium" | "Low";
+  leadDetails?: Record<string, any>;
+  agentMode?: string;
+  detectedLanguage?: string;
 }
 
 export interface ChatMessage {
@@ -258,6 +264,20 @@ class LocalFileDB {
     }
   }
 
+  /** Updates lead qualification intelligence and agent mode for a session */
+  public updateLeadQualification(sessionId: string, leadScore: "High" | "Medium" | "Low", leadDetails: Record<string, any>, agentMode?: string, detectedLanguage?: string) {
+    const session = this.data.sessions.find((s) => s.id === sessionId);
+    if (session) {
+      session.leadScore = leadScore;
+      session.leadDetails = leadDetails;
+      if (agentMode) session.agentMode = agentMode;
+      if (detectedLanguage) session.detectedLanguage = detectedLanguage;
+      session.updatedAt = new Date();
+      session.sessionVersion += 1;
+      this.save();
+    }
+  }
+
   public updateSessionActivity(sessionId: string, expiryMs = 30 * 24 * 60 * 60 * 1000) { // Default to 30 days
     const session = this.data.sessions.find((s) => s.id === sessionId);
     if (session) {
@@ -413,12 +433,18 @@ class LocalFileDB {
   }
 }
 
-// Global safe DB instance for Next.js HMR
+// Safe DB instance export preserving single global instance across dev HMR
 const globalForDB = globalThis as unknown as {
   dbInstance?: LocalFileDB;
 };
 
-export const db = globalForDB.dbInstance || new LocalFileDB();
+if (!globalForDB.dbInstance) {
+  globalForDB.dbInstance = new LocalFileDB();
+} else {
+  Object.setPrototypeOf(globalForDB.dbInstance, LocalFileDB.prototype);
+}
+
+export const db = globalForDB.dbInstance;
 
 if (process.env.NODE_ENV !== "production") {
   globalForDB.dbInstance = db;

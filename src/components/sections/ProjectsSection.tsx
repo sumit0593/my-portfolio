@@ -281,7 +281,7 @@ function ProjectCard({
         <div className="flex flex-col h-full [transform-style:preserve-3d] z-10">
           {/* Gradient Banner with Grid Mesh */}
           <div
-            className={`h-40 bg-gradient-to-br ${project.color} relative overflow-hidden shrink-0 transition-transform duration-300 ease-out [transform-style:preserve-3d] rounded-t-[22px]`}
+            className={`h-32 sm:h-40 bg-gradient-to-br ${project.color} relative overflow-hidden shrink-0 transition-transform duration-300 ease-out [transform-style:preserve-3d] rounded-t-[22px]`}
             style={{
               transform: isHovered ? "translate3d(0, 0, 40px)" : "translate3d(0, 0, 0px)"
             }}
@@ -300,14 +300,14 @@ function ProjectCard({
             <div className="absolute inset-0 bg-black/35 group-hover:bg-black/15 transition-colors duration-300" />
 
             {/* Preview Badge */}
-            <div className="absolute top-4 left-4 z-20">
-              <span className="text-[10px] font-bold tracking-widest uppercase bg-black/55 backdrop-blur-md text-white/95 px-2.5 py-1 rounded-full border border-white/15">
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20">
+              <span className="text-[9px] sm:text-[10px] font-bold tracking-widest uppercase bg-black/55 backdrop-blur-md text-white/95 px-2.5 py-1 rounded-full border border-white/15">
                 Preview {project.id}
               </span>
             </div>
 
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-              <div className="bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full flex items-center gap-2">
+              <div className="bg-white/20 backdrop-blur-md px-4 py-2 sm:px-5 sm:py-2.5 rounded-full flex items-center gap-2">
                 <span className="text-white text-xs font-bold tracking-wide uppercase">
                   Explore Project
                 </span>
@@ -319,7 +319,7 @@ function ProjectCard({
           </div>
 
           {/* Content */}
-          <div className="p-6 flex flex-col flex-1 justify-between [transform-style:preserve-3d]">
+          <div className="p-4 sm:p-6 flex flex-col flex-1 justify-between [transform-style:preserve-3d]">
             <div className="space-y-3 [transform-style:preserve-3d]">
               <h3
                 className="text-lg font-bold text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-purple-600 dark:group-hover:from-blue-400 dark:group-hover:to-purple-400 transition-all duration-300 [transform-style:preserve-3d]"
@@ -652,7 +652,7 @@ export function ProjectsSection() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-screen bg-background py-24 flex flex-col items-center overflow-hidden">
+    <section id="projects" className="relative w-full min-h-screen bg-background py-24 flex flex-col items-center overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -674,12 +674,12 @@ export function ProjectsSection() {
       </div>
 
       {/* Project Cards Grid / Stack */}
-      <div className="relative z-10 w-full max-w-6xl px-6 flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-6xl px-4 sm:px-6 flex flex-col items-center">
         {/* Floating guide badge when collapsed */}
         {!isExpanded && (
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-30 select-none pointer-events-none">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-indigo-400/30 bg-indigo-600/90 text-white text-[10px] font-bold tracking-widest uppercase shadow-lg shadow-indigo-500/20 backdrop-blur-md animate-pulse">
-              Deck of 5 Projects — Hover to Fan
+            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-indigo-400/30 bg-indigo-600/90 text-white text-[10px] font-bold tracking-widest uppercase shadow-lg shadow-indigo-500/20 backdrop-blur-md animate-pulse whitespace-nowrap">
+              {isMobile ? "Deck of 5 Projects — Tap to Expand" : "Deck of 5 Projects — Hover to Fan"}
             </span>
           </div>
         )}
@@ -714,11 +714,11 @@ export function ProjectsSection() {
           className={cn(
             "w-full",
             isExpanded
-              ? "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
-              : "relative h-[480px] w-full max-w-md mx-auto cursor-pointer"
+              ? "grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto"
+              : "relative h-[440px] sm:h-[480px] w-full max-w-[340px] sm:max-w-md mx-auto cursor-pointer"
           )}
         >
-          {!isExpanded && isStackHovered && (
+          {!isExpanded && isStackHovered && !isMobile && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -733,26 +733,26 @@ export function ProjectsSection() {
           )}
 
           {PROJECTS.map((project, index) => {
-            // Stacked offset styles
-            const stackedRotation = isMobile ? 0 : (index === 0 ? 0 : index === 1 ? 3 : index === 2 ? -3 : index === 3 ? 6 : -6);
+            // Stacked offset styles - Centered on Mobile to prevent overflow
+            const stackedRotation = isMobile ? (index - 2) * 1.5 : (index === 0 ? 0 : index === 1 ? 3 : index === 2 ? -3 : index === 3 ? 6 : -6);
             
             const stackedY = isMobile
-              ? -(index - 2) * 14 // Centered diagonal offset (upward)
+              ? -(index - 2) * 8 // Centered slight vertical offset
               : (index === 0 ? 0 : index === 1 ? 8 : index === 2 ? 8 : index === 3 ? 18 : 18);
               
             const stackedX = isMobile
-              ? (index - 2) * 14 // Centered diagonal offset (rightward)
+              ? 0 // ZERO horizontal shift on mobile to keep centered
               : (index === 0 ? 0 : index === 1 ? 12 : index === 2 ? -12 : index === 3 ? 24 : -24);
 
             // Hovered fanned out offset styles
             const hoveredRotation = isMobile ? 0 : (index === 0 ? 0 : index === 1 ? 7 : index === 2 ? -7 : index === 3 ? 14 : -14);
 
             const hoveredY = isMobile
-              ? -(index - 2) * 28 // Fanned out diagonal offset (upward)
+              ? -(index - 2) * 12
               : (index === 0 ? -25 : index === 1 ? -10 : index === 2 ? -10 : index === 3 ? 15 : 15);
 
             const hoveredX = isMobile
-              ? (index - 2) * 28 // Fanned out diagonal offset (rightward)
+              ? 0 // ZERO horizontal shift on mobile to prevent clipping
               : (index === 0 ? 0 : index === 1 ? 60 : index === 2 ? -60 : index === 3 ? 120 : -120);
 
             const rotateVal = isExpanded ? 0 : (isStackHovered ? hoveredRotation : stackedRotation);
@@ -760,7 +760,7 @@ export function ProjectsSection() {
             const xVal = isExpanded ? 0 : (isStackHovered ? hoveredX : stackedX);
 
             // 3D perspective tilts: tilt deck back when stacked
-            const rotateXVal = isExpanded ? 0 : -8;
+            const rotateXVal = isExpanded ? 0 : -6;
             const rotateYVal = isExpanded ? 0 : rotateVal * 0.3;
 
             return (
@@ -780,7 +780,7 @@ export function ProjectsSection() {
                   y: yVal,
                   x: xVal,
                   transformStyle: "preserve-3d",
-                  filter: (!isExpanded && isStackHovered) ? "blur(4px)" : "blur(0px)",
+                  filter: "none",
                 }}
                 transition={{
                   type: "spring",

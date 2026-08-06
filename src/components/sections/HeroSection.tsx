@@ -17,6 +17,57 @@ const Globe3D = dynamic(
   }
 );
 
+import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+
+// 3D Galaxy Starfield backdrop matching Skills Solar System 3D background
+function HeroGalaxyCanvas() {
+  const starsRef = React.useRef<THREE.Points>(null);
+
+  useFrame((state, delta) => {
+    if (starsRef.current) {
+      starsRef.current.rotation.y += delta * 0.02;
+    }
+  });
+
+  const starPositions = React.useMemo(() => {
+    const count = 450;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 80;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 80;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 80;
+    }
+    return positions;
+  }, []);
+
+  return (
+    <group>
+      {/* 3D Starfield matching Solar System background */}
+      <points ref={starsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[starPositions, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.15}
+          color="#ffffff"
+          transparent
+          opacity={0.7}
+          sizeAttenuation
+        />
+      </points>
+
+      {/* Deep Space Volumetric Ambient Glow Lights */}
+      <pointLight position={[-25, 15, -15]} color="#6D5DFD" intensity={3} distance={65} />
+      <pointLight position={[25, -15, -15]} color="#00D4FF" intensity={3} distance={65} />
+      <pointLight position={[0, 0, -22]} color="#8B5CF6" intensity={2} distance={70} />
+    </group>
+  );
+}
+
 // Markers exactly as defined in the Aceternity Globe Demo
 const sampleMarkers: GlobeMarker[] = [
   {
@@ -103,25 +154,53 @@ export function HeroSection() {
   const router = useRouter();
 
   return (
-    <section className="relative w-full min-h-screen lg:h-screen bg-background text-foreground flex items-center justify-center overflow-x-hidden pb-12 pt-20 md:pb-16 md:pt-24 lg:py-0">
+    <section id="home" className="relative w-full min-h-screen lg:h-screen bg-background text-foreground flex items-center justify-center overflow-x-hidden pb-12 pt-20 md:pb-16 md:pt-24 lg:py-0">
 
-      {/* Background Glows */}
+      {/* Unified Full-Section 3D Canvas (Rotating 3D Starfield Space View + Globe + Uncropped Satellites) */}
+      <div className="absolute inset-0 w-full h-full z-10 pointer-events-auto overflow-visible">
+        <Globe3D
+          className="h-full w-full"
+          markers={sampleMarkers}
+          isExploring={false}
+          config={{
+            showAtmosphere: true,
+            atmosphereColor: "#4da6ff",
+            atmosphereIntensity: 0.8,
+            bumpScale: 10,
+            autoRotateSpeed: 0.3,
+          }}
+          onMarkerClick={(marker) => {
+            console.log("Clicked marker:", marker.label);
+          }}
+          onMarkerHover={(marker) => {
+            if (marker) {
+              console.log("Hovering:", marker.label);
+            }
+          }}
+        />
+      </div>
+
+      {/* Background Ambient Cosmic Glows */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div
-          className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#6D5DFD]/10 blur-[130px] animate-pulse"
+          className="absolute top-[-10%] left-[-10%] w-[55%] h-[55%] rounded-full bg-[#6D5DFD]/15 blur-[140px] animate-pulse"
           style={{ animationDuration: "12s" }}
         />
         <div
-          className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#00D4FF]/10 blur-[130px] animate-pulse"
+          className="absolute bottom-[-10%] right-[-10%] w-[55%] h-[55%] rounded-full bg-[#00D4FF]/15 blur-[140px] animate-pulse"
           style={{ animationDuration: "16s" }}
+        />
+        <div
+          className="absolute top-[30%] left-[20%] w-[40%] h-[40%] rounded-full bg-[#8B5CF6]/10 blur-[150px] animate-pulse"
+          style={{ animationDuration: "14s" }}
         />
       </div>
 
       {/* Full-width Responsive Hero Content Overlay */}
       <div className="relative z-20 w-full h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20 max-w-7xl mx-auto gap-8 pointer-events-none">
 
-        {/* Left Column Text / Actions */}
-        <div className="w-full md:w-[55%] lg:w-1/2 flex flex-col space-y-6 pointer-events-auto text-left">
+        {/* Left Column Text / Actions (Static HTML card overlay) */}
+        <div className="w-full md:w-[50%] lg:w-[45%] flex flex-col space-y-6 pointer-events-auto text-left py-12 md:py-0">
           {/* Premium Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#6D5DFD]/40 bg-[#6D5DFD]/10 w-fit">
             <img src="/assets/nova.png" alt="Nova" className="w-3.5 h-3.5 object-contain rounded-full" />
@@ -140,48 +219,7 @@ export function HeroSection() {
             </span>
           </h1>
 
-          {/* 3D Globe - Positioned inline with z-30/visible overflow on mobile, absolutely on tablet/desktop */}
-          <div className="relative md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2 w-full md:w-[45%] lg:w-[50%] h-[240px] md:h-[60vh] lg:h-[80vh] flex items-center justify-center z-30 md:z-10 pointer-events-none overflow-visible md:overflow-hidden">
-            <div className="w-[336px] h-[336px] sm:w-[384px] sm:h-[384px] md:w-[420px] md:h-[420px] lg:w-[580px] lg:h-[580px] xl:w-[680px] xl:h-[680px] relative pointer-events-auto">
-              <Globe3D
-                className="h-full w-full"
-                markers={sampleMarkers}
-                isExploring={false}
-                config={{
-                  showAtmosphere: true,
-                  atmosphereColor: "#4da6ff",
-                  atmosphereIntensity: 0.8,
-                  bumpScale: 10,
-                  autoRotateSpeed: 0.3,
-                }}
-                onMarkerClick={(marker) => {
-                  console.log("Clicked marker:", marker.label);
-                }}
-                onMarkerHover={(marker) => {
-                  if (marker) {
-                    console.log("Hovering:", marker.label);
-                  }
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Scroll Down Indicator - Mobile only, placed between Globe and Tags */}
-          <div className="flex md:hidden flex-col items-center py-2 pointer-events-none w-full">
-            <span
-              className="text-[10px] font-semibold tracking-[0.25em] uppercase mb-1 animate-pulse"
-              style={{
-                color: "var(--foreground)",
-                textShadow: "0 0 12px rgba(109,93,253,0.7), 0 0 24px rgba(109,93,253,0.4)",
-                animationDuration: "2.5s",
-              }}
-            >
-              Scroll Down
-            </span>
-            <div className="w-[2px] h-8 rounded-full bg-gradient-to-b from-[#6D5DFD] via-[#00D4FF] to-transparent animate-pulse" style={{ animationDuration: "2s" }} />
-          </div>
-
-          {/* Styled Tags list to match mockup */}
+          {/* Styled Tech Tags grid */}
           <div className="grid grid-cols-2 gap-2.5 w-full max-w-md md:max-w-lg text-[10px] sm:text-xs font-semibold">
             {[
               { text: "LLMs & GenAI", colorClass: "text-sky-400 border-sky-500/30 bg-sky-500/5 hover:bg-sky-500/10" },
@@ -232,6 +270,9 @@ export function HeroSection() {
           </div>
         </div>
 
+        {/* Right Area Spacer (3D Globe rendered in full section Canvas behind) */}
+        <div className="w-full md:w-[50%] h-0 md:h-full pointer-events-none" />
+
       </div>
 
       {/* Scroll indicator — z-50 so it always floats above globe even during zoom */}
@@ -252,3 +293,4 @@ export function HeroSection() {
     </section>
   );
 }
+

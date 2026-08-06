@@ -33,7 +33,7 @@ export function ExperienceSection() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={containerRef} className="relative w-full bg-background py-32 px-4 md:px-0 overflow-hidden">
+    <section id="experience" ref={containerRef} className="relative w-full bg-background py-32 px-4 md:px-0 overflow-hidden">
       <div className="absolute top-1/4 -right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-20">

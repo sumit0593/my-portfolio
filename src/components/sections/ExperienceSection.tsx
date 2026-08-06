@@ -8,18 +8,18 @@ const EXPERIENCES = [
   {
     year: "Apr 2024 - Present",
     role: "Software Engineer",
-    company: "Kent RO Systems Ltd. (KentCamEye Division)",
+    company: "KENT RO Systems Pvt Ltd (KENT CamEye)",
     location: "Noida, India",
-    description: "Engineered an AI-driven OCR invoice parsing microservice using AWS (Textract, Lambda, DynamoDB) and Node.js. Built browser automation using Playwright, a custom HTML scraper, and a text extractor to automate client data. Developed custom tools on MCP servers to automate software engineering tasks. Implemented secure JWT/OAuth2 RBAC and dynamic Zoho Analytics dashboards.",
-    skills: ["Node.js", "React", "AWS", "Playwright", "MCP", "Web Scraping", "JWT", "OAuth2", "Zoho Analytics", "GitHub Actions", "DynamoDB", "Lambda"]
+    description: "Engineered a multilingual OCR invoice extraction pipeline (AWS Textract + Mistral LLM + Claude Sonnet fallback), reducing manual data entry by 60%. Built a WhatsApp-integrated RAG chatbot (Sarvam LLM + Gupshup + PostgreSQL). Optimized NGINX load balancing for 15% latency reduction and integrated dynamic Zoho Analytics, Metabase & SSRS dashboards.",
+    skills: ["Mistral LLM", "AWS Textract", "Claude Sonnet", "Sarvam LLM", "WhatsApp API", "PostgreSQL", "NGINX", "Zoho Analytics", "Metabase", "SSRS", "JWT", "OAuth2"]
   },
   {
     year: "Aug 2023 - Mar 2024",
     role: "Associate Software Developer",
     company: "TechnoIdentity",
     location: "Hyderabad, India",
-    description: "Spearheaded the legacy-to-modern migration of an enterprise HRMS platform using Next.js and TypeScript. Developed scalable MERN-stack UI components for the US Toll Authority (Hectare). Established robust CI/CD testing pipelines using Cypress and Playwright.",
-    skills: ["Next.js", "MERN Stack", "TypeScript", "Cypress", "Playwright"]
+    description: "Revamped HRMS platform using Next.js and TypeScript. Built reusable MUI/Storybook components for US Toll Authority (Hectare). Curated data to fine-tune open-source LLMs for document classification & extraction. Automated E2E testing with Cypress and Playwright.",
+    skills: ["Next.js", "TypeScript", "MUI", "Storybook", "LLM Fine-Tuning", "Node.js", "Cypress", "Playwright"]
   }
 ];
 

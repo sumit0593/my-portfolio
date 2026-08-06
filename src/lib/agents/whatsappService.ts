@@ -11,6 +11,7 @@ const GRAPH_API_VERSION = "v19.0";
 interface SendTextMessageParams {
   toPhone: string;
   text: string;
+  phoneId?: string;
 }
 
 interface SendMediaMessageParams {
@@ -24,9 +25,9 @@ interface SendMediaMessageParams {
 /**
  * Sends a text message to a client's WhatsApp number.
  */
-export async function sendWhatsAppMessage({ toPhone, text }: SendTextMessageParams): Promise<{ success: boolean; messageId?: string; error?: string }> {
+export async function sendWhatsAppMessage({ toPhone, text, phoneId: overridePhoneId }: SendTextMessageParams): Promise<{ success: boolean; messageId?: string; error?: string }> {
   const token = process.env.WHATSAPP_TOKEN || "";
-  const phoneId = process.env.WHATSAPP_PHONE_ID || "";
+  const phoneId = overridePhoneId || process.env.WHATSAPP_PHONE_ID || "";
 
   if (!token || !phoneId || token.includes("PASTE_YOUR")) {
     console.log(`[WhatsApp Service Mock] To: ${toPhone} | Message: ${text.slice(0, 100)}...`);
@@ -58,10 +59,11 @@ export async function sendWhatsAppMessage({ toPhone, text }: SendTextMessagePara
     );
 
     const messageId = response.data?.messages?.[0]?.id;
+    console.log(`[WhatsApp Send Success] Message ID: ${messageId} to ${cleanPhone}`);
     return { success: true, messageId };
   } catch (err: any) {
     const errorMsg = err?.response?.data?.error?.message || err?.message || "WhatsApp Graph API Request failed.";
-    console.error("[WhatsApp Send Error]", errorMsg);
+    console.error("[WhatsApp Send Error]", errorMsg, "Response Data:", JSON.stringify(err?.response?.data || {}));
     return { success: false, error: errorMsg };
   }
 }

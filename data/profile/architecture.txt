@@ -1,10 +1,12 @@
 ARCHITECTURE EXPERTISE
 
 Enterprise Automation & Architecture
-•	RAG Architecture (Retrieval-Augmented Generation) & Hybrid Search Systems.
-•	LLM Orchestration and multi-agent workflows.
-•	Vector Database Architecture (Pinecone, ChromaDB).
-•	Scalable System Design and Microservices using Next.js & Node.js.
-•	Serverless API Design using AWS Lambda and DynamoDB.
-•	Secure authentication architecture using OAuth2 and JWT.
-•	Data pipeline automation for enterprise syncing (Zoho Analytics, HRMS).
+• RAG Architecture (Retrieval-Augmented Generation), HyDE Query Expansion, Cross-Encoder Reranking & Hybrid Search Systems.
+• LLM Orchestration and Multi-Agent Workflows (LangChain, LangGraph, CrewAI, AutoGen).
+• Vector Database Architecture (Pinecone, Qdrant, ChromaDB, FAISS).
+• Tiered Multi-LLM Routing (Ollama lightweight extraction + Gemini Flash/Pro reasoning).
+• Plugin-based Automation Engine & State Machine (Playwright ATS Handlers for Greenhouse, Lever, Workday, Ashby).
+• Multilingual OCR Invoice Extraction Pipeline (AWS Textract + Mistral LLM + Claude Sonnet fallback).
+• Scalable System Design & NGINX Load Balancing.
+• Secure Authentication Architecture using OAuth2 and JWT.
+• Enterprise Reporting & Data Pipelines (Zoho Analytics, SSRS, Metabase, PostgreSQL).

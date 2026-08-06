@@ -1,6 +1,6 @@
 SUMIT KUMAR	
-GenAI & Multi-Agent Engineer | Full Stack Web Developer 
-Noida, India | 7011676185 | sumitsumitsumit163@gmail.com | LinkedIn | GitHub | Portfolio 
+GenAI & Multi-Agent Engineer | Full Stack Engineer 
+Noida, India | +91 7011676185 | sumitsumitsumit163@gmail.com | LinkedIn: linkedin.com/in/sumit-kumar0509 | GitHub: github.com/sumit0593 | Portfolio: my-portfolio-six-gold-86.vercel.app
 
 PROFILE SUMMARY
-Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures. Currently specializing in the IIT Mandi GenAI curriculum, focusing on LLM orchestration, fine-tuning and agentic workflows using LangChain and CrewAI. Proven track record of integrating AI-driven automation into enterprise web applications (MERN/Next.js) to optimize performance and decision-making.
+Full-Stack Engineer with over 3 years of professional experience, backed by a PG Certification in Generative AI and Multi-Agent Systems from IIT Mandi (TIH). Skilled in building scalable RAG architectures, agentic workflows, and LLM orchestration pipelines using LangChain, LangGraph, and CrewAI. Proven track record of integrating AI-driven automation into enterprise MERN/Next.js applications — cutting manual processing time by up to 60% and improving system performance by 15%.

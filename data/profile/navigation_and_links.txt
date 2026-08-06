@@ -5,14 +5,15 @@ This guide provides details on how to navigate the portfolio site, descriptions 
 ---
 
 ## 1. ROUTES AND NAVIGATION OVERVIEW
-The portfolio is structured across four main page routes:
+The portfolio is structured across five main page routes:
 
 1. **Dashboard Hub (`/` or `/dashboard`)**: The main interactive single-page dashboard containing all primary sections.
-2. **Projects Listing Page (`/projects`)**: A dedicated interface for browsing, filtering, and studying all of Sumit's projects using interactive categories and tags.
+2. **Projects Listing Page (`/projects`)**: A dedicated interface for browsing, filtering, and studying all 8 of Sumit's projects using interactive categories, tags, and private repo access notices.
 3. **AI Tools Marketplace (`/tools`)**: A hub containing advanced AI utilities, including:
    - **Resume Analyzer (`/tools/resume-analyzer`)**: Evaluates CVs against JDs using Gemini.
    - **Stubs for other tools**: Resume Builder, JD Matcher, LinkedIn Summary Generator, Cover Letter Generator, Skill Gap Analyzer, Interview Prep, Description Optimizer, Cold Email Generator, Prompt Generator.
-4. **Services Page (`/services`)**: Showcases professional freelance services (AI Chatbots, RAG Pipelines, Multi-Agent Systems, Full-Stack development).
+4. **Services Page (`/services`)**: Showcases professional freelance services (AI Chatbots, RAG Pipelines, Multi-Agent Systems, WhatsApp Business Cloud API AI Automation, LLMOps, Full-Stack development).
+5. **WhatsApp AI Webhook Endpoint (`/api/webhooks/whatsapp`)**: Live Meta Graph API endpoint connecting Meta WhatsApp Cloud API to Nova Multi-Agent AI system.
 
 ---
 
@@ -24,11 +25,11 @@ The main single-page hub is divided into **10 distinct sections** to provide a r
     - *How to navigate*: Anchored to the top of the viewport at all times.
 
 *   **SECTION 2: Home / Hero Section (`#home`)**
-    - *Purpose*: A premium, high-impact intro showing Sumit's dynamic role titles, subtitle, and primary call-to-action buttons.
+    - *Purpose*: A premium, high-impact intro showing Sumit's dynamic role titles (GenAI & Multi-Agent Engineer, Full Stack Engineer), subtitle, and primary call-to-action buttons.
     - *How to navigate*: Click "Home" in the navbar or go to `/dashboard#home`.
 
 *   **SECTION 3: Experience Metric Section**
-    - *Purpose*: Displays key metrics (e.g., 2+ Years Experience, 10+ Projects, Certifications, DSA Problem Solving counts) in a modern grid.
+    - *Purpose*: Displays key metrics (e.g., 3+ Professional Years Experience, 8+ Enterprise Projects, Certifications, 300+ DSA Problem Solving counts) in a modern scorecard grid.
     - *How to navigate*: Located directly below the Hero section.
 
 *   **SECTION 4: Resume Download & Preview Section**
@@ -36,27 +37,27 @@ The main single-page hub is divided into **10 distinct sections** to provide a r
     - *How to navigate*: Located in the About/Profile card area.
 
 *   **SECTION 5: Featured Projects Section (`#projects`)**
-    - *Purpose*: Renders a 3D-tilt grid of featured projects (AI Loan Advisor, Scam Guard AI, HireFlow AI, and Portfolio AI) complete with tech badges, metrics, and links.
+    - *Purpose*: Renders a 3D-tilt grid of 8 featured projects (Automated Job Application Agent, AI Loan Advisor, Scam Guard AI, HireFlow AI, Portfolio AI, Community Hero, Kent Risengine, Cam Attendance) complete with tech badges, metrics, and private repository access modals.
     - *How to navigate*: Click "Projects" in the navbar or go to `/dashboard#projects`.
 
 *   **SECTION 6: Skills Scene (`#skills`)**
-    - *Purpose*: Renders an interactive Three.js 3D orbiting sphere scene representing Generative AI, AI Engineering, Databases, Full Stack, and MLOps/DevOps.
+    - *Purpose*: Renders an interactive Three.js 3D orbiting sphere scene representing Generative AI, Multi-Agent Systems, LLMOps, Databases, Full Stack, and MLOps/DevOps.
     - *How to navigate*: Click "Skills" in the navbar or go to `/dashboard#skills`.
 
 *   **SECTION 7: AI Tools Marketplace Preview**
-    - *Purpose*: Showcases card pre-views of the AI tools available on `/tools` (e.g., Resume Analyzer).
+    - *Purpose*: Showcases card previews of the AI tools available on `/tools` (e.g., Resume Analyzer).
     - *How to navigate*: Directly below the Skills orbit section.
 
 *   **SECTION 8: Career Experience Timeline (`#experience`)**
-    - *Purpose*: Renders a chronological journey of professional positions (Kent RO Systems, TechnoIdentity) using icons, calendars, and description lists.
+    - *Purpose*: Renders a chronological journey of professional positions (TechnoIdentity, Kent RO Systems) using icons, calendars, and description lists.
     - *How to navigate*: Click "Experience" in the navbar or go to `/dashboard#experience`.
 
 *   **SECTION 9: Gallery / Learning Section (`#gallery`)**
-    - *Purpose*: An interactive tabbed interface displaying LeetCode/DSA problem-solving stats and certificates with zoom-able previews.
+    - *Purpose*: An interactive tabbed interface displaying LeetCode/DSA problem-solving stats and certificates with zoom-able previews and 3 Newton School scorecards.
     - *How to navigate*: Click "Gallery" in the navbar or go to `/dashboard#gallery`.
 
 *   **SECTION 10: Interactive Contact Section (`#contact`)**
-    - *Purpose*: Renders a custom email form (with validation) and lists direct social/contact profiles.
+    - *Purpose*: Renders a custom email form (with validation) and lists direct WhatsApp (+91 7011676185), email, and social profiles.
     - *How to navigate*: Click "Contact" in the navbar or go to `/dashboard#contact`.
 
 ---
@@ -73,8 +74,12 @@ The main single-page hub is divided into **10 distinct sections** to provide a r
 -   **LinkedIn**: `[Sumit Kumar on LinkedIn](https://www.linkedin.com/in/sumit-kumar0509/)`
 -   **LeetCode**: `[Sumit Kumar on LeetCode](https://leetcode.com/u/sumitsumitsumit163/)`
 -   **GitHub**: `[Sumit Kumar on GitHub](https://github.com/sumit0593)`
+-   **WhatsApp**: `[Connect with Sumit on WhatsApp](https://wa.me/917011676185)`
 
 ### 🚀 FEATURED PROJECT LINKS
+-   **Automated Job Application Agent**
+    - *Private Repo Notice*: Marked `isPrivate: true`. Directs users to contact Sumit on WhatsApp (+91 7011676185) or talk to Nova AI Assistant (`/ai-assistant`).
+    - *GitHub Link*: `[Automated Job Application Agent Source](https://github.com/sumit0593)`
 -   **AI Loan Advisor Chatbot**
     - *Live Link*: `[AI Loan Advisor Chatbot Live](https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/)`
     - *GitHub Link*: `[AI Loan Advisor Chatbot Source](https://github.com/sumit0593/AI-Loan-Advisor-Chatbot)`
@@ -92,11 +97,13 @@ The main single-page hub is divided into **10 distinct sections** to provide a r
     -   *GitHub Link*: `[Community Hero Source](https://github.com/sumit0593/Community-Hero---Hyperlocal-Problem-Solver)`
 -   **Cam Attendance**
     - *Live Link*: `[Cam Attendance Portal](https://www.kentcam.com/camattendance/thank-you)`
+    - *Private Repo Notice*: Marked `isPrivate: true`.
 -   **Kent Risengine**
     - *Live Link*: `[Kent Risengine Portal](https://risengine.com/sign-in)`
+    - *Private Repo Notice*: Marked `isPrivate: true`.
 
 ### 🎓 CERTIFICATIONS & CREDENTIALS
--   **IIT Mandi - GenAI & Multi-Agent Systems Certification**
+-   **IIT Mandi (TIH) - PG Certification in Generative AI & Multi-Agent Systems**
     -   *Prompt Engineering PDF*: `[Prompt Engineering Certificate](https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_prompt_engineering.pdf)`
         - *Path*: `/gallery/certification/certificate_prompt_engineering.pdf`
     -   *RAG Engineering PDF*: `[RAG Engineering Certificate](https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf)`
@@ -108,3 +115,6 @@ The main single-page hub is divided into **10 distinct sections** to provide a r
         - *Path*: `/gallery/scorecard/scorecard_newton_1.jpg`
     -   *Scorecard 2*: `[Newton School Scorecard 2](https://my-portfolio-six-gold-86.vercel.app/gallery/scorecard/scorecard_newton_2.jpg)`
         - *Path*: `/gallery/scorecard/scorecard_newton_2.jpg`
+    -   *Scorecard 3*: `[Newton School Scorecard 3](https://my-portfolio-six-gold-86.vercel.app/gallery/scorecard/scorecard_newton_3.jpg)`
+        - *Path*: `/gallery/scorecard/scorecard_newton_3.jpg`
+

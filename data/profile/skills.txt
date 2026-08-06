@@ -4,34 +4,27 @@ TECHNICAL SKILLS
   RAG Pipelines, Prompt Engineering (Zero-shot, Few-shot, CoT),
   LLM Fine-Tuning, Transformers, Embeddings, Vector Search.
 
-• AI Platforms & Models:
-  Google Gemini, OpenAI GPT, Anthropic Claude,
-  Hugging Face, Ollama, Llama 3, DeepSeek.
-
 • Agentic Frameworks:
-  LangChain, LangGraph, LlamaIndex, CrewAI,
-  AutoGen, ReAct Agents, Multi-Agent Systems (MAS).
+  Multi-Agent Systems, LangChain, LlamaIndex, LangGraph,
+  CrewAI, AutoGen, ReAct, MCP (Model Context Protocol).
 
-• AI Engineering:
-  FastAPI, REST APIs, JWT Authentication,
-  Function Calling, Tool Calling, MCP (Model Context Protocol).
+• AI Development & Models:
+  Gemini, OpenAI, Claude, Hugging Face, Mistral, Sarvam LLM,
+  Ollama, Llama 3, DeepSeek, FastAPI, RESTful APIs, JWT Authentication.
 
-• Database & Storage:
-  Pinecone, ChromaDB, FAISS,
-  PostgreSQL, PostGIS, SQLite, Prisma,
-  MySQL, MongoDB.
+• Database & Reporting:
+  Vector DB (Pinecone, ChromaDB, FAISS, Qdrant),
+  PostgreSQL, PostGIS, MySQL, MongoDB, SQLite, Prisma,
+  Metabase, SSRS, Zoho Analytics.
 
-• Full Stack Development:
-  React.js, Next.js, Node.js, Express.js,
-  Python, TypeScript, JavaScript,
-  Tailwind CSS, MUI.
+• Full Stack Core:
+  React.js, Next.js, Python, Pandas, TypeScript, JavaScript,
+  Node.js, Express.js, Angular, Spring Boot, Tailwind CSS, MUI.
 
-• Deployment & MLOps:
-  Docker, AWS, Jenkins, CI/CD,
-  LangSmith, LangFuse, Vercel, GCP,
-  GCP Cloud Run, GCP Secret Manager, Railway.
+• Deployment & LLMOps:
+  Docker, Kubernetes, AWS, GCP, Azure, Azure AI Foundry, Vertex AI,
+  Jenkins, CI/CD, Vercel, LangSmith, LangFuse, NGINX Load Balancing.
 
-• Tools:
-  Git, GitHub, GitLab, Postman,
-  VS Code, Cursor AI, Jupyter,
-  Playwright, Swagger.
+• Tools & Utilities:
+  Git, GitHub, GitLab, Postman, Jupyter, Anaconda,
+  Browser Automation (Playwright, Cypress), Storybook, Swagger.

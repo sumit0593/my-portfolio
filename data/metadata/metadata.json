@@ -1,9 +1,9 @@
 {
   "personal_info": {
     "name": "Sumit Kumar",
-    "title": "GenAI & Multi-Agent Engineer | Full Stack Web Developer",
+    "title": "GenAI & Multi-Agent Engineer | Full Stack Engineer",
     "location": "Noida, India",
-    "phone": "7011676185",
+    "phone": "+91 7011676185",
     "email": "sumitsumitsumit163@gmail.com",
     "contact": {
       "github": "https://github.com/sumit0593",
@@ -13,12 +13,12 @@
       "resume_pdf": "https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.pdf",
       "resume_docx": "https://my-portfolio-six-gold-86.vercel.app/resume/Sumit_Kumar_GenAI_Full_Stack.docx"
     },
-    "summary": "Forward-thinking Generative AI & Full Stack Engineer with strong expertise in building scalable Multi-Agent Systems and RAG architectures. Experienced in remote freelancing on the Handshake platform, utilizing Lotus and Maia II workflows."
+    "summary": "Full-Stack Engineer with over 3 years of professional experience, backed by a PG Certification in Generative AI and Multi-Agent Systems from IIT Mandi (TIH). Skilled in building scalable RAG architectures, agentic workflows, and LLM orchestration pipelines using LangChain, LangGraph, and CrewAI. Proven track record of integrating AI-driven automation into enterprise MERN/Next.js applications — cutting manual processing time by up to 60% and improving system performance by 15%."
   },
   "skills": {
     "generative_ai_and_llms": [
       "RAG Pipelines",
-      "Prompt Engineering (Zero-shot, Few-shot, CoT)",
+      "Prompt Engineering (Zero-shot/Few-shot/CoT)",
       "LLM Fine-Tuning",
       "Transformers",
       "Embeddings",
@@ -28,101 +28,112 @@
       "Google Gemini",
       "OpenAI GPT",
       "Anthropic Claude",
+      "Mistral LLM",
+      "Sarvam LLM",
       "Hugging Face",
       "Ollama",
       "Llama 3",
       "DeepSeek"
     ],
     "agentic_frameworks": [
+      "Multi-Agent Systems",
       "LangChain",
       "LangGraph",
       "LlamaIndex",
       "CrewAI",
       "AutoGen",
       "ReAct Agents",
-      "Multi-Agent Systems (MAS)"
+      "MCP (Model Context Protocol)"
     ],
     "ai_engineering": [
       "FastAPI",
-      "REST APIs",
+      "RESTful APIs",
       "JWT Authentication",
+      "OAuth2",
       "Function Calling",
       "Tool Calling",
-      "MCP (Model Context Protocol)"
+      "FastMCP Servers"
     ],
-    "database_and_storage": [
-      "Pinecone",
-      "ChromaDB",
-      "FAISS",
+    "database_and_reporting": [
+      "Vector DB (Pinecone, ChromaDB, FAISS, Qdrant)",
+      "MySQL",
       "PostgreSQL",
       "PostGIS",
+      "MongoDB",
       "SQLite",
-      "Prisma",
-      "MySQL",
-      "MongoDB"
+      "Metabase",
+      "SSRS",
+      "Zoho Analytics"
     ],
-    "full_stack_development": [
+    "full_stack_core": [
       "React.js",
       "Next.js",
-      "Angular",
-      "Node.js",
-      "Express.js",
       "Python",
+      "Pandas",
       "TypeScript",
       "JavaScript",
+      "Node.js",
+      "Express.js",
       "Tailwind CSS",
       "MUI"
     ],
     "deployment_and_mlops": [
       "Docker",
+      "Kubernetes",
       "AWS",
+      "GCP",
+      "Azure",
+      "Azure AI Foundry",
+      "Vertex AI",
       "Jenkins",
       "CI/CD",
+      "Vercel",
       "LangSmith",
       "LangFuse",
-      "Vercel",
-      "GCP",
-      "GCP Cloud Run",
-      "GCP Secret Manager",
-      "Railway"
+      "NGINX Load Balancing"
     ],
-    "tools": [
+    "tools_and_utilities": [
       "Git",
       "GitHub",
       "GitLab",
       "Postman",
       "VS Code",
-      "Cursor AI",
       "Jupyter",
-      "Playwright",
-      "Anaconda"
+      "Anaconda",
+      "Browser Automation (Playwright, Cypress)",
+      "Storybook"
     ]
   },
   "experience": [
     {
       "role": "Software Engineer",
-      "company": "Kent RO Systems Ltd. (KentCamEye Division)",
+      "company": "KENT RO Systems Pvt Ltd (KENT CamEye)",
       "duration": "Apr 2024 - Present",
       "location": "Noida, India",
       "highlights": [
-        "Integrated OCR-based invoice parsing using AWS (Textract, Lambda, DynamoDB) to automate data extraction and validation, reducing manual effort and improving accuracy.",
-        "Engineered serverless backend APIs using AWS Lambda and DynamoDB to handle high-concurrency workloads.",
-        "Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters.",
-        "Developed robust end-to-end task automation tools using Playwright.",
-        "Created custom tools to automate software engineering workflows.",
-        "Built browser automation scripts using Playwright, an HTML scraper, and a text extractor to automate client data."
+        "Engineered a multilingual OCR invoice extraction pipeline using AWS Textract and Mistral LLM, reducing manual data entry operations by 60%.",
+        "Engineered a WhatsApp-integrated RAG chatbot using Sarvam LLM, Gupshup webhooks, and the WhatsApp Template API, backed by PostgreSQL to deliver real-time conversational replies to account queries.",
+        "Deployed Claude Sonnet as a fallback LLM within the extraction workflow to accurately parse complex document formats beyond Mistral's capability.",
+        "Optimized backend server logic and implemented NGINX-based load balancing, decreasing system latency by 15% and ensuring high availability.",
+        "Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters, enhancing data-driven decision-making and accessibility across departments.",
+        "Established secure authentication and role-based access control using JWT and OAuth2 for internal and external stakeholders.",
+        "Developed and automated complex enterprise reports using SSRS and Metabase, providing real-time data visibility and accelerating cross-departmental decision-making."
       ],
       "tags": [
         "React",
         "Node.js",
         "AWS Textract",
-        "Lambda",
-        "DynamoDB",
+        "Mistral LLM",
+        "Claude Sonnet",
+        "Sarvam LLM",
+        "WhatsApp API",
+        "PostgreSQL",
+        "NGINX",
         "Zoho Analytics",
+        "Metabase",
+        "SSRS",
         "JWT",
-        "OAuth2",
-        "Playwright",
-        "Web Scraping"
+        "OAuth2"
       ]
     },
     {
@@ -131,19 +142,73 @@
       "duration": "Aug 2023 - Mar 2024",
       "location": "Hyderabad, India",
       "highlights": [
-        "Revamped HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience.",
-        "Automated end-to-end test cases using Cypress and Playwright."
+        "Revamped the HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience.",
+        "Developed and documented reusable UI components for the Hectare (US Toll Authority) platform using MUI and Storybook, enhancing system maintainability and cross-team design consistency.",
+        "Built and integrated Node.js backend services and REST APIs supporting the HRMS and Hectare platforms, streamlining data flow between frontend and backend systems.",
+        "Transformed raw, unstructured data into curated datasets to fine-tune an open-source LLM for extracting and classifying data from documents — an early foundation for the AI-driven document automation later scaled at KENT RO Systems.",
+        "Automated end-to-end test cases using Cypress and Playwright, reducing manual QA effort and improving testing efficiency."
       ],
       "tags": [
         "Next.js",
         "TypeScript",
-        "Tailwind CSS",
+        "MUI",
+        "Storybook",
+        "Node.js",
+        "LLM Fine-Tuning",
         "Cypress",
         "Playwright"
       ]
     }
   ],
   "projects": [
+    {
+      "title": "Automated Job Application Agent",
+      "category": "GenAI / Multi-Agent Systems",
+      "project_type": "Personal Project",
+      "domain": "HR Tech / Automation",
+      "description": "Architected an agentic job-application system (FastAPI + React) with a CRAG-based matching pipeline — HyDE query expansion, BGE cross-encoder reranking, and MMR deduplication — retrieving over a Qdrant vector store to semantically match resumes to job postings. Built a plugin-based automation engine with Playwright and 10+ ATS handlers. Evolved into a LangGraph multi-agent orchestrator with tiered multi-LLM routing.",
+      "tech_stack": [
+        "Python",
+        "FastAPI",
+        "React",
+        "LangGraph",
+        "Qdrant",
+        "Playwright",
+        "HyDE",
+        "Cross-Encoder",
+        "Gemini API",
+        "Ollama"
+      ],
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Automated recurring job discovery & batch application submissions",
+      "priority_score": 10,
+      "architecture_tags": [
+        "CRAG Matching Pipeline",
+        "LangGraph Orchestrator",
+        "Qdrant Vector Store",
+        "Tiered Multi-LLM Router"
+      ],
+      "semantic_tags": [
+        "GenAI",
+        "Multi-Agent Systems",
+        "LangGraph",
+        "CRAG Pipeline",
+        "ATS Automation"
+      ],
+      "recruiter_keywords": [
+        "LangGraph",
+        "FastAPI",
+        "Qdrant",
+        "CRAG",
+        "Playwright"
+      ],
+      "ai_capabilities": [
+        "HyDE Query Expansion",
+        "BGE Cross-Encoder Reranking",
+        "Recruiter Chatbot Agent"
+      ]
+    },
     {
       "title": "AI Loan Advisor Chatbot",
       "category": "GenAI / Multi-Agent",
@@ -192,68 +257,6 @@
       ]
     },
     {
-      "title": "Project Lotus (Handshake Platform)",
-      "category": "Enterprise",
-      "project_type": "Freelance Remote Project",
-      "description": "Freelance engagement on Handshake (Project Lotus) to analyze and refine complex software codebases using Maia II.",
-      "tech_stack": [
-        "React",
-        "TypeScript",
-        "Node.js",
-        "Maia II"
-      ],
-      "semantic_tags": [
-        "Freelance Projects",
-        "Consulting",
-        "Independent Work"
-      ]
-    },
-    {
-      "title": "Scam Guard AI",
-      "category": "AI Security Platform",
-      "project_type": "Open Source",
-      "domain": "Cybersecurity",
-      "description": "A cutting-edge AI security platform designed to detect and prevent digital scams in real-time.",
-      "tech_stack": [
-        "Python",
-        "Prompt Engineering",
-        "NLP Pipelines",
-        "LLM Orchestration",
-        "Streamlit",
-        "Gemini",
-        "Transformers"
-      ],
-      "deployment_platforms": [
-        "Streamlit Cloud"
-      ],
-      "complexity_level": "High",
-      "experience_level": "Advanced",
-      "business_impact": "Real-time threat detection",
-      "priority_score": 9,
-      "github": "https://github.com/sumit0593/scam_guard_ai",
-      "live_url": "https://scam-detector-ai.streamlit.app/",
-      "architecture_tags": [
-        "NLP",
-        "Transformers",
-        "LLM Orchestration"
-      ],
-      "semantic_tags": [
-        "AI Security",
-        "Scam Detection",
-        "NLP",
-        "Real-time Analysis"
-      ],
-      "recruiter_keywords": [
-        "Python",
-        "GenAI",
-        "Security"
-      ],
-      "ai_capabilities": [
-        "Malicious text analysis",
-        "URL scanning"
-      ]
-    },
-    {
       "title": "HireFlow AI",
       "category": "Generative AI / RAG Platform",
       "project_type": "Open Source",
@@ -270,9 +273,6 @@
         "Gemini",
         "LangChain",
         "Streamlit"
-      ],
-      "deployment_platforms": [
-        "Streamlit Cloud"
       ],
       "complexity_level": "High",
       "experience_level": "Advanced",
@@ -302,33 +302,75 @@
       ]
     },
     {
-      "title": "Kent RiseEngine",
+      "title": "Scam Guard AI",
+      "category": "AI Security Platform",
+      "project_type": "Open Source",
+      "domain": "Cybersecurity",
+      "description": "A cutting-edge AI security platform designed to detect and prevent digital scams in real-time.",
+      "tech_stack": [
+        "Python",
+        "Prompt Engineering",
+        "NLP Pipelines",
+        "LLM Orchestration",
+        "Streamlit",
+        "Gemini",
+        "Transformers"
+      ],
+      "complexity_level": "High",
+      "experience_level": "Advanced",
+      "business_impact": "Real-time threat detection",
+      "priority_score": 9,
+      "github": "https://github.com/sumit0593/scam_guard_ai",
+      "live_url": "https://scam-detector-ai.streamlit.app/",
+      "architecture_tags": [
+        "NLP",
+        "Transformers",
+        "LLM Orchestration"
+      ],
+      "semantic_tags": [
+        "AI Security",
+        "Scam Detection",
+        "NLP",
+        "Real-time Analysis"
+      ],
+      "recruiter_keywords": [
+        "Python",
+        "GenAI",
+        "Security"
+      ],
+      "ai_capabilities": [
+        "Malicious text analysis",
+        "URL scanning"
+      ]
+    },
+    {
+      "title": "Kent Risengine",
       "category": "Enterprise AI & LLM Automation",
       "project_type": "Enterprise / Internal",
       "domain": "Enterprise Tech",
-      "description": "An enterprise-grade AI invoice parser built with React and Node.js.",
+      "description": "Architected high-performance components and validation schemas using React (SSR) and Node.js. Integrated payment gateways, AWS Textract + Mistral LLM invoice parsing, dynamic Zoho Analytics and SSRS dashboards.",
       "tech_stack": [
         "JavaScript",
         "TypeScript",
         "React",
         "Node.js",
         "Zoho Analytics",
+        "SSRS",
         "AWS Textract",
         "Lambda",
         "DynamoDB",
         "JWT",
         "OAuth2"
       ],
-      "deployment_platforms": [
-        "AWS"
-      ],
+      "live_url": "https://risengine.com/sign-in",
       "complexity_level": "High",
       "experience_level": "Advanced",
-      "business_impact": "Automated invoice processing",
+      "business_impact": "Automated invoice data entry operations by 60%",
       "priority_score": 8,
       "architecture_tags": [
         "Microservices",
-        "Secure Auth"
+        "Secure Auth",
+        "OCR Extraction"
       ],
       "semantic_tags": [
         "Enterprise AI",
@@ -338,56 +380,12 @@
       "recruiter_keywords": [
         "Node.js",
         "React",
+        "AWS Textract",
         "Enterprise"
       ],
       "ai_capabilities": [
-        "OCR Parsing",
+        "Multilingual OCR Parsing",
         "Data Extraction"
-      ]
-    },
-    {
-      "title": "Portfolio AI",
-      "category": "RAG-Powered Personal Portfolio",
-      "project_type": "Open Source",
-      "domain": "Personal Branding",
-      "description": "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and Pinecone.",
-      "tech_stack": [
-        "TypeScript",
-        "Next.js",
-        "Gemini",
-        "Pinecone",
-        "Three.js",
-        "Tailwind CSS",
-        "Framer Motion"
-      ],
-      "deployment_platforms": [
-        "Vercel"
-      ],
-      "complexity_level": "Medium",
-      "experience_level": "Intermediate",
-      "business_impact": "High engagement",
-      "priority_score": 8,
-      "github": "https://github.com/sumit0593/my-portfolio",
-      "live_url": "https://my-portfolio-six-gold-86.vercel.app/",
-      "architecture_tags": [
-        "Next.js AI System",
-        "Vector DB"
-      ],
-      "semantic_tags": [
-        "RAG Chatbot",
-        "Vector Search",
-        "3D Web",
-        "AI Portfolio"
-      ],
-      "recruiter_keywords": [
-        "Next.js",
-        "React",
-        "Gemini",
-        "Pinecone"
-      ],
-      "ai_capabilities": [
-        "Streaming Chatbot",
-        "RAG"
       ]
     },
     {
@@ -395,7 +393,7 @@
       "category": "Enterprise",
       "project_type": "Enterprise / Client",
       "domain": "HR Tech / Attendance",
-      "description": "Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Built browser automation using Playwright, an HTML scraper, and a text extractor to automate client data. Designed Spring Boot microservices, Angular frontend modules, and robust REST APIs.",
+      "description": "Maintained and scaled a full-stack attendance platform utilized by thousands of concurrent employees. Managed Spring Boot microservices, Angular frontend, automated check-in pipelines, and Playwright browser automation.",
       "tech_stack": [
         "Java",
         "TypeScript",
@@ -404,6 +402,7 @@
         "Angular",
         "REST APIs",
         "Microservices",
+        "Playwright",
         "SQL"
       ],
       "live_url": "https://www.kentcam.com/camattendance/thank-you",
@@ -418,19 +417,58 @@
       ],
       "semantic_tags": [
         "Enterprise AI",
-        "Face Recognition AI",
         "Playwright Automation",
         "Web Scraping"
       ],
       "recruiter_keywords": [
         "Spring Boot",
         "Angular",
-        "Playwright",
-        "Web Scraping"
+        "Playwright"
       ],
       "ai_capabilities": [
-        "Face Recognition AI",
-        "Computer Vision Integration"
+        "Browser Automation",
+        "HR Data Synchronization"
+      ]
+    },
+    {
+      "title": "Portfolio AI",
+      "category": "RAG-Powered Personal Portfolio",
+      "project_type": "Open Source",
+      "domain": "Personal Branding",
+      "description": "A modern, AI-powered portfolio website featuring a RAG-based chatbot powered by Gemini and MiniSearch/Pinecone. Includes an AI resume insights generator, dark mode, 3D visuals, and premium Framer Motion animations.",
+      "tech_stack": [
+        "TypeScript",
+        "Next.js",
+        "Gemini",
+        "Pinecone",
+        "Three.js",
+        "Tailwind CSS",
+        "Framer Motion"
+      ],
+      "github": "https://github.com/sumit0593/my-portfolio",
+      "live_url": "https://my-portfolio-six-gold-86.vercel.app/",
+      "complexity_level": "Medium",
+      "experience_level": "Intermediate",
+      "business_impact": "High engagement & interactive AI assistant",
+      "priority_score": 8,
+      "architecture_tags": [
+        "Next.js AI System",
+        "Hybrid Search"
+      ],
+      "semantic_tags": [
+        "RAG Chatbot",
+        "Vector Search",
+        "3D Web",
+        "AI Portfolio"
+      ],
+      "recruiter_keywords": [
+        "Next.js",
+        "React",
+        "Gemini"
+      ],
+      "ai_capabilities": [
+        "Streaming Chatbot",
+        "RAG"
       ]
     },
     {
@@ -451,12 +489,12 @@
         "Secret Manager",
         "Cloud Storage"
       ],
+      "github": "https://github.com/sumit0593/Community-Hero---Hyperlocal-Problem-Solver",
+      "live_url": "https://community-hero-wlanslf4ba-uc.a.run.app/",
       "complexity_level": "High",
       "experience_level": "Advanced",
       "business_impact": "Automated community ticket classification & hyperlocal mapping",
       "priority_score": 10,
-      "github": "https://github.com/sumit0593/Community-Hero---Hyperlocal-Problem-Solver",
-      "live_url": "https://community-hero-wlanslf4ba-uc.a.run.app/",
       "architecture_tags": [
         "PostGIS GIS Database",
         "GCP Cloud Run Serverless",
@@ -479,6 +517,23 @@
         "Google Gemini Ticket Auto-Classification",
         "Image Metadata Extraction"
       ]
+    },
+    {
+      "title": "Project Lotus (Handshake Platform)",
+      "category": "Enterprise",
+      "project_type": "Freelance Remote Project",
+      "description": "Freelance engagement on Handshake (Project Lotus) to analyze and refine complex software codebases using Maia II.",
+      "tech_stack": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "Maia II"
+      ],
+      "semantic_tags": [
+        "Freelance Projects",
+        "Consulting",
+        "Independent Work"
+      ]
     }
   ],
   "services": [
@@ -495,24 +550,14 @@
     {
       "title": "PG Certification in Gen AI and Multi-Agent Systems",
       "institution": "IIT Mandi - TIH",
-      "duration": "Dec 2025 — Present",
+      "duration": "Dec 2025 — Jul 2026",
       "pdf_urls": {
-        "Full Certificate": "/gallery/certification/certificate_GenAI_Multi-Agent_Systems.pdf",
-        "Prompt Engineering": "/gallery/certification/certificate_prompt_engineering.pdf",
-        "RAG Engineering": "/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf"
+        "Full Certificate": "/gallery/certification/certificate_of_Excellence_GenAI_Multi-Agent_Systems.pdf",
+        "Prompt Engineering": "/gallery/certification/certificate_of_Excellence_Prompt_Engg.pdf",
+        "RAG Engineering": "/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf",
+        "AI & Multi-Agent Systems": "/gallery/certification/certificate_of_Excellence_AI_Agents_and_Multi-Agent_Systems.pdf",
+        "Deployment & Integration": "/gallery/certification/certificate_Deployment_and_Project_Integration.pdf"
       }
-    },
-    {
-      "title": "Prompt Engineering Certificate",
-      "institution": "IIT Mandi - TIH",
-      "duration": "2025",
-      "pdf_url": "/gallery/certification/certificate_prompt_engineering.pdf"
-    },
-    {
-      "title": "RAG Engineering Certificate",
-      "institution": "IIT Mandi - TIH",
-      "duration": "2025",
-      "pdf_url": "/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf"
     },
     {
       "title": "Full Stack Web Development Certificate",
@@ -522,12 +567,14 @@
     }
   ],
   "achievements": [
-    "Delivered automation and AI-driven enhancements across platforms.",
-    "Built secure Node.js authentication with role-based login.",
-    "Improved system scalability and uptime through optimized load handling."
+    "Engineered an AI-driven, multilingual invoice automation pipeline, successfully cutting manual data entry operations by 60%.",
+    "Boosted system performance and API response times by 15% through optimized server load handling and refined backend logic.",
+    "Built secure Node.js authentication protocols featuring granular role-based access and integrated AWS certificate handling.",
+    "Strengthened overall platform architecture by establishing modular codebases, improving cross-service data flow and scalability.",
+    "Built reusable automation solutions inspired by enterprise RPA practices using browser automation and custom scripting."
   ],
   "metrics": {
-    "total_years_experience": "4+",
+    "total_years_experience": "3+",
     "gen_ai_experience": "2+",
     "full_stack_experience": "3+",
     "enterprise_projects": "10+"
@@ -536,7 +583,8 @@
     "ideal_roles": [
       "AI Engineer",
       "GenAI Engineer",
-      "Full Stack AI Developer"
+      "Full Stack AI Developer",
+      "Multi-Agent Systems Engineer"
     ]
   },
   "semantic_profile": {
@@ -546,39 +594,46 @@
     "RAG Systems",
     "Multi-Agent Systems",
     "LLM Orchestration",
+    "CRAG Pipelines",
     "Semantic Search",
     "Hybrid Retrieval",
     "Prompt Engineering",
     "Agentic AI",
     "Vector Databases",
-    "AI Automation",
+    "FastMCP Tools",
     "Enterprise AI"
   ],
   "architecture_expertise": [
     "RAG Architecture",
+    "CRAG Matching Pipeline",
     "Hybrid Search Systems",
     "Semantic Retrieval Pipelines",
     "LLM Orchestration",
     "Vector Database Architecture",
     "Agentic Workflows",
     "Scalable AI Systems",
-    "AI API Architecture",
+    "FastMCP Server Architecture",
     "Next.js AI Systems"
   ],
   "industries": [
     "Enterprise SaaS",
     "HR Tech",
+    "Fintech",
     "Cybersecurity"
   ],
   "deployment_skills": [
     "Docker",
+    "Kubernetes",
     "AWS",
+    "GCP",
+    "Azure",
     "Vercel",
     "CI/CD"
   ],
   "freelance_services": [
     "AI Chatbots",
-    "RAG Platforms"
+    "RAG Platforms",
+    "Multi-Agent Systems"
   ],
   "recruiter_keywords": [
     "AI Engineer",
@@ -588,10 +643,12 @@
     "RAG Engineer",
     "AI Platform Engineer",
     "Multi-Agent Engineer",
+    "LangGraph Developer",
     "LangChain Developer"
   ],
   "semantic_tags": [
     "RAG",
+    "CRAG",
     "Hybrid Search",
     "Semantic Retrieval",
     "Enterprise AI",
@@ -601,6 +658,7 @@
     "Vector Search",
     "AI Platform",
     "MCP",
+    "FastMCP",
     "Agentic AI",
     "Multi-Agent Systems"
   ],
@@ -613,9 +671,11 @@
     "high_availability": true
   },
   "priority_ranking": {
+    "Automated Job Application Agent": 10,
+    "AI Loan Advisor Chatbot": 10,
     "HireFlow AI": 10,
     "Scam Guard AI": 9,
-    "Kent RiseEngine": 8,
+    "Kent Risengine": 8,
     "Portfolio AI": 8,
     "Community Hero": 10
   },

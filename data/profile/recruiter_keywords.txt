@@ -1,19 +1,22 @@
 RECRUITER KEYWORDS
 
-AI Engineer
 GenAI Engineer
-Full Stack AI Developer
-LLM Engineer
-RAG Engineer
-AI Platform Engineer
-Multi-Agent Engineer
+Multi-Agent Systems Engineer
+Full Stack Engineer
+RAG Architect
 LangChain Developer
-Pinecone Expert
-Gemini Developer
-AI Full Stack Engineer
-Next.js AI Developer
-Agentic AI Engineer
+LangGraph Developer
+CrewAI Engineer
+AutoGen Developer
+LLMOps Engineer
+FastMCP Developer
+Vector Search Specialist (Qdrant, Pinecone)
+CRAG Pipeline Specialist
+HyDE & Cross-Encoder Engineer
+WhatsApp Business API Integration Engineer
+FastAPI & Python Engineer
+React 19 & Next.js 15 Developer
+PostgreSQL & Prisma Specialist
+Enterprise AI Solutions Architect
 Semantic Search Engineer
 AI Automation Engineer
-AI Solutions Architect
-Enterprise AI Engineer

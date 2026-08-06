@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
     }
 
     const fromPhone = message.from; // Sender's phone number
+    const incomingPhoneId = value?.metadata?.phone_number_id; // Phone Number ID from Meta payload
     const messageType = message.type;
     let userText = "";
 
@@ -105,16 +106,18 @@ FORMATTING RULE: Format your answer cleanly for WhatsApp messaging:
     const replyText = sanitizeAIOutput(aiResponse.text || "Hello! Thanks for reaching out. How can I assist with your AI engineering or full-stack project?");
 
     // 7. Send Response back to WhatsApp Cloud API
-    await sendWhatsAppMessage({
+    const sendResult = await sendWhatsAppMessage({
       toPhone: fromPhone,
       text: replyText,
+      phoneId: incomingPhoneId,
     });
 
     return NextResponse.json({
-      status: "success",
+      status: sendResult.success ? "success" : "send_failed",
       fromPhone,
       activeAgent: activeAgent.role,
       leadScore: leadResult.leadScore,
+      sendResult,
     });
   } catch (err: any) {
     console.error("[WhatsApp Webhook Error]", err);

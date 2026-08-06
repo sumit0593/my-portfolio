@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { ExternalLink, Github, X, ChevronRight, ArrowRight, Eye } from "lucide-react";
+import { ExternalLink, Github, X, ChevronRight, ArrowRight, Eye, Lock, MessageSquare, Bot } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -185,7 +185,47 @@ const PROJECTS = [
         ]
       }
     ],
-    deployment: "Deploy to Google Cloud Run utilizing Cloud SQL (PostgreSQL + PostGIS) and GCP Secret Manager. Detailed steps include configuring Cloud SQL, enabling APIs, storing environment secrets, creating Artifact Registry, and triggering builds via Cloud Build (gcloud builds submit --config=cloudbuild.yaml)."
+    deployment: "Deploy to Google Cloud Run utilizing Cloud SQL (PostgreSQL + PostGIS) and GCP Secret Manager."
+  },
+  {
+    id: 6,
+    title: "Automated Job Application Agent",
+    subtitle: "LangGraph Multi-Agent ATS Matching System",
+    tech: ["Python", "FastAPI", "React", "LangGraph", "Qdrant", "Playwright", "HyDE", "Cross-Encoder", "Gemini API", "Ollama"],
+    color: "from-indigo-600 to-purple-500",
+    description:
+      "Architected an agentic job-application system (FastAPI + React) with a CRAG-based matching pipeline — HyDE query expansion, BGE cross-encoder reranking, and MMR deduplication — retrieving over a Qdrant vector store to semantically match resumes to job postings. Built a plugin-based ATS automation engine with Playwright and LangGraph orchestrator.",
+    highlights: [
+      "CRAG matching pipeline with HyDE query expansion & BGE cross-encoder reranking over Qdrant",
+      "Plugin-based automation engine with Playwright & 10+ ATS integration handlers (Greenhouse, Lever, Workday, Ashby)",
+      "LangGraph multi-agent orchestrator with tiered multi-LLM router (Ollama + Gemini Flash/Pro)"
+    ],
+    github: "https://github.com/sumit0593",
+    isPrivate: true,
+    envVars: {
+      backend: [
+        { name: "QDRANT_URL", description: "URL to Qdrant vector database instance", value: "http://localhost:6333" },
+        { name: "GEMINI_API_KEY", description: "Google Gemini API Key for complex reasoning", value: "[Required]" },
+        { name: "OLLAMA_HOST", description: "Ollama host URL for lightweight extractions", value: "http://localhost:11434" }
+      ]
+    },
+    setupSteps: [
+      {
+        title: "1. Run Qdrant Vector Store & Ollama",
+        commands: [
+          "docker run -p 6333:6333 qdrant/qdrant",
+          "ollama run llama3"
+        ]
+      },
+      {
+        title: "2. Launch FastAPI Microservice & React App",
+        commands: [
+          "pip install -r requirements.txt",
+          "uvicorn main:app --reload",
+          "npm run dev"
+        ]
+      }
+    ]
   }
 ];
 
@@ -396,8 +436,17 @@ function ProjectModal({
   onClose: () => void;
 }) {
   const [activeTab, setActiveTab] = useState<"overview" | "setup">("overview");
+  const [showPrivateNotice, setShowPrivateNotice] = useState(false);
 
+  const isPrivateRepo = ("isPrivate" in project && Boolean(project.isPrivate)) || project.github === "https://github.com/sumit0593";
   const hasSetup = "envVars" in project || "setupSteps" in project || "deployment" in project;
+
+  const handleGithubClick = (e: React.MouseEvent) => {
+    if (isPrivateRepo) {
+      e.preventDefault();
+      setShowPrivateNotice((prev) => !prev);
+    }
+  };
 
   return (
     <>
@@ -608,25 +657,71 @@ function ProjectModal({
           </div>
 
           {/* Footer (fixed at bottom of modal) */}
-          <div className="p-6 bg-card/50 border-t border-border/50 shrink-0">
+          <div className="p-6 bg-card/50 border-t border-border/50 shrink-0 space-y-4">
+            {showPrivateNotice && (
+              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-3 animate-in fade-in zoom-in-95 duration-200">
+                <div className="flex items-center gap-2 font-bold text-amber-400">
+                  <Lock className="w-4 h-4 text-amber-400" />
+                  <span>Private Repository Notice</span>
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  This is a private repository. You need to connect with <strong>Sumit</strong> or talk to <strong>Nova AI Assistant</strong> to request code access or demo.
+                </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <a
+                    href={`https://wa.me/917011676185?text=${encodeURIComponent(`Hi Sumit, I would like to request code access / walkthrough for the ${project.title} private repository.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold flex items-center gap-1.5 transition-colors cursor-pointer text-xs shadow-md shadow-emerald-600/20"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    Connect with Sumit
+                  </a>
+                  <Link
+                    href="/ai-assistant"
+                    className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold flex items-center gap-1.5 transition-colors cursor-pointer text-xs shadow-md shadow-indigo-600/20"
+                  >
+                    <Bot className="w-3.5 h-3.5" />
+                    Talk to Nova AI
+                  </Link>
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3.5 py-2 rounded-xl bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold flex items-center gap-1.5 transition-colors border border-border cursor-pointer text-xs"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    Proceed to GitHub Profile
+                  </a>
+                </div>
+              </div>
+            )}
+
             <div className="flex gap-3">
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-sm font-semibold transition-colors shadow-lg shadow-indigo-500/20 cursor-pointer"
-              >
-                <ExternalLink className="w-4 h-4" />
-                Live Demo
-              </a>
+              {"link" in project && project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-sm font-semibold transition-colors shadow-lg shadow-indigo-500/20 cursor-pointer"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Live Demo
+                </a>
+              )}
               <a
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 py-3 rounded-xl text-sm font-semibold transition-colors border border-border cursor-pointer"
+                onClick={handleGithubClick}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-colors border cursor-pointer ${
+                  isPrivateRepo
+                    ? "bg-amber-500/10 text-amber-300 border-amber-500/30 hover:bg-amber-500/20"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80 border-border"
+                }`}
               >
-                <Github className="w-4 h-4" />
-                Source Code
+                {isPrivateRepo ? <Lock className="w-4 h-4 text-amber-400" /> : <Github className="w-4 h-4" />}
+                {isPrivateRepo ? "Source Code (Private Repo)" : "Source Code"}
               </a>
             </div>
           </div>
@@ -679,7 +774,7 @@ export function ProjectsSection() {
         {!isExpanded && (
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-30 select-none pointer-events-none">
             <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-indigo-400/30 bg-indigo-600/90 text-white text-[10px] font-bold tracking-widest uppercase shadow-lg shadow-indigo-500/20 backdrop-blur-md animate-pulse whitespace-nowrap">
-              {isMobile ? "Deck of 5 Projects — Tap to Expand" : "Deck of 5 Projects — Hover to Fan"}
+              {isMobile ? `Deck of ${PROJECTS.length} Projects — Tap to Expand` : `Deck of ${PROJECTS.length} Projects — Hover to Fan`}
             </span>
           </div>
         )}

@@ -1,10 +1,11 @@
 SERVICES AND FREELANCE OFFERINGS
 
-•	AI Chatbot Development: Custom conversational agents for customer support, portfolio assistants, and enterprise data retrieval.
-•	RAG Pipeline Development: Building semantic search systems over enterprise data using Vector Databases and LLMs.
-•	Multi-Agent Systems: Designing autonomous agent networks (CrewAI, LangGraph) for complex workflow automation.
-•	Next.js AI Integration: Full stack web development with seamless AI tool integration.
-•	Enterprise AI Automation: Custom OCR invoice parsers, automated data extraction, and AI-driven analytics.
-•	LLM API Integration: Gemini, OpenAI, Claude orchestration for your platform.
-•	AI Solutions Architecture: Consulting on scalable AI deployment and ML Ops (Docker, AWS).
-•	Freelance Software Development (Handshake Platform): Analyze and refine complex software codebases under Project Lotus using Maia II workflows.
+• Multi-Agent Systems & Workflow Automation: Designing autonomous agent networks (LangGraph, CrewAI, AutoGen) for complex enterprise workflow automation.
+• RAG & CRAG Pipeline Development: Building semantic search systems with HyDE query expansion, BGE cross-encoder reranking, and Vector Databases (Qdrant, Pinecone).
+• Automated Job & ATS Automation Engines: Developing Playwright + LangGraph automated application systems with multi-LLM router pipelines.
+• Meta WhatsApp Business API AI Integration: Custom conversational WhatsApp AI bots connected to enterprise knowledge bases and multi-agent dispatchers.
+• Next.js 15 & React 19 Full-Stack AI Development: Building scalable web applications with seamless AI tool integration and interactive dashboards.
+• LLMOps & FastMCP Tool Orchestration: FastMCP server development, model tracing (Langfuse/LangSmith), and Gemini/OpenAI/Claude API orchestration.
+• Enterprise AI Automation & OCR Parsers: Invoice parsers, document processing pipelines, and AI-driven business analytics.
+• AI Solutions Architecture & Consulting: Scalable AI deployment, MLOps, Docker containerization, and GCP/Vercel cloud architecture.
+• Freelance Software Development (Handshake Platform): Analyze and refine complex software codebases under Project Lotus using Maia II workflows.

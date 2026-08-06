@@ -1,12 +1,16 @@
 AI EXPERTISE
 
-PG Certification in Gen AI and Multi-Agent Systems, IIT Mandi - TIH	 Dec 2025 — Present
-•	Core Curriculum: Mastered advanced Prompt Engineering, NLP fundamentals, and Retrieval-Augmented Generation (RAG) pipelines using Vector Databases.
-•	Agentic AI & Fine-Tuning: Architected autonomous Multi-Agent Systems (MAS) using LangChain, CrewAI, AutoGen, LlamaIndex and fine-tuned Large Language Models.
-•	Key Learnings & Deployment: Applied Deep Learning foundations and Transformer architectures to build and deploy scalable GenAI models via FastAPI.  
+PG Certification in Generative AI & Multi-Agent Systems, IIT Mandi - TIH	 Dec 2025 — Jul 2026
+• Core Curriculum: Mastered advanced Prompt Engineering, NLP fundamentals, and Retrieval-Augmented Generation (RAG) pipelines using Vector Databases.
+• Agentic AI & Fine-Tuning: Architected autonomous Multi-Agent Systems (MAS) using LangChain, CrewAI, AutoGen, LlamaIndex and fine-tuned Large Language Models.
+• Key Learnings & Deployment: Applied Deep Learning foundations and Transformer architectures to build and deploy scalable GenAI models via FastAPI.
+• FastMCP Servers: Deployed FastMCP servers to enable secure, standardized tool-calling for autonomous AI agents.
+• Data Preprocessing: Utilized Pandas for complex data preprocessing within Agentic RAG workflows.
 
-Generative AI Focus
-•	Building intelligent multi-agent workflows using CrewAI and LangGraph.
-•	Semantic search optimization and metadata-driven hybrid RAG implementation (BM25 + Pinecone).
-•	Vector databases including Pinecone, FAISS, and ChromaDB.
-•	Prompt orchestration, zero-shot, few-shot, and chain-of-thought methodologies.
+Generative AI Focus & Engineering
+• Building intelligent multi-agent workflows using CrewAI, LangGraph, and AutoGen.
+• CRAG-based matching pipelines — HyDE query expansion, BGE cross-encoder reranking, and MMR deduplication.
+• Multilingual OCR invoice extraction using AWS Textract, Mistral LLM, and Claude Sonnet fallback.
+• WhatsApp-integrated RAG chatbots using Sarvam LLM, Gupshup webhooks, and WhatsApp Template API.
+• Vector databases including Pinecone, ChromaDB, FAISS, and Qdrant.
+• Prompt orchestration, zero-shot, few-shot, and chain-of-thought methodologies.

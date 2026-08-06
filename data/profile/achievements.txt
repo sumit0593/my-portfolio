@@ -11,19 +11,20 @@ CATEGORIES & PROFILE INFORMATION:
   Achievements include:
   - Newton School DSA Competition Scorecard #1
   - Newton School DSA Competition Scorecard #2
+  - Google Vibe2Ship Hackathon Certificate
   These showcase strong algorithmic thinking and competitive coding proficiency under time constraints.
 
 • Prompt Engineering & RAG Engineering:
   Sumit has deep expertise in Prompt Engineering and Retrieval-Augmented Generation (RAG) architectures.
-  He holds specialized certificates in both fields.
-  He designed and built HireFlow AI, an advanced RAG resume search platform using Pinecone, Gemini, and LangChain, which demonstrates hands-on RAG implementation.
+  He holds specialized certificates in both fields from IIT Mandi - TIH.
+  He designed and built HireFlow AI and Automated Job Application Agent, demonstrating hands-on RAG and agentic workflow implementation.
 
 • Full Stack Development:
   Certified Full Stack Web Developer from Newton School (May 2022 - Mar 2023).
   Proficient in Next.js, React, Node.js, Express.js, and MongoDB.
 
 • IIT Mandi Certification:
-  Holds a PG Certification in GenAI & Multi-Agent Systems from IIT Mandi - TIH (Dec 2025 - Present), focusing on LLMs, agentic workflows, LangChain, CrewAI, AutoGen, and advanced NLP.
+  Holds a PG Certification in GenAI & Multi-Agent Systems from IIT Mandi - TIH (Dec 2025 - Jul 2026), focusing on LLMs, agentic workflows, LangChain, CrewAI, AutoGen, LlamaIndex, FastMCP servers, and advanced NLP.
 
 
 ANSWERS TO COMMON RECRUITER QUESTIONS:
@@ -36,17 +37,19 @@ ANSWERS TO COMMON RECRUITER QUESTIONS:
 
 • What certifications do you have?
   Sumit holds the following key certifications:
-  - PG Certification in GenAI & Multi-Agent Systems from IIT Mandi - TIH (Dec 2025 - Present)
-  - Prompt Engineering Certificate
-  - RAG Engineering Certificate
+  - PG Certification in GenAI & Multi-Agent Systems from IIT Mandi - TIH (Dec 2025 - Jul 2026)
+  - Certificate of Excellence in Prompt Engineering (IIT Mandi - TIH)
+  - Certificate of Excellence in RAG Engineering (IIT Mandi - TIH)
+  - Certificate of Excellence in AI & Multi-Agent Systems (IIT Mandi - TIH)
+  - Certificate of Deployment & Project Integration (IIT Mandi - TIH)
   - Full Stack Web Development Certificate from Newton School (May 2022 - Mar 2023)
 
 • Do you have Prompt Engineering certification?
-  Yes, Sumit holds a Prompt Engineering Certificate. You can view or download the certificate PDF at: /gallery/certification/certificate_prompt_engineering.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_prompt_engineering.pdf)
+  Yes, Sumit holds a Prompt Engineering Certificate. You can view or download the certificate PDF at: /gallery/certification/certificate_of_Excellence_Prompt_Engg.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_of_Excellence_Prompt_Engg.pdf)
 
 • Do you have RAG experience?
   Yes, Sumit has extensive hands-on experience and holds a RAG Engineering Certificate. You can view or download the certificate PDF at: /gallery/certification/certificate_of_Excellence_RAG_Engg.pdf (Absolute URL: https://my-portfolio-six-gold-86.vercel.app/gallery/certification/certificate_of_Excellence_RAG_Engg.pdf)
-  A prime example of his RAG experience is HireFlow AI, a Generative AI resume search engine he built using Pinecone vector database, Gemini, and LangChain for automated ATS semantic filtering.
+  Prime examples of his RAG experience are HireFlow AI and the Automated Job Application Agent.
 
 • Where can I download your resume?
   You can download Sumit's resume using these links:
@@ -67,16 +70,17 @@ ANSWERS TO COMMON RECRUITER QUESTIONS:
 
 KEY ACHIEVEMENTS
 
-• Delivered automation and AI-driven enhancements across platforms, improving accuracy, reliability, and workflow efficiency. 
-• Built secure Node.js authentication with role-based login, user management (create/delete), and integrated AWS certificate handling. 
-• Improved system scalability and uptime through optimized server load handling, high-performance APIs, and refined backend logic. 
-• Enhanced decision-making by implementing structured analytics dashboards and improving data visibility across departments. 
-• Strengthened platform architecture with modular codebases, reusable components, and improved cross-service data flow. 
+• Engineered an AI-driven, multilingual invoice automation pipeline, successfully cutting manual data entry operations by 60%.
+• Boosted system performance and API response times by 15% through optimized server load handling and refined backend logic.
+• Built secure Node.js authentication protocols featuring granular role-based access and integrated AWS certificate handling.
+• Strengthened overall platform architecture by establishing modular codebases, improving cross-service data flow and scalability.
+• Built reusable automation solutions inspired by enterprise RPA practices (similar to UiPath workflows) using browser automation and custom scripting, reducing manual effort and increasing processing accuracy.
+
 
 EDUCATION
 
 MTech – Computer Science 	 2022 — 2024
 Monad University
 
-B.E – Mechanical Engineering 	               2012 — 2016
+B.E – Mechanical Engineering 	 2012 — 2016
 RGPV

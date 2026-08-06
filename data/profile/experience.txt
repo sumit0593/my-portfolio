@@ -1,17 +1,17 @@
 PROFESSIONAL EXPERIENCE
 
-Software Engineer, Kent RO Systems Ltd. (KentCamEye Division) 	 Apr 2024 — Present
-•	Integrated OCR-based invoice parsing using AWS (Textract, Lambda, DynamoDB) to automate data extraction and validation, reducing manual effort and improving accuracy. 
-•	Engineered serverless backend APIs using AWS Lambda and DynamoDB to handle high-concurrency workloads.
-•	Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters, enhancing decision-making and data accessibility across departments. 
-•	Developed secure authentication and role-based access control using JWT and OAuth2 for internal and external stakeholders. 
-•	Improved API performance, optimized backend logic, and strengthened system scalability across the Kent RiseEngine platform. 
-•	Developed robust end-to-end task automation tools using Playwright.
-•	Created custom tools to automate software engineering workflows.
-•	Built browser automation scripts using Playwright, an HTML scraper, and a text extractor to automate client data.
-
+Software Engineer, KENT RO Systems Pvt Ltd (KENT CamEye) 	 Apr 2024 — Present
+• Engineered a multilingual OCR invoice extraction pipeline using AWS Textract and Mistral LLM, reducing manual data entry operations by 60%.
+• Engineered a WhatsApp-integrated RAG chatbot using Sarvam LLM, Gupshup webhooks, and the WhatsApp Template API, backed by PostgreSQL to deliver real-time conversational replies to account queries.
+• Deployed Claude Sonnet as a fallback LLM within the extraction workflow to accurately parse complex document formats beyond Mistral's capability.
+• Optimized backend server logic and implemented NGINX-based load balancing, decreasing system latency by 15% and ensuring high availability.
+• Integrated dynamic Zoho Analytics dashboards with role-based and criteria-based filters, enhancing data-driven decision-making and accessibility across departments.
+• Established secure authentication and role-based access control using JWT and OAuth2 for internal and external stakeholders.
+• Developed and automated complex enterprise reports using SSRS and Metabase, providing real-time data visibility and accelerating cross-departmental decision-making.
 
 Associate Software Developer, TechnoIdentity 	 Aug 2023 — Mar 2024
-•	Revamped the HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience. 
-•	Developed scalable and reusable UI components for the Hectare (US Toll Authority) platform, enhancing system reliability and maintainability. 
-•	Automated end-to-end test cases using Cypress and Playwright, reducing manual QA effort and improving testing efficiency.
+• Revamped the HRMS platform using Next.js and TypeScript, improving UI performance and overall user experience.
+• Developed and documented reusable UI components for the Hectare (US Toll Authority) platform using MUI and Storybook, enhancing system maintainability and cross-team design consistency.
+• Built and integrated Node.js backend services and REST APIs supporting the HRMS and Hectare platforms, streamlining data flow between frontend and backend systems.
+• Transformed raw, unstructured data into curated datasets to fine-tune an open-source LLM for extracting and classifying data from documents — an early foundation for the AI-driven document automation later scaled at KENT RO Systems.
+• Automated end-to-end test cases using Cypress and Playwright, reducing manual QA effort and improving testing efficiency.

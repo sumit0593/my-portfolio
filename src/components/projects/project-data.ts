@@ -2,13 +2,14 @@ export type Project = {
   id: string;
   title: string;
   category: "GenAI" | "Frontend" | "Backend" | "Full Stack" | "Multi-Agent Systems" | "Enterprise";
-  categories: ("GenAI" | "Frontend" | "Backend" | "Full Stack" | "Enterprise")[];
+  categories: ("GenAI" | "Frontend" | "Backend" | "Full Stack" | "Enterprise" | "Multi-Agent Systems")[];
   description: string;
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
   image: string;
   featured?: boolean;
+  isPrivate?: boolean;
   architecture?: string[];
   aiFeatures?: string[];
 };
@@ -64,6 +65,8 @@ export const PROJECTS_DATA: Project[] = [
     description: "Built an AI-based invoice parser to automate data extraction. Created React/Node.js validation layers, serverless functions using AWS Lambda and DynamoDB, and dynamic Zoho Analytics dashboards with JWT/OAuth2 role-based access.",
     techStack: ["JavaScript", "TypeScript", "HTML", "CSS", "Tailwind", "Python", "MUI", "React", "Node.js", "Express.js", "Zoho Analytics", "AWS Textract", "Lambda", "DynamoDB"],
     liveUrl: "https://risengine.com/sign-in",
+    githubUrl: "https://github.com/sumit0593",
+    isPrivate: true,
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
     featured: true,
     architecture: ["JWT/OAuth2 RBAC", "Enterprise Data Pipelines"],
@@ -91,6 +94,8 @@ export const PROJECTS_DATA: Project[] = [
     description: "Maintained a highly scalable full-stack attendance platform managing thousands of concurrent employees. Built browser automation using Playwright, an HTML scraper, and a text extractor to automate client data. Designed Spring Boot microservices, Angular frontend modules, and robust REST APIs.",
     techStack: ["Java", "JavaScript", "TypeScript", "Python", "Html", "Css", "MUI", "AWS Textract", "Lambda", "DynamoDB", "Spring Boot", "Angular", "REST APIs", "SQL", "Microservices", "Playwright", "HTML Scraper", "Text Extractor"],
     liveUrl: "https://www.kentcam.com/camattendance/thank-you",
+    githubUrl: "https://github.com/sumit0593",
+    isPrivate: true,
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
     featured: false,
     architecture: ["Spring Boot", "Automated Data Pipelines", "High-Concurrency APIs", "Playwright Automation"],
@@ -109,6 +114,20 @@ export const PROJECTS_DATA: Project[] = [
     featured: true,
     architecture: ["Next.js App Router", "Prisma ORM", "PostGIS GIS Database", "Cloud Run Serverless"],
     aiFeatures: ["Google Gemini Auto-Classification", "Coordinates & GIS Mapping"]
+  },
+  {
+    id: "automated-job-application-agent",
+    title: "Automated Job Application Agent",
+    category: "Multi-Agent Systems",
+    categories: ["GenAI", "Multi-Agent Systems", "Backend", "Full Stack"],
+    description: "Architected an agentic job-application system (FastAPI + React) with a CRAG-based matching pipeline — HyDE query expansion, BGE cross-encoder reranking, and MMR deduplication — retrieving over a Qdrant vector store to semantically match resumes to job postings. Built a plugin-based ATS automation engine with Playwright and LangGraph orchestrator.",
+    techStack: ["Python", "FastAPI", "React", "LangGraph", "Qdrant", "Playwright", "HyDE", "Cross-Encoder", "Gemini API", "Ollama"],
+    githubUrl: "https://github.com/sumit0593",
+    isPrivate: true,
+    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=800&auto=format&fit=crop",
+    featured: true,
+    architecture: ["CRAG Matching Pipeline", "LangGraph Orchestrator", "Qdrant Vector Store", "Tiered Multi-LLM Router"],
+    aiFeatures: ["HyDE Query Expansion", "BGE Cross-Encoder Reranking", "ATS Playwright Automation"]
   }
 ];
 

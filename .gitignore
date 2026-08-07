@@ -44,8 +44,12 @@ tsc-errors.txt
 # custom logs
 dev-output.log
 
-# Generated Data & Indices
+# Generated Data, Indices & Agent Workspace Artifacts
 data/processed/minisearch-index.json
 data/db/
 error.json
 models.json
+.agents/
+*.tmp
+*.log
+

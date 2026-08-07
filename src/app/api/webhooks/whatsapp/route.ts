@@ -69,28 +69,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: "empty" }, { status: 200 });
     }
 
-    // Process AI response in background without blocking Meta's 3-second HTTP timeout
-    (async () => {
-      try {
-        const sanitizedText = sanitizePromptInput(userText);
+    const sanitizedText = sanitizePromptInput(userText);
 
-        // 1. Detect language
-        const detectedLang = detectLanguage(sanitizedText);
-        const langInstruction = buildLanguageInstruction(detectedLang);
+    // 1. Detect language
+    const detectedLang = detectLanguage(sanitizedText);
+    const langInstruction = buildLanguageInstruction(detectedLang);
 
-        // 2. Retrieve hybrid context
-        const { chunks, intent } = await retrieveHybridContext(sanitizedText, 4);
+    // 2. Retrieve hybrid context
+    const { chunks, intent } = await retrieveHybridContext(sanitizedText, 4);
 
-        // 3. Classify Multi-Agent Persona
-        const activeAgent = classifyAgentRole(sanitizedText, intent);
+    // 3. Classify Multi-Agent Persona
+    const activeAgent = classifyAgentRole(sanitizedText, intent);
 
-        // 4. Lead Qualification Check
-        const leadResult = extractLeadQualification([{ role: "user", content: sanitizedText }]);
-        const leadDirective = buildLeadQualificationDirective(leadResult);
+    // 4. Lead Qualification Check
+    const leadResult = extractLeadQualification([{ role: "user", content: sanitizedText }]);
+    const leadDirective = buildLeadQualificationDirective(leadResult);
 
-        // 5. Build System Prompt
-        const basePrompt = buildOrchestratedPrompt(chunks, [], sanitizedText, intent);
-        const whatsappPrompt = `
+    // 5. Build System Prompt
+    const basePrompt = buildOrchestratedPrompt(chunks, [], sanitizedText, intent);
+    const whatsappPrompt = `
 ${basePrompt}
 
 ACTIVE WHATSAPP AI AGENT: ${activeAgent.title} (${activeAgent.role} Agent)
@@ -106,39 +103,35 @@ FORMATTING RULE: Format your answer cleanly for WhatsApp messaging:
 - Include bullet points for lists.
 `;
 
-        // 6. Generate AI Response via Gemini
-        const aiResponse = await ai.models.generateContent({
-          model: CHAT_MODEL,
-          contents: sanitizedText,
-          config: {
-            systemInstruction: whatsappPrompt,
-            temperature: 0.2,
-            maxOutputTokens: 400,
-          },
-        });
+    // 6. Generate AI Response via Gemini
+    const aiResponse = await ai.models.generateContent({
+      model: CHAT_MODEL,
+      contents: sanitizedText,
+      config: {
+        systemInstruction: whatsappPrompt,
+        temperature: 0.2,
+        maxOutputTokens: 400,
+      },
+    });
 
-        const replyText = sanitizeAIOutput(
-          aiResponse.text || "Hello! Thanks for reaching out. How can I assist with your AI engineering or full-stack project?"
-        );
+    const replyText = sanitizeAIOutput(
+      aiResponse.text || "Hello! Thanks for reaching out. How can I assist with your AI engineering or full-stack project?"
+    );
 
-        // 7. Send Response back to WhatsApp Cloud API
-        const sendResult = await sendWhatsAppMessage({
-          toPhone: fromPhone,
-          text: replyText,
-          phoneId: incomingPhoneId,
-        });
+    // 7. Send Response back to WhatsApp Cloud API
+    const sendResult = await sendWhatsAppMessage({
+      toPhone: fromPhone,
+      text: replyText,
+      phoneId: incomingPhoneId,
+    });
 
-        console.log(`[WhatsApp Agent Sent] To: ${fromPhone} | Agent: ${activeAgent.role} | Success: ${sendResult.success} | Message ID: ${sendResult.messageId || "N/A"}`);
-      } catch (bgErr) {
-        console.error("[WhatsApp Async Agent Error]", bgErr);
-      }
-    })();
+    console.log(`[WhatsApp Agent Sent] To: ${fromPhone} | Agent: ${activeAgent.role} | Success: ${sendResult.success} | Message ID: ${sendResult.messageId || "N/A"}`);
 
-    // Immediately return HTTP 200 OK to Meta to comply with Meta's 3-second webhook timeout
     return NextResponse.json({
-      status: "success",
-      message: "Message received and dispatching to AI agent",
+      status: sendResult.success ? "success" : "failed",
       fromPhone,
+      activeAgent: activeAgent.role,
+      sendResult,
     }, { status: 200 });
   } catch (err: any) {
     console.error("[WhatsApp Webhook Error]", err);

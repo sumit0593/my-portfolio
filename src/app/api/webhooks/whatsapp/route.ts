@@ -19,11 +19,14 @@ export async function GET(req: NextRequest) {
   const token = searchParams.get("hub.verify_token");
   const challenge = searchParams.get("hub.challenge");
 
+  console.log(`[WhatsApp Webhook GET] Verification request received. Mode: ${mode} | Token: ${token}`);
+
   if (mode === "subscribe" && token === verifyToken) {
-    console.log("[WhatsApp Webhook] Verification successful.");
+    console.log("[WhatsApp Webhook GET] Verification successful! Returning challenge.");
     return new Response(challenge, { status: 200 });
   }
 
+  console.error("[WhatsApp Webhook GET] Verification failed. Invalid verify token.");
   return NextResponse.json({ error: "Verification failed." }, { status: 403 });
 }
 
@@ -33,6 +36,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    console.log("[WhatsApp Webhook POST] Webhook event received from Meta:", JSON.stringify(body));
 
     // Check if this is a WhatsApp message notification
     const entry = body?.entry?.[0];
@@ -41,6 +45,7 @@ export async function POST(req: NextRequest) {
     const message = value?.messages?.[0];
 
     if (!message) {
+      console.log("[WhatsApp Webhook POST] Status update or non-message payload received. Ignoring.");
       return NextResponse.json({ status: "ignored" }, { status: 200 });
     }
 
@@ -57,7 +62,10 @@ export async function POST(req: NextRequest) {
       userText = `Client sent a ${messageType} attachment.`;
     }
 
+    console.log(`[WhatsApp Webhook POST] 📩 Incoming Message | From: ${fromPhone} | Phone ID: ${incomingPhoneId} | Type: ${messageType} | Text: "${userText}"`);
+
     if (!userText.trim()) {
+      console.warn("[WhatsApp Webhook POST] Empty message text received.");
       return NextResponse.json({ status: "empty" }, { status: 200 });
     }
 
@@ -120,7 +128,7 @@ FORMATTING RULE: Format your answer cleanly for WhatsApp messaging:
           phoneId: incomingPhoneId,
         });
 
-        console.log(`[WhatsApp Agent Sent] To: ${fromPhone} | Agent: ${activeAgent.role} | Success: ${sendResult.success}`);
+        console.log(`[WhatsApp Agent Sent] To: ${fromPhone} | Agent: ${activeAgent.role} | Success: ${sendResult.success} | Message ID: ${sendResult.messageId || "N/A"}`);
       } catch (bgErr) {
         console.error("[WhatsApp Async Agent Error]", bgErr);
       }

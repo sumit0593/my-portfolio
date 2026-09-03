@@ -92,6 +92,7 @@ const CHAT_TOOLS = [
 
 export async function POST(req: Request) {
   const requestId = crypto.randomUUID();
+  let dbSession: Awaited<ReturnType<typeof getOrCreateSession>>["dbSession"] | null = null;
   try {
     // Hidden IP-Based Rate Limiting
     const token = getRateLimitToken(req);
@@ -131,7 +132,7 @@ export async function POST(req: Request) {
     const lockoutUntilStr = cookieStore.get("guest-chat-lockout-until")?.value || null;
 
     // Load active session from database (or create if missing/expired)
-    const { dbSession } = await getOrCreateSession();
+    ({ dbSession } = await getOrCreateSession());
     const sessionState = await buildSessionState(dbSession, lockoutUntilStr);
 
     // Validate using the server-side sessionState
@@ -399,6 +400,11 @@ ${langInstruction}
     });
   } catch (err: any) {
     console.error("Chat API Error:", err?.stack || err?.message || err);
+    // Always release the processing lock on error to prevent the chat input
+    // from being permanently disabled for the remainder of the session.
+    if (dbSession) {
+      try { db.releaseProcessingLock(dbSession.id); } catch (_) {}
+    }
     return new Response(
       JSON.stringify({ error: "Failed to process chat request." }),
       { status: 500 }

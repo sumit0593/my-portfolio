@@ -133,7 +133,8 @@ export async function POST(req: Request) {
 
     // Load active session from database (or create if missing/expired)
     ({ dbSession } = await getOrCreateSession());
-    const sessionState = await buildSessionState(dbSession, lockoutUntilStr);
+    const session = dbSession; // narrowed non-null reference for use inside this try block
+    const sessionState = await buildSessionState(session, lockoutUntilStr);
 
     // Validate using the server-side sessionState
     if (!sessionState.canChat) {
@@ -151,7 +152,7 @@ export async function POST(req: Request) {
 
     // Check Idempotency
     if (clientMessageId) {
-      const dbMessages = db.getMessagesBySessionId(dbSession.id);
+      const dbMessages = db.getMessagesBySessionId(session.id);
       const existingUserMsg = dbMessages.find((m) => m.metadata?.clientMessageId === clientMessageId);
       if (existingUserMsg) {
         const userMsgIndex = dbMessages.indexOf(existingUserMsg);
@@ -169,7 +170,7 @@ export async function POST(req: Request) {
               send({ type: "finish-step" });
               send({ type: "finish", finishReason: "stop" });
               
-              const state = await buildSessionState(dbSession, lockoutUntilStr);
+              const state = await buildSessionState(session, lockoutUntilStr);
               // SDK requires 'data-*' prefix for custom data chunks (strict schema)
               send({ type: "data-session-state", data: state });
               controller.enqueue(encoder.encode("data: [DONE]\n\n"));
@@ -189,7 +190,7 @@ export async function POST(req: Request) {
     }
 
     // Acquire Concurrency Lock
-    const locked = db.tryAcquireProcessingLock(dbSession.id);
+    const locked = db.tryAcquireProcessingLock(session.id);
     if (!locked) {
       return NextResponse.json(
         {
@@ -209,7 +210,7 @@ export async function POST(req: Request) {
     const userMsgCount = sessionState.messageCount;
     const limit = sessionState.maxMessages;
     if (sessionState.authenticationState === "guest" && limit && userMsgCount + 1 >= limit) {
-      cookieStore.set("guest-chat-lockout-until", dbSession.expiresAt.toISOString(), {
+      cookieStore.set("guest-chat-lockout-until", session.expiresAt.toISOString(), {
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 60 * 60 * 24 * 30, // 30 days
@@ -221,7 +222,7 @@ export async function POST(req: Request) {
     let userQuery = extractTextFromMessage(lastUserMessage);
 
     if (!userQuery.trim()) {
-      db.releaseProcessingLock(dbSession.id);
+      db.releaseProcessingLock(session.id);
       return new Response(JSON.stringify({ error: "Empty query received." }), { status: 400 });
     }
 
@@ -238,7 +239,7 @@ export async function POST(req: Request) {
     const activeAgent = classifyAgentRole(sanitizedQuery, intent);
 
     // 4. Build history & Lead Qualification Extraction
-    const dbMessages = db.getMessagesBySessionId(dbSession.id);
+    const dbMessages = db.getMessagesBySessionId(session.id);
     const activeDbMessages = dbMessages.filter((m) => !m.metadata?.cleared);
     const conversationHistory = activeDbMessages.map((m) => ({
       role: m.role === "user" ? "user" as const : "assistant" as const,
@@ -251,7 +252,7 @@ export async function POST(req: Request) {
 
     // 5. Persist lead intelligence & active agent role to database session
     db.updateLeadQualification(
-      dbSession.id,
+      session.id,
       leadResult.leadScore,
       leadResult,
       activeAgent.role,
@@ -273,9 +274,9 @@ ${langInstruction}
 `;
 
     // Save User Message
-    db.addMessage(dbSession.id, "user", sanitizedQuery, { clientMessageId });
-    db.updateSessionActivity(dbSession.id);
-    conversationMemory.addMessage(dbSession.sessionToken, { role: "user", content: sanitizedQuery });
+    db.addMessage(session.id, "user", sanitizedQuery, { clientMessageId });
+    db.updateSessionActivity(session.id);
+    conversationMemory.addMessage(session.sessionToken, { role: "user", content: sanitizedQuery });
 
     // Update guest-chat-message-count cookie for robust serverless tracking
     if (sessionState.authenticationState !== "user") {
@@ -361,22 +362,22 @@ ${langInstruction}
           }
         } finally {
           // Release Lock
-          db.releaseProcessingLock(dbSession.id);
+          db.releaseProcessingLock(session.id);
 
           // Save assistant message to DB (partial if interrupted)
           if (fullResponse) {
             const metadata = isFinished ? null : { interrupted: true };
-            db.addMessage(dbSession.id, "assistant", fullResponse, metadata);
-            db.updateSessionActivity(dbSession.id);
-            conversationMemory.addMessage(dbSession.sessionToken, { role: "assistant", content: fullResponse });
+            db.addMessage(session.id, "assistant", fullResponse, metadata);
+            db.updateSessionActivity(session.id);
+            conversationMemory.addMessage(session.sessionToken, { role: "assistant", content: fullResponse });
           }
 
           // Build final sessionState for the client
           const finalLockoutStr = isFinished && sessionState.authenticationState !== "user" && limit && (userMsgCount + 1 >= limit)
-            ? dbSession.expiresAt.toISOString()
+            ? session.expiresAt.toISOString()
             : lockoutUntilStr;
           
-          const updatedSession = await buildSessionState(dbSession, finalLockoutStr);
+          const updatedSession = await buildSessionState(session, finalLockoutStr);
 
           send({ type: "text-end", id: textId });
           send({ type: "finish-step" });

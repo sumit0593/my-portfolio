@@ -183,6 +183,7 @@
       "experience_level": "Advanced",
       "business_impact": "Automated recurring job discovery & batch application submissions",
       "priority_score": 10,
+      "github": "https://github.com/sumit0593/Automated-Job-Agent",
       "architecture_tags": [
         "CRAG Matching Pipeline",
         "LangGraph Orchestrator",

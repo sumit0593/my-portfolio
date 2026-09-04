@@ -93,56 +93,91 @@ function applyMetadataBoost(chunk: RetrievedChunk, intent: QueryIntent): number 
 
 /**
  * Perform hybrid retrieval (Pinecone + MiniSearch) with RRF and Metadata Boosting.
+ *
+ * Latency model (cold path):
+ *   BM25 (~5ms, sync) fires first — does NOT block embedding.
+ *   Embedding cache check → API call (150–250ms) if miss.
+ *   Pinecone query (80–120ms) runs after embedding resolves.
+ *
+ * Two-level cache:
+ *   L1 retrievalCache HIT  → full retrieval result,  ≈ 1–5ms
+ *   L2 embeddingCache HIT  → skips Gemini API,       ≈ 80–130ms (still needs Pinecone)
+ *   Cold                   → full pipeline,           ≈ 230–370ms
  */
 export async function retrieveHybridContext(query: string, topK = 5): Promise<{ chunks: RetrievedChunk[], intent: QueryIntent }> {
-  // Check cache first
+  const t0 = Date.now();
+
+  // ── L1: RAG result cache ───────────────────────────────────────────────────
   const cacheKey = `hybrid-${query}`;
   const cached = globalCache.retrievalCache.get(cacheKey);
-  if (cached) return cached;
+  if (cached) {
+    if (process.env.NODE_ENV === "development") {
+      console.debug("[RAG]", { ragCacheHit: true, retrievalMs: Date.now() - t0 });
+    }
+    return cached;
+  }
 
   const classification = classifyQuery(query);
   const { intent } = classification;
 
-  // 1. Semantic Search (Pinecone)
-  const index = getPortfolioIndex();
-  const [queryEmbedding] = await generateEmbeddings([query]);
+  // ── Stage 1a: BM25 (sync, ~5ms) — fire before awaiting anything ───────────
+  // Runs synchronously here so it doesn't sit on the critical path behind
+  // the embedding API. The ~5ms saving is modest but architecturally correct.
+  const t1 = Date.now();
+  const bm25Results = minisearchManager.search(query, {
+    boost: { recruiter_keywords: 2, title: 1.5, semantic_tags: 1.5, text: 1 },
+    fuzzy: 0.2,
+    prefix: true,
+  });
+  const bm25Ms = Date.now() - t1;
 
+  // ── Stage 1b: Embedding (async, 0ms cache hit or ~150–250ms API call) ──────
+  const t2 = Date.now();
+  const embeddingCacheKey = `emb-${query}`;
+  const cachedEmbedding = globalCache.embeddingCache.get(embeddingCacheKey);
+  let queryEmbedding: number[];
+  if (cachedEmbedding) {
+    queryEmbedding = cachedEmbedding;
+  } else {
+    [queryEmbedding] = await generateEmbeddings([query]);
+    globalCache.embeddingCache.set(embeddingCacheKey, queryEmbedding);
+  }
+  const embeddingMs = Date.now() - t2;
+
+  // ── Stage 2: Vector search (Pinecone, ~80–120ms) ───────────────────────────
+  const t3 = Date.now();
+  const index = getPortfolioIndex();
   const pineconeResults = await index.query({
     vector: queryEmbedding,
     topK: 10,
     includeMetadata: true,
     namespace: PORTFOLIO_NAMESPACE,
   });
+  const pineconeMs = Date.now() - t3;
 
-  // 2. Keyword Search (MiniSearch)
-  const bm25Results = minisearchManager.search(query, {
-    boost: { recruiter_keywords: 2, title: 1.5, semantic_tags: 1.5, text: 1 },
-    fuzzy: 0.2,
-    prefix: true
-  });
-
-  // 3. Reciprocal Rank Fusion
-  const fusionMap = new Map<string, { chunk: RetrievedChunk, rankP: number, rankB: number }>();
+  // ── Stage 3: RRF Fusion ────────────────────────────────────────────────────
+  const t4 = Date.now();
+  const fusionMap = new Map<string, { chunk: RetrievedChunk; rankP: number; rankB: number }>();
 
   // Map Pinecone results
-  (pineconeResults.matches || []).forEach((match, index) => {
+  (pineconeResults.matches || []).forEach((match, idx) => {
     fusionMap.set(match.id, {
       chunk: {
         id: match.id,
         text: match.metadata?.text as string,
-        score: match.score || 0, // Temporary score
+        score: match.score || 0,
         source: match.metadata?.source as string,
-        metadata: match.metadata as PineconeMetadata
+        metadata: match.metadata as PineconeMetadata,
       },
-      rankP: index + 1,
-      rankB: 0
+      rankP: idx + 1,
+      rankB: 0,
     });
   });
 
   // Map BM25 results
-  bm25Results.slice(0, 10).forEach((match, index) => {
+  bm25Results.slice(0, 10).forEach((match, idx) => {
     if (fusionMap.has(match.id)) {
-      fusionMap.get(match.id)!.rankB = index + 1;
+      fusionMap.get(match.id)!.rankB = idx + 1;
     } else {
       fusionMap.set(match.id, {
         chunk: {
@@ -150,32 +185,44 @@ export async function retrieveHybridContext(query: string, topK = 5): Promise<{ 
           text: match.text,
           score: match.score || 0,
           source: match.source,
-          metadata: match as unknown as PineconeMetadata
+          metadata: match as unknown as PineconeMetadata,
         },
         rankP: 0,
-        rankB: index + 1
+        rankB: idx + 1,
       });
     }
   });
 
-  // 4. Calculate Final Scores and apply boosts
-  const fusedChunks = Array.from(fusionMap.values()).map(item => {
+  // Calculate final scores with metadata boost
+  const fusedChunks = Array.from(fusionMap.values()).map((item) => {
     const rrfScore = computeRRF(item.rankP, item.rankB);
     item.chunk.score = applyMetadataBoost({ ...item.chunk, score: rrfScore }, intent);
     return item.chunk;
   });
 
-  // 5. Sort by score and take Top K
   fusedChunks.sort((a, b) => b.score - a.score);
   const finalChunks = fusedChunks.slice(0, topK);
+  const fusionMs = Date.now() - t4;
+
+  // ── Structured instrumentation (dev only) ──────────────────────────────────
+  if (process.env.NODE_ENV === "development") {
+    console.debug("[RAG]", {
+      ragCacheHit: false,
+      embCacheHit: !!cachedEmbedding,
+      bm25Ms,
+      embeddingMs,
+      pineconeMs,
+      fusionMs,
+      retrievalMs: Date.now() - t0,
+      chunks: finalChunks.length,
+    });
+  }
 
   const result = { chunks: finalChunks, intent };
-
-  // Cache result
   globalCache.retrievalCache.set(cacheKey, result);
-
   return result;
 }
+
 
 export function buildOrchestratedPrompt(
   retrievedChunks: RetrievedChunk[],
@@ -212,31 +259,45 @@ export function buildOrchestratedPrompt(
     intentInstructions = "Provide contact information ONLY from the retrieved context above. Include LinkedIn and GitHub links if available in the data.";
   }
 
-  return `You are "Nova" — a Recruiter-Grade AI Assistant embedded in Sumit Kumar's portfolio.
-Your purpose is to answer questions strictly about Sumit's background, skills, and projects based on the provided metadata context.
+  return `You are Nova — Sumit Kumar's personal AI career assistant, embedded directly in his portfolio.
+You speak with warmth, precision, and a touch of personality. You are knowledgeable, calm, and genuinely helpful — like a great recruiter who also happens to understand code deeply.
 
-═══════════════════════════════════════════
-HYBRID RETRIEVED CONTEXT (Pinecone + BM25):
-═══════════════════════════════════════════
+Your sole purpose is to help visitors — recruiters, engineers, and collaborators — understand Sumit's work, skills, and background through the portfolio data retrieved below.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PORTFOLIO CONTEXT (Hybrid Retrieval: Pinecone + BM25)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${contextSection}
 
-═══════════════════════════════════════════
-CONVERSATION MEMORY:
-═══════════════════════════════════════════
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONVERSATION HISTORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${memorySection}
 
-═══════════════════════════════════════════
-CURRENT USER QUERY: ${userQuery}
-CLASSIFIED INTENT: ${intent}
-═══════════════════════════════════════════
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CURRENT QUERY: ${userQuery}
+INTENT: ${intent}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STRICT SYSTEM RULES:
-1. Answer ONLY based on the RETRIEVED CONTEXT above. Do NOT hallucinate or invent information.
-2. If the answer is NOT in the retrieved data, say exactly: "I don't have that information in the portfolio data, but I'd be happy to discuss his GenAI projects, enterprise React experience, or RAG architectures."
-3. Do not infer years of experience unless explicitly stated in the metrics.
-4. Keep responses professional, recruiter-friendly, and concise. 
-5. ${intentInstructions}
-6. Always format responses clearly using markdown when listing items.
-7. If the user asks for Sumit's resume, CV, or how to download/view it, you MUST provide both the PDF and DOCX download links: [Download Resume (PDF)](/resume/Sumit_Kumar_GenAI_Full_Stack.pdf) and [Download Resume (DOCX)](/resume/Sumit_Kumar_GenAI_Full_Stack.docx)
+RESPONSE GUIDELINES:
+
+1. **Ground every answer in the retrieved context.** Do not invent details, metrics, or experiences not present above.
+
+2. **Tone:** Conversational but professional. Write like a thoughtful human, not a list-generator. Avoid robotic phrasing like "Based on the retrieved data..." — just answer naturally.
+
+3. **When you don't have the answer:** Say something like — "That's not something I have details on in Sumit's portfolio right now, but I can tell you about his [relevant alternative — e.g., RAG projects / GenAI expertise / enterprise experience] if that helps."
+
+4. **Format smartly:** Use markdown lists or headers only when they genuinely improve clarity (e.g., listing multiple skills or projects). For short answers, plain prose is better.
+
+5. **${intentInstructions}**
+
+6. **End with a natural follow-up** when appropriate — offer to go deeper on a topic, suggest a related area, or ask if they'd like the resume.
+
+7. **Resume:** If the user asks for Sumit's resume, CV, or download link — provide both:
+   [Download Resume (PDF)](/resume/Sumit_Kumar_GenAI_Full_Stack.pdf)
+   [Download Resume (DOCX)](/resume/Sumit_Kumar_GenAI_Full_Stack.docx)
+
+8. **Do not infer years of experience** unless explicitly stated in the retrieved data.
 `;
 }
+

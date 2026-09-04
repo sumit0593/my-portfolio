@@ -78,8 +78,7 @@ The main single-page hub is divided into **10 distinct sections** to provide a r
 
 ### 🚀 FEATURED PROJECT LINKS
 -   **Automated Job Application Agent**
-    - *Private Repo Notice*: Marked `isPrivate: true`. Directs users to contact Sumit on WhatsApp (+91 7011676185) or talk to Nova AI Assistant (`/ai-assistant`).
-    - *GitHub Link*: `[Automated Job Application Agent Source](https://github.com/sumit0593)`
+    - *GitHub Link*: `[Automated Job Application Agent Source](https://github.com/sumit0593/Automated-Job-Agent)`
 -   **AI Loan Advisor Chatbot**
     - *Live Link*: `[AI Loan Advisor Chatbot Live](https://ai-loan-advisor-chatbot-3mt0oequ0-sumit0593s-projects.vercel.app/)`
     - *GitHub Link*: `[AI Loan Advisor Chatbot Source](https://github.com/sumit0593/AI-Loan-Advisor-Chatbot)`

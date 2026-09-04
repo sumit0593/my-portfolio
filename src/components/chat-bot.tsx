@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import { X, Loader2, AlertCircle, Sparkles, Maximize2, Minimize2, Info, LogOut } from "lucide-react";
+import React, { useState, useRef, useEffect, useCallback, memo } from "react";
+import { X, AlertCircle, Sparkles, Maximize2, Minimize2, Info, LogOut, Send } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -133,6 +133,191 @@ const CATEGORIES: Category[] = [
         ]
     }
 ];
+
+function getMessageText(m: { parts?: any[]; content?: string }) {
+    if (m?.parts && m.parts.length > 0) {
+        return m.parts
+            .map((p: any) => (p?.type === "text" ? p.text : ""))
+            .join("");
+    }
+    return (m as { content?: string })?.content || "";
+}
+
+const markdownComponents = {
+    a: ({ href, children, ...props }: any) => {
+        if (!href) {
+            return <a {...props}>{children}</a>;
+        }
+        const isResume = href.toLowerCase().includes("resume") && (
+            href.toLowerCase().endsWith(".pdf") ||
+            href.toLowerCase().endsWith(".docx") ||
+            href.toLowerCase().includes("pdf") ||
+            href.toLowerCase().includes("docx")
+        );
+        if (isResume) {
+            const isPdf = href?.toLowerCase().includes("pdf");
+            const isDocx = href?.toLowerCase().includes("docx") || href?.toLowerCase().includes("doc");
+            const label = isPdf ? "Download Resume (PDF)" : isDocx ? "Download Resume (DOCX)" : "Download Resume";
+            return (
+                <a
+                    href={href}
+                    download
+                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                    {...props}
+                >
+                    <span>📥 {label}</span>
+                </a>
+            );
+        }
+
+        const isLinkedIn = href?.toLowerCase().includes("linkedin.com");
+        if (isLinkedIn) {
+            return (
+                <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-[#0077b5] hover:bg-[#0077b5]/90 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                    {...props}
+                >
+                    <span>🔗 LinkedIn Profile</span>
+                </a>
+            );
+        }
+
+        const isGitHub = href?.toLowerCase().includes("github.com");
+        if (isGitHub) {
+            const isProfile = href.toLowerCase().endsWith("sumit0593") || href.toLowerCase().endsWith("sumit0593/");
+            const label = isProfile ? "GitHub Profile" : "GitHub Repository";
+            return (
+                <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-[#24292e] dark:bg-[#404448] hover:bg-[#24292e]/90 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                    {...props}
+                >
+                    <span>💻 {label}</span>
+                </a>
+            );
+        }
+
+        const isLeetCode = href?.toLowerCase().includes("leetcode.com");
+        if (isLeetCode) {
+            return (
+                <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                    {...props}
+                >
+                    <span>💡 LeetCode Profile</span>
+                </a>
+            );
+        }
+
+        const isNewtonSchool = href?.toLowerCase().includes("newton") || href?.toLowerCase().includes("full_stack_web_certificate");
+        if (isNewtonSchool) {
+            let label = "Newton School Certificate";
+            if (href.toLowerCase().includes("scorecard_newton_1")) label = "Newton School Scorecard 1";
+            else if (href.toLowerCase().includes("scorecard_newton_2")) label = "Newton School Scorecard 2";
+            else if (href.toLowerCase().includes("full_stack_web_certificate")) label = "Newton School Certificate (PDF)";
+            return (
+                <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                    {...props}
+                >
+                    <span>📜 {label}</span>
+                </a>
+            );
+        }
+
+        const isIITMandi = href?.toLowerCase().includes("prompt_engineering") || href?.toLowerCase().includes("excellence_rag");
+        if (isIITMandi) {
+            let label = "IIT Mandi Certificate";
+            if (href.toLowerCase().includes("prompt_engineering")) label = "IIT Mandi Prompt Engineering (PDF)";
+            else if (href.toLowerCase().includes("excellence_rag")) label = "IIT Mandi RAG Engineering (PDF)";
+            return (
+                <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
+                    {...props}
+                >
+                    <span>🎓 {label}</span>
+                </a>
+            );
+        }
+
+        return (
+            <a href={href} className="text-indigo-400 hover:underline" {...props}>
+                {children}
+            </a>
+        );
+    }
+};
+
+const ChatMessageItem = memo(function ChatMessageItem({
+    message,
+    isLast,
+    isStreaming,
+}: {
+    message: { id: string; role: string; parts?: any[]; content?: string };
+    isLast: boolean;
+    isStreaming: boolean;
+}) {
+    const text = getMessageText(message);
+
+    if (message.role === "system") {
+        return (
+            <div className="flex justify-center my-2 select-none animate-in fade-in zoom-in-95 duration-300">
+                <div className="text-[10px] text-muted-foreground font-semibold bg-muted dark:bg-zinc-800/80 px-3 py-1.5 rounded-full border border-border/50 shadow-sm flex items-center gap-1.5">
+                    <Info className="w-3.5 h-3.5 text-indigo-500" />
+                    <span>{text}</span>
+                </div>
+            </div>
+        );
+    }
+
+    const isAssistant = message.role === "assistant";
+    const showBlinkingCursor = isLast && isStreaming && isAssistant && text.length > 0;
+
+    return (
+        <div
+            className={`flex animate-in fade-in slide-in-from-bottom-2 duration-200 ${message.role === "user" ? "justify-end" : "justify-start"}`}
+        >
+            {isAssistant && (
+                <div className="w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 overflow-hidden shrink-0 mr-2 mt-1 self-end">
+                    <img src="/assets/nova.png" alt="Nova" className="h-full w-full object-cover rounded-full" />
+                </div>
+            )}
+            <div
+                className={`px-4 py-3 rounded-2xl text-sm max-w-[82%] shadow-sm ${message.role === "user"
+                    ? "bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-br-none"
+                    : "bg-card border border-border/80 text-foreground rounded-bl-none"
+                    }`}
+            >
+                <div className="prose prose-sm dark:prose-invert max-w-none break-words">
+                    <Markdown
+                        remarkPlugins={[remarkGfm, remarkBreaks]}
+                        rehypePlugins={[rehypeSanitize]}
+                        components={markdownComponents}
+                    >
+                        {text}
+                    </Markdown>
+                    {showBlinkingCursor && (
+                        <span className="inline-block w-1.5 h-3.5 ml-1 bg-indigo-500 animate-pulse rounded-xs align-middle" />
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+});
 
 export function ChatBot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -548,9 +733,16 @@ export function ChatBot() {
         prevDataLengthRef.current = data ? data.length : 0;
     }, [isLoading, data, refreshSession]);
 
+    const lastMsg = messages[messages.length - 1];
+    const isAssistantStreamingText = status === "streaming" && lastMsg?.role === "assistant" && getMessageText(lastMsg).length > 0;
+
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
+        if (status === "streaming") {
+            messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+        } else {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages, status]);
 
     // Load messages from database session on mount
     useEffect(() => {
@@ -566,24 +758,13 @@ export function ChatBot() {
         }
     }, [isOpen]);
 
-    // Helper to extract text content from a message's parts
-    const getMessageText = (m: (typeof messages)[number]) => {
-        if (m.parts && m.parts.length > 0) {
-            return m.parts
-                .map((p) => (p.type === "text" ? p.text : ""))
-                .join("");
-        }
-        // fallback for legacy content field
-        return (m as { content?: string }).content || "";
-    };
-
     // Hide chatbot on auth pages (login, register, etc.)
     if (isAuthPage) return null;
 
     return (
-        <div className={`fixed z-50 ${isOpen ? (isEnlarged ? "inset-0 md:inset-6" : "inset-0 md:top-auto md:left-auto md:bottom-6 md:right-6") : "bottom-6 right-6"}`}>
+        <div className={`fixed z-50 transition-all duration-300 ease-in-out ${isOpen ? (isEnlarged ? "inset-0 md:top-4 md:bottom-4 md:right-4 md:left-auto" : "inset-0 md:top-auto md:left-auto md:bottom-6 md:right-6") : "bottom-6 right-6"}`}>
             {isOpen ? (
-                <Card className={`w-full h-full shadow-2xl flex flex-col border-0 md:border border-border bg-card/95 backdrop-blur-xl animate-in slide-in-from-bottom-5 fade-in-50 duration-300 overflow-hidden rounded-none md:rounded-3xl ${isEnlarged ? "md:w-full md:h-full" : "md:w-96 md:h-[500px]"}`} style={{ opacity: 1 }}>
+                <Card className={`w-full h-full shadow-2xl flex flex-col border-0 md:border border-border bg-card/97 backdrop-blur-xl animate-in slide-in-from-bottom-5 fade-in-50 duration-300 overflow-hidden rounded-none md:rounded-3xl transition-all duration-300 ease-in-out ${isEnlarged ? "md:w-[25vw] md:min-w-[340px] md:h-full" : "md:w-[380px] md:h-[600px]"}`} style={{ opacity: 1 }}>
                     <CardHeader className="p-3 border-b border-border bg-muted/80 flex flex-row items-center justify-between pb-3">
                         <CardTitle className="text-sm font-bold flex items-center gap-2">
                             <div className="p-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 overflow-hidden h-7 w-7 flex items-center justify-center shrink-0">
@@ -597,6 +778,7 @@ export function ChatBot() {
                                 type="button"
                                 variant="ghost"
                                 size="icon"
+                                title={isEnlarged ? "Minimize" : "Expand"}
                                 className="h-7 w-7 rounded-full text-indigo-500 dark:text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-300 transition-all cursor-pointer hidden md:flex items-center justify-center border border-indigo-500/20 bg-indigo-500/5 hover:border-indigo-500/40"
                                 onClick={() => setIsEnlarged(!isEnlarged)}
                             >
@@ -662,158 +844,14 @@ export function ChatBot() {
                     )}
                     <CardContent className="flex-1 p-0 flex flex-col bg-background/50 overflow-hidden">
                         <div className="flex-1 overflow-y-auto w-full p-4 space-y-4 custom-scrollbar">
-                            {messages.map((m) => {
-                                if (m.role === "system") {
-                                    return (
-                                        <div key={m.id} className="flex justify-center my-2 select-none animate-in fade-in zoom-in-95 duration-300">
-                                            <div className="text-[10px] text-muted-foreground font-semibold bg-muted dark:bg-zinc-800/80 px-3 py-1.5 rounded-full border border-border/50 shadow-sm flex items-center gap-1.5">
-                                                <Info className="w-3.5 h-3.5 text-indigo-500" />
-                                                <span>{getMessageText(m)}</span>
-                                            </div>
-                                        </div>
-                                    );
-                                }
-                                return (
-                                    <div
-                                        key={m.id}
-                                        className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
-                                    >
-                                        <div
-                                            className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm ${m.role === "user"
-                                                ? "bg-gradient-to-br from-indigo-500 to-purple-500 text-white rounded-br-sm"
-                                                : "bg-card border border-border text-foreground rounded-bl-sm"
-                                                }`}
-                                        >
-                                            <div className="prose prose-sm dark:prose-invert max-w-none break-words">
-                                                <Markdown
-                                                    remarkPlugins={[remarkGfm, remarkBreaks]}
-                                                    rehypePlugins={[rehypeSanitize]}
-                                                    components={{
-                                                        a: ({ href, children, ...props }) => {
-                                                            if (!href) {
-                                                                return <a {...props}>{children}</a>;
-                                                            }
-                                                            const isResume = href.toLowerCase().includes("resume") && (
-                                                                href.toLowerCase().endsWith(".pdf") ||
-                                                                href.toLowerCase().endsWith(".docx") ||
-                                                                href.toLowerCase().includes("pdf") ||
-                                                                href.toLowerCase().includes("docx")
-                                                            );
-                                                            if (isResume) {
-                                                                const isPdf = href?.toLowerCase().includes("pdf");
-                                                                const isDocx = href?.toLowerCase().includes("docx") || href?.toLowerCase().includes("doc");
-                                                                const label = isPdf ? "Download Resume (PDF)" : isDocx ? "Download Resume (DOCX)" : "Download Resume";
-                                                                return (
-                                                                    <a
-                                                                        href={href}
-                                                                        download
-                                                                        className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
-                                                                        {...props}
-                                                                    >
-                                                                        <span>📥 {label}</span>
-                                                                    </a>
-                                                                );
-                                                            }
-
-                                                            const isLinkedIn = href?.toLowerCase().includes("linkedin.com");
-                                                            if (isLinkedIn) {
-                                                                return (
-                                                                    <a
-                                                                        href={href}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-[#0077b5] hover:bg-[#0077b5]/90 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
-                                                                        {...props}
-                                                                    >
-                                                                        <span>🔗 LinkedIn Profile</span>
-                                                                    </a>
-                                                                );
-                                                            }
-
-                                                            const isGitHub = href?.toLowerCase().includes("github.com");
-                                                            if (isGitHub) {
-                                                                const isProfile = href.toLowerCase().endsWith("sumit0593") || href.toLowerCase().endsWith("sumit0593/");
-                                                                const label = isProfile ? "GitHub Profile" : "GitHub Repository";
-                                                                return (
-                                                                    <a
-                                                                        href={href}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-[#24292e] dark:bg-[#404448] hover:bg-[#24292e]/90 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
-                                                                        {...props}
-                                                                    >
-                                                                        <span>💻 {label}</span>
-                                                                    </a>
-                                                                );
-                                                            }
-
-                                                            const isLeetCode = href?.toLowerCase().includes("leetcode.com");
-                                                            if (isLeetCode) {
-                                                                return (
-                                                                    <a
-                                                                        href={href}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
-                                                                        {...props}
-                                                                    >
-                                                                        <span>💡 LeetCode Profile</span>
-                                                                    </a>
-                                                                );
-                                                            }
-
-                                                            const isNewtonSchool = href?.toLowerCase().includes("newton") || href?.toLowerCase().includes("full_stack_web_certificate");
-                                                            if (isNewtonSchool) {
-                                                                let label = "Newton School Certificate";
-                                                                if (href.toLowerCase().includes("scorecard_newton_1")) label = "Newton School Scorecard 1";
-                                                                else if (href.toLowerCase().includes("scorecard_newton_2")) label = "Newton School Scorecard 2";
-                                                                else if (href.toLowerCase().includes("full_stack_web_certificate")) label = "Newton School Certificate (PDF)";
-                                                                return (
-                                                                    <a
-                                                                        href={href}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
-                                                                        {...props}
-                                                                    >
-                                                                        <span>📜 {label}</span>
-                                                                    </a>
-                                                                );
-                                                            }
-
-                                                            const isIITMandi = href?.toLowerCase().includes("prompt_engineering") || href?.toLowerCase().includes("excellence_rag");
-                                                            if (isIITMandi) {
-                                                                let label = "IIT Mandi Certificate";
-                                                                if (href.toLowerCase().includes("prompt_engineering")) label = "IIT Mandi Prompt Engineering (PDF)";
-                                                                else if (href.toLowerCase().includes("excellence_rag")) label = "IIT Mandi RAG Engineering (PDF)";
-                                                                return (
-                                                                    <a
-                                                                        href={href}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg no-underline cursor-pointer text-xs"
-                                                                        {...props}
-                                                                    >
-                                                                        <span>🎓 {label}</span>
-                                                                    </a>
-                                                                );
-                                                            }
-
-                                                            return (
-                                                                <a href={href} className="text-indigo-400 hover:underline" {...props}>
-                                                                    {children}
-                                                                </a>
-                                                            );
-                                                        }
-                                                    }}
-                                                >
-                                                    {getMessageText(m)}
-                                                </Markdown>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            {messages.map((m, idx) => (
+                                <ChatMessageItem
+                                    key={m.id || idx}
+                                    message={m}
+                                    isLast={idx === messages.length - 1}
+                                    isStreaming={status === "streaming"}
+                                />
+                            ))}
 
                             {messages.filter((m) => m.role === "user").length === 0 && !isLoading && (
                                 <div className="space-y-4 mt-2 border-t border-border/40 pt-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
@@ -909,10 +947,17 @@ export function ChatBot() {
                                 </div>
                             )}
 
-                            {isLoading && (
-                                <div className="flex justify-start">
-                                    <div className="bg-card border border-border text-foreground p-3 rounded-2xl rounded-bl-sm text-sm inline-block shadow-sm">
-                                        <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                            {isLoading && !isAssistantStreamingText && (
+                                <div className="flex justify-start items-end gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                                    <div className="w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 overflow-hidden shrink-0">
+                                        <img src="/assets/nova.png" alt="Nova" className="h-full w-full object-cover rounded-full" />
+                                    </div>
+                                    <div className="bg-card border border-border/80 px-4 py-3.5 rounded-2xl rounded-bl-none shadow-sm">
+                                        <div className="flex gap-1.5 items-center h-4">
+                                            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce [animation-delay:0ms]" />
+                                            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce [animation-delay:150ms]" />
+                                            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce [animation-delay:300ms]" />
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -1046,8 +1091,16 @@ export function ChatBot() {
                                     disabled={isLoading || sessionState.ui.disableInput}
                                     className="flex-1 text-sm rounded-xl border border-indigo-500/35 hover:border-indigo-500/60 bg-card text-foreground px-4 py-2.5 shadow-[0_0_10px_rgba(99,102,241,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 disabled:opacity-50 placeholder:text-[11px] placeholder:text-muted-foreground/50 transition-all duration-200"
                                 />
-                                <Button type="submit" disabled={isLoading || sessionState.ui.disableInput} size="icon" className="h-auto w-10 shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-500 cursor-pointer shadow-sm overflow-hidden p-2.5">
-                                    <img src="/assets/nova.png" alt="Send" className="h-full w-full object-contain rounded-full" />
+                                <Button
+                                    type="submit"
+                                    disabled={isLoading || sessionState.ui.disableInput}
+                                    className="h-10 px-3.5 shrink-0 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white cursor-pointer shadow-md hover:shadow-indigo-500/25 flex items-center gap-2 transition-all duration-200 border border-indigo-400/25 group disabled:opacity-50"
+                                    title="Send message"
+                                >
+                                    <div className="relative w-5 h-5 rounded-full overflow-hidden shrink-0 ring-1 ring-white/30 shadow-xs">
+                                        <img src="/assets/nova.png" alt="Nova" className="h-full w-full object-cover" />
+                                    </div>
+                                    <Send className="w-3.5 h-3.5 text-white/90 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                                 </Button>
                             </form>
                             {!isLimitReached && (

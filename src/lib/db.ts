@@ -26,6 +26,16 @@ export interface ChatSession {
   leadDetails?: Record<string, any>;
   agentMode?: string;
   detectedLanguage?: string;
+
+  // Contact Flow State
+  pendingContact?: PendingContactState | null;
+}
+
+export interface PendingContactState {
+  recipientEmail?: string | null;
+  draftMessage?: string | null;
+  awaitingConfirmation: boolean;
+  lastUpdated?: string;
 }
 
 export interface ChatMessage {
@@ -276,6 +286,23 @@ class LocalFileDB {
       session.sessionVersion += 1;
       this.save();
     }
+  }
+
+  /** Updates or clears pending contact workflow state for a session */
+  public updatePendingContact(sessionId: string, state: PendingContactState | null) {
+    const session = this.data.sessions.find((s) => s.id === sessionId);
+    if (session) {
+      session.pendingContact = state;
+      session.updatedAt = new Date();
+      session.sessionVersion += 1;
+      this.save();
+    }
+  }
+
+  /** Retrieves the pending contact workflow state for a session */
+  public getPendingContact(sessionId: string): PendingContactState | null {
+    const session = this.data.sessions.find((s) => s.id === sessionId);
+    return session?.pendingContact || null;
   }
 
   public updateSessionActivity(sessionId: string, expiryMs = 30 * 24 * 60 * 60 * 1000) { // Default to 30 days

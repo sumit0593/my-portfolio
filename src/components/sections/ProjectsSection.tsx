@@ -200,8 +200,8 @@ const PROJECTS = [
       "Plugin-based automation engine with Playwright & 10+ ATS integration handlers (Greenhouse, Lever, Workday, Ashby)",
       "LangGraph multi-agent orchestrator with tiered multi-LLM router (Ollama + Gemini Flash/Pro)"
     ],
-    github: "https://github.com/sumit0593",
-    isPrivate: true,
+    github: "https://github.com/sumit0593/Automated-Job-Agent",
+    isPrivate: false,
     envVars: {
       backend: [
         { name: "QDRANT_URL", description: "URL to Qdrant vector database instance", value: "http://localhost:6333" },
@@ -282,7 +282,7 @@ function ProjectCard({
 
   return (
     <div
-      className="w-full flex justify-center py-4"
+      className="w-full h-full flex justify-center py-2"
       style={{ perspective: "1000px" }}
     >
       <motion.div
@@ -863,9 +863,9 @@ export function ProjectsSection() {
                 key={project.id}
                 layout
                 className={cn(
-                  "w-full",
+                  "w-full h-full",
                   !isExpanded && "absolute inset-0",
-                  isExpanded && index === 4 && "md:col-span-2 md:max-w-md md:mx-auto"
+                  isExpanded && PROJECTS.length % 2 !== 0 && index === PROJECTS.length - 1 && "md:col-span-2 md:max-w-md md:mx-auto"
                 )}
                 style={{
                   zIndex: isExpanded ? 10 : PROJECTS.length - index,

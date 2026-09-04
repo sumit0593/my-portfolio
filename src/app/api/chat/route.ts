@@ -5,13 +5,13 @@ import { chatRequestSchema } from "@/lib/validations";
 import { escapeHtml, sanitizePromptInput, sanitizeAIOutput } from "@/lib/security";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { db } from "@/lib/db";
+import { db, PendingContactState } from "@/lib/db";
 import { getOrCreateSession } from "@/lib/session";
 import { buildSessionState } from "@/lib/sessionMapper";
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import { detectLanguage, buildLanguageInstruction } from "@/lib/agents/languageDetector";
-import { classifyAgentRole } from "@/lib/agents/agentDispatcher";
+import { classifyAgentRole, AGENT_PERSONAS } from "@/lib/agents/agentDispatcher";
 import { extractLeadQualification, buildLeadQualificationDirective } from "@/lib/agents/leadQualifier";
 
 export const maxDuration = 60;
@@ -32,6 +32,37 @@ function extractTextFromMessage(msg: any): string {
       .trim();
   }
   return "";
+}
+
+function cleanUserDraftText(text: string): string {
+  return text
+    .replace(/^(just\s+)?(send\s+(a\s+|one\s+more\s+|another\s+)?(msg|message)(\s+to\s+sumit)?(\s+saying|\s+that)?[:,\s]*)/i, "")
+    .replace(/^["']|["']$/g, "")
+    .trim();
+}
+
+function findPreviousUserDraft(messages: { role: string; content: string }[]): string | null {
+  const controlCommandRegex = /^(yes|yeah|yep|sure|no|nope|cancel|stop|nevermind|edit|change|ok|okay|what\s+email|clear|admin:clear|send\s+it|do\s+it)\b/i;
+  const isRefRegex = /\b(previous|earlier|last|old)\s+(msg|message|draft|text)\b|\bwhat\s+i\s+(said|wrote|sent)\s+earlier\b/i;
+
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i];
+    if (m.role === "user") {
+      const trimmed = m.content.trim();
+      if (isRefRegex.test(trimmed)) continue;
+      if (controlCommandRegex.test(trimmed) && trimmed.length < 40) continue;
+      if (/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}$/.test(trimmed)) continue;
+      // Skip generic connect or send-msg commands that have no message body
+      if (/^(just\s+)?send\s+(a\s+|one\s+more\s+|another\s+)?(msg|message)(\s+i\s+give\s+email|\s+to\s+sumit)?$/i.test(trimmed)) continue;
+      if (/^connect\s+with\s+sumit/i.test(trimmed)) continue;
+
+      const cleaned = cleanUserDraftText(trimmed);
+      if (cleaned.length > 0) {
+        return cleaned;
+      }
+    }
+  }
+  return null;
 }
 
 async function sendEmailViaNodemailer(email: string, message: string) {
@@ -227,6 +258,7 @@ export async function POST(req: Request) {
     }
 
     const sanitizedQuery = sanitizePromptInput(userQuery);
+    const tRequest = Date.now();
 
     // 1. Language Detection Engine
     const detectedLang = detectLanguage(sanitizedQuery);
@@ -234,9 +266,10 @@ export async function POST(req: Request) {
 
     // 2. Retrieve contextual chunks
     const { chunks: retrievedChunks, intent } = await retrieveHybridContext(sanitizedQuery, 5);
+    const ragMs = Date.now() - tRequest;
 
     // 3. Multi-Agent Persona Dispatcher
-    const activeAgent = classifyAgentRole(sanitizedQuery, intent);
+    let activeAgent = classifyAgentRole(sanitizedQuery, intent);
 
     // 4. Build history & Lead Qualification Extraction
     const dbMessages = db.getMessagesBySessionId(session.id);
@@ -245,6 +278,232 @@ export async function POST(req: Request) {
       role: m.role === "user" ? "user" as const : "assistant" as const,
       content: m.content,
     }));
+
+    // ── Pending Contact Workflow State Machine ─────────────────────────────
+    let pendingContact = db.getPendingContact(session.id);
+    let contactDirective = "";
+    let canSendToolExecute = false;
+
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b/i;
+    const queryEmailMatch = sanitizedQuery.match(emailRegex);
+
+    // Track active email: current query > pendingContact > history
+    let currentEmail: string | undefined = queryEmailMatch ? queryEmailMatch[0] : (pendingContact?.recipientEmail || undefined);
+    if (!currentEmail) {
+      for (let i = conversationHistory.length - 1; i >= 0; i--) {
+        const m = conversationHistory[i].content.match(emailRegex);
+        if (m) {
+          currentEmail = m[0];
+          break;
+        }
+      }
+    }
+
+    const assistantMessages = conversationHistory.filter((m) => m.role === "assistant");
+    const lastAssistantContent = assistantMessages[assistantMessages.length - 1]?.content || "";
+
+    const isAskingForMessage =
+      /(what\s+message|what\s+would\s+you\s+like(\s+me)?\s+to\s+(send|say)|what('s|\s+is)\s+the\s+message|provide\s+(the|a|your)\s+message|message\s+you('d|\s+would)\s+like\s+to\s+send)/i.test(
+        lastAssistantContent
+      );
+
+    const isAskingForEmail =
+      /(what('s|\s+is)\s+your\s+email|provide\s+your\s+email|your\s+email\s+address|email\s+so\s+sumit)/i.test(
+        lastAssistantContent
+      );
+
+    const trimmedQuery = sanitizedQuery.trim();
+    const isRefToPreviousMsg = /\b(previous|earlier|last|old)\s+(msg|message|draft|text)\b|\bwhat\s+i\s+(said|wrote|sent)\s+earlier\b/i.test(trimmedQuery);
+    const isCancelOrChange = /\b(no\b|nope\b|cancel|stop|nevermind|never mind|don't send|do not send|change\s+it|edit\s+it|clear)\b/i.test(trimmedQuery);
+    const isEmailInquiry = /\b(what|which)\s+(is\s+my\s+email|email\s+address|email\s+do\s+you\s+have|email\s+you\s+got)\b/i.test(trimmedQuery);
+
+    const inlineSendMsgRegex = /^(just\s+)?send\s+(a\s+|one\s+more\s+|another\s+)?(msg|message)(\s+to\s+sumit)?(\s+saying|\s+that)?[:,\s]*/i;
+    const hasInlineMatch = inlineSendMsgRegex.test(trimmedQuery);
+    const cleanedInline = hasInlineMatch ? cleanUserDraftText(trimmedQuery) : "";
+    const isNewInlineMessage = hasInlineMatch && cleanedInline.length > 0 && !/^(i\s+give\s+email|to\s+sumit)$/i.test(cleanedInline);
+
+    const isExplicitConfirmation =
+      /^(yes|yeah|yep|sure|send\s+it(\s+now|\s+please)?|send\s+now|send\s+the\s+message|send|please|do\s+it|ok|okay|yup|confirm|absolutely|yes\s+please|go\s+ahead)$/i.test(
+        trimmedQuery.replace(/[.!]+$/, "")
+      ) && !isRefToPreviousMsg && !isCancelOrChange && !isNewInlineMessage;
+
+    // Resolve any active or quoted draft from pendingContact, assistant quote, or conversation history
+    const resolvedDraft = pendingContact?.draftMessage ||
+      (lastAssistantContent.match(/["“']([^"”']{2,})["”']/) ? lastAssistantContent.match(/["“']([^"”']{2,})["”']/)?.[1] : null) ||
+      findPreviousUserDraft(conversationHistory);
+
+    const isAssistantAskingToSend = /(would\s+you\s+like\s+me\s+to\s+send|should\s+i\s+send|ready\s+to\s+send|send\s+that\s+message|confirm\s+before\s+sending)/i.test(lastAssistantContent);
+    const isPendingConfirmation = (pendingContact?.awaitingConfirmation && !!pendingContact?.draftMessage) || isAssistantAskingToSend;
+
+    // 1. Case A: Reference to previous message ("yes now send previous msg", "send previous message")
+    if (isRefToPreviousMsg) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      const previousDraft = findPreviousUserDraft(conversationHistory);
+      if (previousDraft) {
+        pendingContact = {
+          recipientEmail: currentEmail || null,
+          draftMessage: previousDraft,
+          awaitingConfirmation: true,
+          lastUpdated: new Date().toISOString(),
+        };
+        db.updatePendingContact(session.id, pendingContact);
+
+        contactDirective = `The user is referring to their previous message draft: "${previousDraft.replace(/"/g, '\\"')}".
+Recipient email on record: ${currentEmail || "not provided yet"}.
+
+CRITICAL POLICY:
+- DO NOT call the \`send_message_by_guest\` tool in this turn.
+- You must acknowledge the found previous message and ask for explicit confirmation:
+"I found your previous message:
+\\"${previousDraft.replace(/"/g, '\\"')}\\"
+
+Would you like me to send "${previousDraft.replace(/"/g, '\\"')}" to Sumit using ${currentEmail || "your email address"}?"`;
+      } else {
+        contactDirective = `The user referred to a previous message, but no previous draft was found in earlier turns. Ask them what message they would like to send to Sumit.`;
+      }
+      canSendToolExecute = false;
+    }
+    // 2. Case A2: Inline new message draft ("send one more msg hello buddy", "send message can we meet tomorrow")
+    else if (isNewInlineMessage) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      pendingContact = {
+        recipientEmail: currentEmail || null,
+        draftMessage: cleanedInline,
+        awaitingConfirmation: true,
+        lastUpdated: new Date().toISOString(),
+      };
+      db.updatePendingContact(session.id, pendingContact);
+      canSendToolExecute = false;
+
+      if (currentEmail) {
+        contactDirective = `The user provided a new message to send to Sumit:
+- Recipient: Sumit Kumar
+- Sender Email: ${currentEmail}
+- Message Draft: "${cleanedInline.replace(/"/g, '\\"')}"
+
+CRITICAL POLICY:
+- DO NOT call the \`send_message_by_guest\` tool in this turn.
+- Acknowledge their message and ask for explicit confirmation before sending:
+"I have your message: \\"${cleanedInline.replace(/"/g, '\\"')}\\" (from ${currentEmail}). Would you like me to go ahead and send this to Sumit?"`;
+      } else {
+        contactDirective = `You noted their message: "${cleanedInline.replace(/"/g, '\\"')}".
+Ask for their email address so Sumit can reply:
+"Got your message: \\"${cleanedInline.replace(/"/g, '\\"')}\\"! What is your email address so Sumit can get back to you?"`;
+      }
+    }
+    // 2. Case B: Explicit user confirmation ("send it", "yes", "confirm") when message & email are ready
+    else if (isExplicitConfirmation && isPendingConfirmation && currentEmail && resolvedDraft) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      canSendToolExecute = true; // HARD GATE UNLOCKED!
+      pendingContact = {
+        recipientEmail: currentEmail,
+        draftMessage: resolvedDraft,
+        awaitingConfirmation: true,
+        lastUpdated: new Date().toISOString(),
+      };
+      db.updatePendingContact(session.id, pendingContact);
+
+      contactDirective = `CRITICAL ACTION DIRECTIVE:
+The user has EXPLICITLY CONFIRMED sending the draft message.
+You MUST IMMEDIATELY call the \`send_message_by_guest\` tool now with:
+- email: "${currentEmail}"
+- message: "${resolvedDraft.replace(/"/g, '\\"')}"
+Do NOT ask for confirmation again. Call the tool now to send the email to Sumit.
+In your response, confirm to the user that their message has been sent to Sumit from ${currentEmail}.`;
+    }
+    // 3. Case C: User cancels or asks to change ("no change it", "cancel", "wait don't send")
+    else if (isCancelOrChange && (pendingContact?.awaitingConfirmation || pendingContact?.draftMessage)) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      pendingContact = {
+        recipientEmail: currentEmail || null,
+        draftMessage: null,
+        awaitingConfirmation: false,
+        lastUpdated: new Date().toISOString(),
+      };
+      db.updatePendingContact(session.id, pendingContact);
+      canSendToolExecute = false;
+
+      contactDirective = `The user requested to cancel or change their draft.
+Acknowledge politely:
+"Sure, I've cleared that draft. What message would you like to change it to instead?"`;
+    }
+    // 4. Case D: User asks what email is on record ("what email address do you have?")
+    else if (isEmailInquiry) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      canSendToolExecute = false;
+      contactDirective = `The user is inquiring about their email address on record.
+Tell them: ${currentEmail ? `Your email on file is **${currentEmail}**.` : "I don't have an email address recorded for you yet."}
+If they have a draft or want to send a message, let them know you're ready when they are.`;
+    }
+    // 5. Case E: User provides only an email address
+    else if (queryEmailMatch && trimmedQuery.length < queryEmailMatch[0].length + 20) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      currentEmail = queryEmailMatch[0];
+      const draft = resolvedDraft;
+
+      pendingContact = {
+        recipientEmail: currentEmail,
+        draftMessage: draft || null,
+        awaitingConfirmation: !!draft,
+        lastUpdated: new Date().toISOString(),
+      };
+      db.updatePendingContact(session.id, pendingContact);
+      canSendToolExecute = false;
+
+      if (pendingContact.draftMessage) {
+        contactDirective = `You noted the updated email: ${currentEmail}.
+You have their message draft: "${pendingContact.draftMessage.replace(/"/g, '\\"')}".
+Ask them for confirmation: "Got your email: ${currentEmail}! Would you like me to send '${pendingContact.draftMessage.replace(/"/g, '\\"')}' to Sumit?"`;
+      } else {
+        contactDirective = `You noted the email: ${currentEmail}.
+Ask them: "Got your email: ${currentEmail}! What message would you like me to send to Sumit?"`;
+      }
+    }
+    // 6. Case F: User provides the message draft
+    else if (isAskingForMessage && !isCancelOrChange && !isExplicitConfirmation) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      const draft = sanitizedQuery;
+      pendingContact = {
+        recipientEmail: currentEmail || null,
+        draftMessage: draft,
+        awaitingConfirmation: true,
+        lastUpdated: new Date().toISOString(),
+      };
+      db.updatePendingContact(session.id, pendingContact);
+      canSendToolExecute = false;
+
+      if (currentEmail) {
+        contactDirective = `PENDING ACTION - SENDING MESSAGE TO SUMIT:
+- Recipient: Sumit Kumar
+- Sender Email: ${currentEmail}
+- Message Content: "${draft.replace(/"/g, '\\"')}"
+
+Ask them for a quick confirmation:
+"I have your message: \\"${draft.replace(/"/g, '\\"')}\\" (from ${currentEmail}). Would you like me to go ahead and send this to Sumit?"
+Do NOT call \`send_message_by_guest\` yet until they explicitly confirm.`;
+      } else {
+        contactDirective = `You received their message draft: "${draft.replace(/"/g, '\\"')}".
+Now ask for their email address so Sumit can reply:
+"Got your message! What is your email address so Sumit can get back to you?"`;
+      }
+    }
+    // 7. Case G: User provides email when asked for email
+    else if (isAskingForEmail && currentEmail && !isAskingForMessage) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      canSendToolExecute = false;
+      contactDirective = `The user provided their email: ${currentEmail}.
+Now ask: "Got your email: ${currentEmail}! What message would you like me to send to Sumit?"`;
+    }
+    // 8. Case H: General contact queries
+    else if (intent === "contact_query" || /\b(send\s+(a\s+)?message|contact\s+sumit|email\s+sumit|reach\s+out\s+to\s+sumit)\b/i.test(trimmedQuery)) {
+      activeAgent = AGENT_PERSONAS.Scheduling;
+      canSendToolExecute = false;
+      if (!currentEmail) {
+        contactDirective = `The user wants to contact Sumit. Warmly ask for their email address and what message they would like to send so Sumit can respond directly.`;
+      } else if (!pendingContact?.draftMessage) {
+        contactDirective = `The user wants to contact Sumit. You have their email (${currentEmail}). Ask what message they would like you to send to Sumit.`;
+      }
+    }
 
     const allMessagesForLeadEval = [...conversationHistory, { role: "user", content: sanitizedQuery }];
     const leadResult = extractLeadQualification(allMessagesForLeadEval);
@@ -267,7 +526,7 @@ ${basePrompt}
 ACTIVE AI AGENT PERSONA: ${activeAgent.title} (${activeAgent.role} Agent)
 ═══════════════════════════════════════════
 ${activeAgent.systemDirective}
-
+${contactDirective ? `\n═══════════════════════════════════════════\nPENDING CONTACT WORKFLOW DIRECTIVE:\n═══════════════════════════════════════════\n${contactDirective}\n` : ""}
 ${leadDirective}
 
 ${langInstruction}
@@ -299,7 +558,19 @@ ${langInstruction}
       model: CHAT_MODEL,
       contents: sanitizedQuery,
       config: {
-        systemInstruction: multiAgentPrompt + "\nIf the user wants to leave a message, send a message, or contact Sumit, you can initiate the message send by calling the `send_message_by_guest` tool. You must ask the user for their email and message if they haven't provided them. Make sure to call this tool to send the message.",
+        systemInstruction: multiAgentPrompt + `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEND_MESSAGE SAFETY POLICY & RULES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. NEVER call \`send_message_by_guest\` merely because the user mentions "send", "message", or provides an email.
+2. A message must first be resolved, and the recipient's email must be known.
+3. The exact message content must be known and presented to the user.
+4. The user must explicitly confirm the exact message and recipient in a separate turn before sending.
+5. If the user says "yes", "okay", "do it", etc., ONLY treat it as confirmation when there is an active pending confirmation state.
+6. If the user refers to "previous message" or "earlier msg", resolve that message from history, display it, and ask for confirmation. NEVER send in the same turn.
+7. If the user says "no", "change it", or "cancel", do NOT call the tool; acknowledge and ask what they would like to change.
+8. Only call \`send_message_by_guest\` when you receive a CRITICAL ACTION DIRECTIVE explicitly instructing you to execute it now.
+9. When the user supplies a new message draft (e.g. "send one more msg hello buddy"), NEVER call \`send_message_by_guest\` immediately. Present the draft to the user and ask for their confirmation first!`,
         temperature: 0.15,
         topP: 0.8,
         maxOutputTokens: 512,
@@ -316,6 +587,9 @@ ${langInstruction}
         const encoder = new TextEncoder();
         const send = (data: object) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
 
+        const tGemini = Date.now();
+        let ttftMs: number | null = null;
+
         send({ type: "start" });
         send({ type: "start-step" });
         send({ type: "text-start", id: textId });
@@ -324,20 +598,51 @@ ${langInstruction}
           for await (const chunk of stream) {
             if (abortController.signal.aborted) break;
 
+            // Capture time-to-first-token on first text chunk from Gemini
+            if (ttftMs === null && (chunk.text || chunk.functionCalls?.length)) {
+              ttftMs = Date.now() - tGemini;
+            }
+
             const calls = chunk.functionCalls;
             if (calls && calls.length > 0) {
               for (const call of calls) {
                 if (call.name === "send_message_by_guest") {
                   const args = call.args as { email?: string; message?: string };
-                  if (args.email && args.message) {
+                  const targetEmail = args.email || pendingContact?.recipientEmail;
+                  const targetMessage = args.message || pendingContact?.draftMessage;
+
+                  if (!canSendToolExecute) {
+                    console.warn("[Chat Tool Gate] BLOCKED unauthorized send_message_by_guest: confirmation gate not satisfied.");
+                    const draftToConfirm = targetMessage || pendingContact?.draftMessage;
+                    const emailToConfirm = targetEmail || currentEmail;
+                    if (draftToConfirm && !fullResponse.includes("Would you like me to")) {
+                      pendingContact = {
+                        recipientEmail: emailToConfirm || null,
+                        draftMessage: draftToConfirm,
+                        awaitingConfirmation: true,
+                        lastUpdated: new Date().toISOString(),
+                      };
+                      db.updatePendingContact(session.id, pendingContact);
+                      const confirmationPrompt = `\n\nI have your message: "${draftToConfirm}"${emailToConfirm ? ` (from ${emailToConfirm})` : ""}. Would you like me to go ahead and send this to Sumit?`;
+                      send({ type: "text-delta", id: textId, delta: confirmationPrompt });
+                      fullResponse += confirmationPrompt;
+                    }
+                    continue;
+                  }
+
+                  if (targetEmail && targetMessage) {
                     try {
-                      console.log("[Chat Tool] Sending email from", args.email);
-                      await sendEmailViaNodemailer(args.email, args.message);
-                      send({ type: "text-delta", id: textId, delta: "\n\n*System: Message sent successfully to Sumit on your behalf!* 🚀" });
-                      fullResponse += "\n\n*System: Message sent successfully to Sumit on your behalf!* 🚀";
+                      console.log("[Chat Tool] Sending email from", targetEmail);
+                      await sendEmailViaNodemailer(targetEmail, targetMessage);
+                      db.updatePendingContact(session.id, null); // Clear state after successful send
+                      const successNotice = `\n\n✅ **Message sent successfully to Sumit!** 🚀\n\n- **From:** \`${targetEmail}\`\n- **Message:** *"${targetMessage}"*\n\nSumit has received your note in his inbox and will follow up with you at **${targetEmail}** soon!`;
+                      send({ type: "text-delta", id: textId, delta: successNotice });
+                      fullResponse += successNotice;
                     } catch (mailErr: any) {
                       console.error("Failed to send email inside tool:", mailErr?.message);
-                      send({ type: "text-delta", id: textId, delta: "\n\n*System: Failed to send your message. Please try again.*" });
+                      const failureNotice = `\n\n⚠️ **Delivery failed**: We were unable to send your message from **${targetEmail}**. Please try again shortly or contact Sumit directly via [WhatsApp](https://wa.me/917011676185) or [LinkedIn](https://www.linkedin.com/in/sumit-kumar0509/).`;
+                      send({ type: "text-delta", id: textId, delta: failureNotice });
+                      fullResponse += failureNotice;
                     }
                   }
                 }
@@ -379,6 +684,14 @@ ${langInstruction}
           
           const updatedSession = await buildSessionState(session, finalLockoutStr);
 
+          if (process.env.NODE_ENV === "development") {
+            console.debug("[CHAT]", {
+              ragMs,
+              ttftMs,
+              totalStreamMs: Date.now() - tGemini,
+            });
+          }
+
           send({ type: "text-end", id: textId });
           send({ type: "finish-step" });
           send({ type: "finish", finishReason: "stop" });
@@ -394,8 +707,9 @@ ${langInstruction}
     return new Response(sseStream, {
       headers: {
         "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
+        "Cache-Control": "no-cache, no-transform",
         "Connection": "keep-alive",
+        "X-Accel-Buffering": "no",
         "X-Vercel-AI-UI-Message-Stream": "v1",
       },
     });

@@ -9,7 +9,7 @@ export const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 // Model IDs
 export const EMBEDDING_MODEL = "gemini-embedding-001";
 export const REASONING_MODEL = "gemini-3.8-flash";
-export const CHAT_MODEL = "gemini-3.5-flash-lite";       // Fast, smart, and has a free tier
+export const CHAT_MODEL = "gemini-3.5-flash-lite";      // Fast and  smart
 export const FALLBACK_MODEL = "gemini-3.1-flash-lite"; // Lowest latency, ultra-lightweight backup
 
 

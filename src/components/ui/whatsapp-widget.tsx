@@ -5,7 +5,7 @@ import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function WhatsAppWidget() {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "15556735747";
+  const whatsappNumber = process.env.WHATSAPP_NUMBER || "15556735747";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20an%20AI%20%2F%20full-stack%20project.`;
 
   return (

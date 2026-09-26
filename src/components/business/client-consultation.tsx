@@ -44,13 +44,13 @@ export function ClientConsultation() {
 
   return (
     <div id="consultation-section" className="space-y-10 w-full pt-6">
-      
+
       {/* Project Query Note & Category Card */}
       <StitchCard glowColor="indigo" className="p-6 sm:p-10 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl mx-auto space-y-6 text-center">
-          
+
           {/* Header */}
           <div className="space-y-2">
             <StitchBadge variant="primary">
@@ -177,7 +177,7 @@ export function ClientConsultation() {
       {/* Direct Contact Channels Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         <a
-          href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "15556735747"}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20a%20project.`}
+          href={`https://wa.me/${process.env.WHATSAPP_NUMBER || "15556735747"}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20a%20project.`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition-all hover:scale-105 group"

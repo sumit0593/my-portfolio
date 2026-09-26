@@ -74,7 +74,7 @@ export function ContactSection() {
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 w-full max-w-3xl mb-12 px-2"
       >
         <a
-          href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "15556735747"}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20an%20AI%20project.`}
+          href={`https://wa.me/${process.env.WHATSAPP_NUMBER || "15556735747"}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20an%20AI%20project.`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2.5 bg-emerald-500/10 backdrop-blur-md hover:bg-emerald-500/20 p-3.5 rounded-xl border border-emerald-500/30 transition-all hover:-translate-y-1 hover:shadow-md group"

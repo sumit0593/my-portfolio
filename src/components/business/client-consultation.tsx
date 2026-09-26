@@ -177,7 +177,7 @@ export function ClientConsultation() {
       {/* Direct Contact Channels Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         <a
-          href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || process.env.WHATSAPP_NUMBER || ""}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20a%20project.`}
+          href={`https://wa.me/${process.env.WHATSAPP_NUMBER || ""}?text=Hi%20Sumit!%20I'm%20interested%20in%20discussing%20a%20project.`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 p-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition-all hover:scale-105 group"

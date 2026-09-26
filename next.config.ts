@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  env: {
+    WHATSAPP_NUMBER: process.env.WHATSAPP_NUMBER,
+  },
   async headers() {
     return [
       {

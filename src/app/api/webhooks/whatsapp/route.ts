@@ -7,13 +7,19 @@ import { retrieveHybridContext, buildOrchestratedPrompt } from "@/lib/orchestrat
 import { ai, CHAT_MODEL } from "@/lib/gemini";
 import { sanitizePromptInput, sanitizeAIOutput } from "@/lib/security";
 
-const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || "portfolio_whatsapp_verify_token";
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 /**
  * GET Webhook Verification Handshake for Meta WhatsApp Cloud API.
  */
 export async function GET(req: NextRequest) {
-  const verifyToken = process.env.WHATSAPP_VERIFY_TOKEN || "portfolio_whatsapp_verify_token";
+  const verifyToken = process.env.WHATSAPP_VERIFY_TOKEN;
+  if (!verifyToken) {
+    console.error("[WhatsApp Webhook GET] Error: WHATSAPP_VERIFY_TOKEN is not configured in process.env");
+    return NextResponse.json({ error: "WHATSAPP_VERIFY_TOKEN not configured." }, { status: 500 });
+  }
+
   const { searchParams } = new URL(req.url);
   const mode = searchParams.get("hub.mode");
   const token = searchParams.get("hub.verify_token");
@@ -50,7 +56,11 @@ export async function POST(req: NextRequest) {
     }
 
     const fromPhone = message.from; // Sender's phone number
-    const incomingPhoneId = value?.metadata?.phone_number_id; // Phone Number ID from Meta payload
+    const incomingPhoneId = value?.metadata?.phone_number_id || process.env.WHATSAPP_PHONE_ID;
+    if (!incomingPhoneId) {
+      console.error("[WhatsApp Webhook POST] Error: WHATSAPP_PHONE_ID is not configured in process.env and missing in payload metadata.");
+      return NextResponse.json({ error: "WHATSAPP_PHONE_ID not configured" }, { status: 500 });
+    }
     const messageType = message.type;
     let userText = "";
 
@@ -69,28 +79,35 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: "empty" }, { status: 200 });
     }
 
-    // Process AI response in background without blocking Meta's 3-second HTTP timeout
-    (async () => {
+    // Await processing directly so Vercel Serverless Function does not freeze execution prematurely
+    try {
+      const sanitizedText = sanitizePromptInput(userText);
+
+      // 1. Detect language
+      const detectedLang = detectLanguage(sanitizedText);
+      const langInstruction = buildLanguageInstruction(detectedLang);
+
+      // 2. Retrieve hybrid context with safety fallback
+      let chunks: any[] = [];
+      let intent: any = "general_query";
       try {
-        const sanitizedText = sanitizePromptInput(userText);
+        const hybridResult = await retrieveHybridContext(sanitizedText, 4);
+        chunks = hybridResult.chunks || [];
+        intent = hybridResult.intent || "general_query";
+      } catch (ragErr) {
+        console.warn("[WhatsApp Webhook] RAG context retrieval failed, proceeding with base knowledge:", ragErr);
+      }
 
-        // 1. Detect language
-        const detectedLang = detectLanguage(sanitizedText);
-        const langInstruction = buildLanguageInstruction(detectedLang);
+      // 3. Classify Multi-Agent Persona
+      const activeAgent = classifyAgentRole(sanitizedText, intent);
 
-        // 2. Retrieve hybrid context
-        const { chunks, intent } = await retrieveHybridContext(sanitizedText, 4);
+      // 4. Lead Qualification Check
+      const leadResult = extractLeadQualification([{ role: "user", content: sanitizedText }]);
+      const leadDirective = buildLeadQualificationDirective(leadResult);
 
-        // 3. Classify Multi-Agent Persona
-        const activeAgent = classifyAgentRole(sanitizedText, intent);
-
-        // 4. Lead Qualification Check
-        const leadResult = extractLeadQualification([{ role: "user", content: sanitizedText }]);
-        const leadDirective = buildLeadQualificationDirective(leadResult);
-
-        // 5. Build System Prompt
-        const basePrompt = buildOrchestratedPrompt(chunks, [], sanitizedText, intent);
-        const whatsappPrompt = `
+      // 5. Build System Prompt
+      const basePrompt = buildOrchestratedPrompt(chunks, [], sanitizedText, intent);
+      const whatsappPrompt = `
 ${basePrompt}
 
 ACTIVE WHATSAPP AI AGENT: ${activeAgent.title} (${activeAgent.role} Agent)
@@ -106,7 +123,9 @@ FORMATTING RULE: Format your answer cleanly for WhatsApp messaging:
 - Include bullet points for lists.
 `;
 
-        // 6. Generate AI Response via Gemini
+      // 6. Generate AI Response via Gemini with fallback
+      let replyText = "";
+      try {
         const aiResponse = await ai.models.generateContent({
           model: CHAT_MODEL,
           contents: sanitizedText,
@@ -117,27 +136,30 @@ FORMATTING RULE: Format your answer cleanly for WhatsApp messaging:
           },
         });
 
-        const replyText = sanitizeAIOutput(
+        replyText = sanitizeAIOutput(
           aiResponse.text || "Hello! Thanks for reaching out. How can I assist with your AI engineering or full-stack project?"
         );
-
-        // 7. Send Response back to WhatsApp Cloud API
-        const sendResult = await sendWhatsAppMessage({
-          toPhone: fromPhone,
-          text: replyText,
-          phoneId: incomingPhoneId,
-        });
-
-        console.log(`[WhatsApp Agent Sent] To: ${fromPhone} | Agent: ${activeAgent.role} | Success: ${sendResult.success} | Message ID: ${sendResult.messageId || "N/A"}`);
-      } catch (bgErr) {
-        console.error("[WhatsApp Async Agent Error]", bgErr);
+      } catch (aiErr) {
+        console.error("[WhatsApp AI Generation Error]", aiErr);
+        replyText = "Hello! Thanks for reaching out to Sumit's AI assistant. I'm reviewing your message and will provide full details shortly. Feel free to share more about your project requirements!";
       }
-    })();
 
-    // Immediately return HTTP 200 OK to Meta to comply with Meta's 3-second webhook timeout
+      // 7. Send Response back to WhatsApp Cloud API
+      const sendResult = await sendWhatsAppMessage({
+        toPhone: fromPhone,
+        text: replyText,
+        phoneId: incomingPhoneId,
+      });
+
+      console.log(`[WhatsApp Agent Sent] To: ${fromPhone} | Agent: ${activeAgent.role} | Success: ${sendResult.success} | Message ID: ${sendResult.messageId || "N/A"}`);
+    } catch (agentErr) {
+      console.error("[WhatsApp Agent Error]", agentErr);
+    }
+
+    // Return HTTP 200 OK to Meta confirming processing completed
     return NextResponse.json({
       status: "success",
-      message: "Message received and dispatching to AI agent",
+      message: "Message processed and AI response dispatched",
       fromPhone,
     }, { status: 200 });
   } catch (err: any) {

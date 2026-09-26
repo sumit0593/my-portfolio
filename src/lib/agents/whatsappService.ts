@@ -26,12 +26,13 @@ interface SendMediaMessageParams {
  * Sends a text message to a client's WhatsApp number.
  */
 export async function sendWhatsAppMessage({ toPhone, text, phoneId: overridePhoneId }: SendTextMessageParams): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  const token = process.env.WHATSAPP_TOKEN || "";
-  const phoneId = overridePhoneId || process.env.WHATSAPP_PHONE_ID || "";
+  const token = process.env.WHATSAPP_TOKEN;
+  const phoneId = overridePhoneId || process.env.WHATSAPP_PHONE_ID;
 
-  if (!token || !phoneId || token.includes("PASTE_YOUR")) {
-    console.log(`[WhatsApp Service Mock] To: ${toPhone} | Message: ${text.slice(0, 100)}...`);
-    return { success: true, messageId: `mock-wa-${Date.now()}` };
+  if (!token || !phoneId) {
+    const errorMsg = "Missing WHATSAPP_TOKEN or WHATSAPP_PHONE_ID in process.env.";
+    console.error(`[WhatsApp Service Error] ${errorMsg}`);
+    return { success: false, error: errorMsg };
   }
 
   const cleanPhone = toPhone.replace(/[^\d]/g, "");
@@ -46,7 +47,7 @@ export async function sendWhatsAppMessage({ toPhone, text, phoneId: overridePhon
         to: cleanPhone,
         type: "text",
         text: {
-          preview_url: true,
+          preview_url: false,
           body: text,
         },
       },
@@ -72,12 +73,13 @@ export async function sendWhatsAppMessage({ toPhone, text, phoneId: overridePhon
  * Sends media attachments (Images, Proposal PDFs, Audio Notes) to client WhatsApp.
  */
 export async function sendWhatsAppMedia({ toPhone, mediaType, mediaUrl, caption, filename }: SendMediaMessageParams): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  const token = process.env.WHATSAPP_TOKEN || "";
-  const phoneId = process.env.WHATSAPP_PHONE_ID || "";
+  const token = process.env.WHATSAPP_TOKEN;
+  const phoneId = process.env.WHATSAPP_PHONE_ID;
 
-  if (!token || !phoneId || token.includes("PASTE_YOUR")) {
-    console.log(`[WhatsApp Media Mock] To: ${toPhone} | Type: ${mediaType} | URL: ${mediaUrl}`);
-    return { success: true, messageId: `mock-wa-media-${Date.now()}` };
+  if (!token || !phoneId) {
+    const errorMsg = "Missing WHATSAPP_TOKEN or WHATSAPP_PHONE_ID in process.env.";
+    console.error(`[WhatsApp Media Error] ${errorMsg}`);
+    return { success: false, error: errorMsg };
   }
 
   const cleanPhone = toPhone.replace(/[^\d]/g, "");
